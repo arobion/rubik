@@ -37,7 +37,7 @@ class rubik_corner():
         self.final_position = position
 
     def __str__(self):
-        return "orientation = {}\ncurrent_position = {}\nfinal_position = {}\n".format(self.orientation, self.current_position, self.final_position)
+        return "orientation = {}\nfinal_position = {}\n".format(self.orientation, self.final_position)
 
 
 class rubik_edge():
@@ -47,5 +47,5 @@ class rubik_edge():
         self.final_position = position
 
     def __str__(self):
-        return "orientation = {}\ncurrent_position = {}\nfinal_position = {}\n".format(self.orientation, self.current_position, self.final_position)
+        return "orientation = {}\nfinal_position = {}\n".format(self.orientation, self.final_position)
 

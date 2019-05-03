@@ -72,7 +72,8 @@ class Rubik():
             self.manhattan_dist["edge"][i] = {}
             for j in range(1, 13):
                 self.manhattan_dist["edge"][i][j] = self.calc_dist(self.edges_coord[i], self.edges_coord[j]) / 8
-   def precalc_h1(self):
+
+    def precalc_h1(self):
         """
         {index : {cube: cout}}
         """

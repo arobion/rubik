@@ -7,6 +7,7 @@ class Rubik():
         self.edges = {i : rubik_edge(i) for i in range(1, 13)}
         self.create_dics_coord()
         self.precalc_manhattan_dist()
+        self.precalc_h1()
 
     def __str__(self):
         ret = "coins:\n"
@@ -71,7 +72,21 @@ class Rubik():
             self.manhattan_dist["edge"][i] = {}
             for j in range(1, 13):
                 self.manhattan_dist["edge"][i][j] = self.calc_dist(self.edges_coord[i], self.edges_coord[j]) / 8
-    
+   def precalc_h1(self):
+        """
+        {index : {cube: cout}}
+        """
+        self.h1_dist = {}
+        for i in range(1, 13):
+            self.h1_dist[i] = {}
+            for j in range(1, 13):
+                if i not in [5, 6, 7, 8] and j not in [5, 6, 7, 8]:
+                    self.h1_dist[i][j] = 0
+                elif i in [5, 6, 7, 8] and j in [5, 6, 7, 8]:
+                    self.h1_dist[i][j] = 0
+                else:
+                    self.h1_dist[i][j] = 2 
+
     def heuristic(self, obj):
         tot = 0
         for index in obj.corners:
@@ -79,6 +94,16 @@ class Rubik():
         for index in obj.edges:
             tot += self.manhattan_dist["edge"][index][obj.edges[index].final_position]
         return tot 
+
+    def heuristic_h1(self, obj):
+        tot = 0
+        for elem in self.corners.values():
+            if elem.orientation != 0:
+                tot += 1
+        for index in self.edges:
+            tot += self.edges[index].orientation
+            tot += self.h1_dist[index][obj.edges[index].final_position]
+        return tot / 8
 
 
 class rubik_corner():

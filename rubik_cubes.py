@@ -83,11 +83,11 @@ class Rubik():
             for j in range(1, 13):
                 self.manhattan_dist["edge"][i][j] = self.calc_dist(self.edges_coord[i], self.edges_coord[j]) / 8
     
-    def heuristic_manhattan(self):
+    def heuristic_manhattan(self, obj):
         tot = 0
-        for index in self.corners:
+        for index in obj.corners:
             tot += self.manhattan_dist["corner"][index][self.corners[index].final_position]
-        for index in self.edges:
+        for index in obj.edges:
             tot += self.manhattan_dist["edge"][index][self.edges[index].final_position]
         return tot 
 

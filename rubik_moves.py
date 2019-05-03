@@ -148,3 +148,26 @@ move_fp = {
 def move(obj, instruction):
     move_fp[instruction](obj)
 
+move_notation_fp = {
+    "U": U,
+    "R": R,
+    "L": L,
+    "D": D,
+    "F": F,
+    "B": B,
+    "U'": Ur,
+    "R'": Rr,
+    "L'": Lr,
+    "D'": Dr,
+    "F'": Fr,
+    "B'": Br,
+    "U2": U2,
+    "R2": R2,
+    "L2": L2,
+    "D2": D2,
+    "F2": F2,
+    "B2": B2
+}
+
+def move_by_notation(obj, notation):
+    move_notation_fp[notation](obj)

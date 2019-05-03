@@ -3,7 +3,6 @@ import argparse
 from rubik_cubes import Rubik
 from rubik_moves import move, move_by_notation
 from rubik_state import rubik_state
-from ida import IDA
 
 def scramble(string, rubik):
     valid_moves = ["U", "U'", "U2", "R", "R'", "R2", "L", "L'", "L2", "D", "D'", "D2", "F", "F'", "F2", "B", "B'", "B2"]

@@ -10,22 +10,11 @@ class Rubik():
 
     def __str__(self):
         ret = "coins:\n"
-        ret += "\t{}  {}\t{}  {}\n\t U\t D\n\t{}  {}\t{}  {}\n".format(self.get_corner_by_position(4).final_position, self.get_corner_by_position(1).final_position, self.get_corner_by_position(8).final_position, self.get_corner_by_position(5).final_position, self.get_corner_by_position(3).final_position, self.get_corner_by_position(2).final_position, self.get_corner_by_position(7).final_position, self.get_corner_by_position(6).final_position)
+        ret += "\t{}  {}\t{}  {}\n\t U\t D\n\t{}  {}\t{}  {}\n".format(self.corners[4].final_position, self.corners[1].final_position, self.corners[8].final_position, self.corners[5].final_position, self.corners[3].final_position, self.corners[2].final_position, self.corners[7].final_position, self.corners[6].final_position)
         ret += "aretes:\n"
-        ret += "    {}        {}  {}        {}\n   {}  {}                {}  {}\n    {}        {}  {}        {}\n".format(self.get_edge_by_position(1).final_position,self.get_edge_by_position(8).final_position, self.get_edge_by_position(5).final_position, self.get_edge_by_position(9).final_position, self.get_edge_by_position(4).final_position, self.get_edge_by_position(2).final_position, self.get_edge_by_position(12).final_position, self.get_edge_by_position(10).final_position, self.get_edge_by_position(3).final_position, self.get_edge_by_position(7).final_position, self.get_edge_by_position(6).final_position, self.get_edge_by_position(11).final_position)
+        ret += "    {}        {}  {}        {}\n   {}  {}                {}  {}\n    {}        {}  {}        {}\n".format(self.edges[1].final_position,self.edges[8].final_position, self.edges[5].final_position, self.edges[9].final_position, self.edges[4].final_position, self.edges[2].final_position, self.edges[12].final_position, self.edges[10].final_position, self.edges[3].final_position, self.edges[7].final_position, self.edges[6].final_position, self.edges[11].final_position)
         return ret
         
-#    def get_corner_by_number(self, number):
-#        for elem in self.corners:
-#            if number == elem.final_position:
-#                return elem
-#
-#    def get_edge_by_number(self, number):
-#        for elem in self.edges:
-#            if number == elem.final_position:
-#                return elem
-
-
     def get_corner_by_position(self, position):
         return self.corners[position]
 

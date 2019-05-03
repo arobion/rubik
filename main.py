@@ -5,11 +5,11 @@ from rubik_moves import move, move_by_notation
 from rubik_state import rubik_state
 
 def scramble(string, rubik):
-    valid_moves = ["U", "U'", "U2", "R', "R'", "R2', "L", "L'", "L2", "D", "D'", "D2", "F", "F'", "F2", "B", "B'", "B2"]
-    moves = string.split(" ")
+    valid_moves = ["U", "U'", "U2", "R", "R'", "R2", "L", "L'", "L2", "D", "D'", "D2", "F", "F'", "F2", "B", "B'", "B2"]
+    moves = string.split()
     for elem in moves:
         if elem not in valid_moves:
-            raise Exception("Error unvalid move, look at usage for more information")
+            raise Exception("Error unvalid move : {}, look at usage for more information".format(elem))
         move_by_notation(rubik, elem)
 
 

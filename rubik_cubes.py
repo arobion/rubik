@@ -4,6 +4,8 @@ class Rubik():
 #        self.edges = [rubik_edge(i) for i in range(1, 13)]
         self.corners = {i : rubik_corner(i) for i in range(1, 9)}
         self.edges = {i : rubik_edge(i) for i in range(1, 13)}
+        self.create_dics_coord()
+        self.precalc_manhattan_dist()
 
     def __str__(self):
         ret = "coins:\n"
@@ -28,7 +30,65 @@ class Rubik():
     def get_edge_by_position(self, position):
         return self.edges[position]
 
+    def create_dics_coord(self):
+        """
+        {index: (x, y, z)}
+        le point 7 est le point 0, 0, 0
+        """
+        
+        self.corner_coord = {}
+        self.corner_coord[1] = (2, 2, 2) 
+        self.corner_coord[2] = (2, 2, 0)
+        self.corner_coord[3] = (0, 2, 0)
+        self.corner_coord[4] = (0, 2, 2)
+        self.corner_coord[5] = (2, 0, 2)
+        self.corner_coord[6] = (2, 0, 0)
+        self.corner_coord[7] = (0, 0, 0)
+        self.corner_coord[8] = (0, 0, 2)
+        
+        self.edges_coord = {}
+        self.edges_coord[1] = (1, 2, 2)
+        self.edges_coord[2] = (2, 2, 1)
+        self.edges_coord[3] = (1, 2, 0)
+        self.edges_coord[4] = (0, 2, 1)
+        self.edges_coord[5] = (2, 1, 2)
+        self.edges_coord[6] = (2, 1, 0)
+        self.edges_coord[7] = (0, 1, 0)
+        self.edges_coord[8] = (0, 1, 2)
+        self.edges_coord[9] = (1, 0, 2)
+        self.edges_coord[10] = (2, 0, 1)
+        self.edges_coord[11] = (1, 0, 0)
+        self.edges_coord[12] = (0, 0, 1)
     
+    def calc_dist(self, a, b):
+        return abs(b[0] - a[0]) + abs(b[1] - a[1]) + abs(b[2] - a[2])
+    
+    def precalc_manhattan_dist(self):
+        """
+        {index: {cube: cout}}
+        """
+        # corners
+        self.manhattan_dist = {}
+        self.manhattan_dist["corner"] = {}
+        for i in range(1, 9):
+            self.manhattan_dist["corner"][i] = {}
+            for j in range(1, 9):
+                self.manhattan_dist["corner"][i][j] = self.calc_dist(self.corner_coord[i], self.corner_coord[j]) / 8
+        #edges
+        self.manhattan_dist["edge"] = {}
+        for i in range(1, 13):
+            self.manhattan_dist["edge"][i] = {}
+            for j in range(1, 13):
+                self.manhattan_dist["edge"][i][j] = self.calc_dist(self.edges_coord[i], self.edges_coord[j]) / 8
+    
+    def heuristic_manhattan(self):
+        tot = 0
+        for index in self.corners:
+            tot += self.manhattan_dist["corner"][index][self.corners[index].final_position]
+        for index in self.edges:
+            tot += self.manhattan_dist["edge"][index][self.edges[index].final_position]
+        return tot 
+
     def move(self, instruction):
         #U
         #corner: 1 2 3 4, edges: 1 2 3 4
@@ -156,6 +216,45 @@ class Rubik():
         elif instruction == 18:
             self.corners[1], self.corners[8], self.corners[4], self.corners[5] = self.corners[8], self.corners[1], self.corners[5], self.corners[4]
             self.edges[1], self.edges[9], self.edges[5], self.edges[8] = self.edges[9], self.edges[1], self.edges[8], self.edges[5]
+
+
+    def get_num_by_notation(self, notation):
+        if notation == "U":
+            return 1
+        if notation == "R":
+            return 2
+        if notation == "L":
+            return 3
+        if notation == "D":
+            return 4
+        if notation == "F":
+            return 5
+        if notation == "B":
+            return 6
+        if notation == "U'":
+            return 7
+        if notation == "R'":
+            return 8
+        if notation == "L'":
+            return 9
+        if notation == "D'":
+            return 10
+        if notation == "F'":
+            return 11
+        if notation == "B'":
+            return 12
+        if notation == "U2":
+            return 13
+        if notation == "R2":
+            return 14
+        if notation == "L2":
+            return 15
+        if notation == "D2":
+            return 16
+        if notation == "F2":
+            return 17
+        if notation == "B2":
+            return 18
 
 
 

@@ -3,6 +3,7 @@ import argparse
 from rubik_cubes import Rubik
 from rubik_moves import move, move_by_notation
 from rubik_state import rubik_state
+from rubik_ida import IDA
 
 def scramble(string, rubik):
     valid_moves = ["U", "U'", "U2", "R", "R'", "R2", "L", "L'", "L2", "D", "D'", "D2", "F", "F'", "F2", "B", "B'", "B2"]
@@ -23,7 +24,17 @@ def main():
     except Exception as e:
         print(e)
         return
-    print(rubik)
+
+    start = rubik_state(rubik, 0)
+    ida = IDA(start, rubik.heuristic)
+    ret = ida.run()
+    if ret == "not found":
+        print(ret)
+    else:
+        for state in ret:
+            print(state)
+            print("_______________________________________")
+
 
 if __name__ == "__main__":
     main()

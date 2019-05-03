@@ -259,10 +259,3 @@ class rubik_edge():
 
     def __str__(self):
         return "orientation = {}\nfinal_position = {}\n".format(self.orientation, self.final_position)
-
-
-r = Rubik()
-print(r)
-r.move(1)
-r.U()
-print(r)

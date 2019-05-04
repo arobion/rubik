@@ -1,4 +1,5 @@
 import argparse
+import time
 
 from rubik_cubes import Rubik
 from rubik_moves import move, move_by_notation
@@ -27,13 +28,17 @@ def main():
 
     start = rubik_state(rubik, 0)
     ida = IDA(start, rubik.heuristic)
+    start = time.time()
     ret = ida.run()
+    duration = time.time() - start
     if ret == "not found":
         print(ret)
     else:
         for state in ret:
             print(state)
             print("_______________________________________")
+    print("total:", duration)
+    print("h_cal:", ida.h_cal)
 
 
 if __name__ == "__main__":

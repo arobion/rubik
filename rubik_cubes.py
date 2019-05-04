@@ -51,10 +51,34 @@ class Rubik():
         self.edges_coord[10] = (2, 0, 1)
         self.edges_coord[11] = (1, 0, 0)
         self.edges_coord[12] = (0, 0, 1)
+
+        # everything is the same return 0
+        # same a[1] > return 1
+        # diff a[1] and same a[0] return 1
+        # else return 2
     
     def calc_dist(self, a, b):
         return abs(b[0] - a[0]) + abs(b[1] - a[1]) + abs(b[2] - a[2])
+
+    def calc_corner_move(self, a, b):
+        if a[0] == b[0] and a[1] == b[1] and a[2] == b[2]:
+            return 0
+        if a[0] != b[0] and a[1] != b[1] and a[2] != b[2]:
+            return 2
+        return 1
     
+    def calc_edge_move(self, a, b):
+        if a[0] == b[0] and a[1] == b[1] and a[2] == b[2]:
+            return 0
+        if a[1] == a[1]:
+            return 1
+        if a[0] == a[0] and a[2] == a[2]:
+            return 1
+        return 2
+    
+    '''
+    basic manhattan distance
+
     def precalc_manhattan_dist(self):
         """
         {index: {cube: cout}}
@@ -65,13 +89,49 @@ class Rubik():
         for i in range(1, 9):
             self.manhattan_dist["corner"][i] = {}
             for j in range(1, 9):
-                self.manhattan_dist["corner"][i][j] = self.calc_dist(self.corner_coord[i], self.corner_coord[j]) / 8
+                self.manhattan_dist["corner"][i][j] = self.calc_corner_move(self.corner_coord[i], self.corner_coord[j]) / 8
         #edges
         self.manhattan_dist["edge"] = {}
         for i in range(1, 13):
             self.manhattan_dist["edge"][i] = {}
             for j in range(1, 13):
-                self.manhattan_dist["edge"][i][j] = self.calc_dist(self.edges_coord[i], self.edges_coord[j]) / 8
+                self.manhattan_dist["edge"][i][j] = self.calc_edge_move(self.edges_coord[i], self.edges_coord[j]) / 8
+
+    def heuristic(self, obj):
+        tot = 0
+        for index in obj.corners:
+            tot += self.manhattan_dist["corner"][index][obj.corners[index].final_position]
+        for index in obj.edges:
+            tot += self.manhattan_dist["edge"][index][obj.edges[index].final_position]
+        return tot 
+        '''
+
+    def precalc_manhattan_dist(self):
+        """
+        {index: {cube: cout}}
+        """
+        # corners
+        self.manhattan_dist = {}
+        self.manhattan_dist["corner"] = {}
+        for i in range(1, 9):
+            self.manhattan_dist["corner"][i] = {}
+            for j in range(1, 9):
+                self.manhattan_dist["corner"][i][j] = self.calc_corner_move(self.corner_coord[i], self.corner_coord[j]) / 4
+        #edges
+        self.manhattan_dist["edge"] = {}
+        for i in range(1, 13):
+            self.manhattan_dist["edge"][i] = {}
+            for j in range(1, 13):
+                self.manhattan_dist["edge"][i][j] = self.calc_edge_move(self.edges_coord[i], self.edges_coord[j]) / 4
+
+    def heuristic(self, obj):
+        tot_corner = 0
+        tot_edge = 0
+        for index in obj.corners:
+            tot_corner += self.manhattan_dist["corner"][index][obj.corners[index].final_position]
+        for index in obj.edges:
+            tot_edge += self.manhattan_dist["edge"][index][obj.edges[index].final_position]
+        return max(tot_corner, tot_edge) 
 
     def precalc_h1(self):
         """
@@ -87,14 +147,6 @@ class Rubik():
                     self.h1_dist[i][j] = 0
                 else:
                     self.h1_dist[i][j] = 2 
-
-    def heuristic(self, obj):
-        tot = 0
-        for index in obj.corners:
-            tot += self.manhattan_dist["corner"][index][obj.corners[index].final_position]
-        for index in obj.edges:
-            tot += self.manhattan_dist["edge"][index][obj.edges[index].final_position]
-        return tot 
 
     def heuristic_h1(self, obj):
         tot = 0

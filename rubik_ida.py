@@ -6,16 +6,17 @@ NOT_FOUND = "not found"
 
 class IDA:
 
-    def __init__(self, start, heuristic):
+    def __init__(self, start, heuristic, get_nexts):
         self.start = start
+        self.start.g = 0
         self.h = heuristic
+        self.get_nexts = get_nexts
 
         # if we have pruning table we can set bound to this instead and it will improve the speed a lot
         # self.bound = 9
         self.bound = self.h(self.start)
         self.path = [self.start]
         self.set = set()
-        self.h_cal = 0
     
     def run(self):
         while True:
@@ -23,7 +24,7 @@ class IDA:
             if tmp == FOUND:
                 return self.path
             if tmp == INFINITY:
-                return "not found"
+                return NOT_FOUND
             self.bound = tmp
             print(self.bound)
     
@@ -31,10 +32,7 @@ class IDA:
         curr = self.path[-1]
 
         # optimize idea: precalculate heuristic will reduce time a lot
-        start = time.time()
         h = self.h(curr)
-        self.h_cal += time.time() - start
-
         f = curr.g + h
         if f > self.bound:
             return f
@@ -43,7 +41,7 @@ class IDA:
         min = INFINITY
 
         # optimize idea: change get_nexts() to create next one by one, maybe for i in range and create next base of move i, this will reduce the cost of unused state
-        for next in curr.get_nexts():
+        for next in self.get_nexts(curr):
             if next.state not in self.set:
 
                 # optimize idea: instead of append and pop the path, send state as argument and store parent in node

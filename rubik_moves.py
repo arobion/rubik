@@ -4,7 +4,7 @@ def U(obj):
     obj.edges[1], obj.edges[2], obj.edges[3], obj.edges[4] = obj.edges[4], obj.edges[1], obj.edges[2], obj.edges[3]
 
 def R(obj):
-    #corner: 1 5 6 2, edges: 2 5 10 6
+    #corner: 1 5 6 2, edges: 2 5 1 6
     obj.corners[2].orientation, obj.corners[5].orientation = (obj.corners[2].orientation + 1) % 3, (obj.corners[5].orientation + 1) % 3
     obj.corners[1].orientation, obj.corners[6].orientation = (obj.corners[1].orientation - 1) % 3, (obj.corners[6].orientation - 1) % 3
     

@@ -4,6 +4,7 @@ import time
 from rubik_cubes import Rubik
 from rubik_moves import move, move_by_notation
 from rubik_state import rubik_state
+from rubik_next import get_nexts_1, get_nexts_2
 from rubik_ida import IDA
 
 def scramble(string, rubik):
@@ -26,19 +27,23 @@ def main():
         print(e)
         return
 
-    start = rubik_state(rubik, 0)
-    ida = IDA(start, rubik.heuristic)
-    start = time.time()
-    ret = ida.run()
-    duration = time.time() - start
-    if ret == "not found":
-        print(ret)
-    else:
-        for state in ret:
-            print(state)
-            print("_______________________________________")
-    print("total:", duration)
-    print("h_cal:", ida.h_cal)
+    phase1 = rubik_state(rubik, 0)
+    ida1 = IDA(phase1, rubik.heuristic_h1, get_nexts_1)
+    ret1 = ida1.run()
+
+    print("***** Phase 1 *****\n")
+    for state in ret1:
+        print(state)
+        print("_______________________________________")
+
+    phase2 = rubik_state(ret1[-1], 0)
+    ida2 = IDA(phase2, rubik.heuristic_h2, get_nexts_2)
+    ret2 = ida2.run()
+
+    print("\n***** Phase 2 *****\n")
+    for state in ret2:
+        print(state)
+        print("_______________________________________")
 
 
 if __name__ == "__main__":

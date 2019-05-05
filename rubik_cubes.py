@@ -6,7 +6,7 @@ class Rubik():
         self.corners = {i : rubik_corner(i) for i in range(1, 9)}
         self.edges = {i : rubik_edge(i) for i in range(1, 13)}
         self.create_dics_coord()
-        self.precalc_manhattan_dist()
+        self.precalc_h2()
         self.precalc_h1()
 
     def __str__(self):
@@ -77,9 +77,7 @@ class Rubik():
         return 2
     
     '''
-    basic manhattan distance
-
-    def precalc_manhattan_dist(self):
+    def precalc_h2(self):
         """
         {index: {cube: cout}}
         """
@@ -97,16 +95,16 @@ class Rubik():
             for j in range(1, 13):
                 self.manhattan_dist["edge"][i][j] = self.calc_edge_move(self.edges_coord[i], self.edges_coord[j]) / 8
 
-    def heuristic(self, obj):
+    def heuristic_h2(self, obj):
         tot = 0
         for index in obj.corners:
             tot += self.manhattan_dist["corner"][index][obj.corners[index].final_position]
         for index in obj.edges:
             tot += self.manhattan_dist["edge"][index][obj.edges[index].final_position]
         return tot 
-        '''
+    '''
 
-    def precalc_manhattan_dist(self):
+    def precalc_h2(self):
         """
         {index: {cube: cout}}
         """
@@ -124,7 +122,7 @@ class Rubik():
             for j in range(1, 13):
                 self.manhattan_dist["edge"][i][j] = self.calc_edge_move(self.edges_coord[i], self.edges_coord[j]) / 4
 
-    def heuristic(self, obj):
+    def heuristic_h2(self, obj):
         tot_corner = 0
         tot_edge = 0
         for index in obj.corners:
@@ -141,21 +139,25 @@ class Rubik():
         for i in range(1, 13):
             self.h1_dist[i] = {}
             for j in range(1, 13):
-                if i not in [5, 6, 7, 8] and j not in [5, 6, 7, 8]:
+                if i == j:
+                    self.h1_dist[i][j] = 0
+                elif i not in [5, 6, 7, 8] and j not in [5, 6, 7, 8]:
                     self.h1_dist[i][j] = 0
                 elif i in [5, 6, 7, 8] and j in [5, 6, 7, 8]:
                     self.h1_dist[i][j] = 0
                 else:
-                    self.h1_dist[i][j] = 2 
+                    self.h1_dist[i][j] = 1
 
     def heuristic_h1(self, obj):
         tot = 0
-        for elem in self.corners.values():
+        for elem in obj.corners.values():
             if elem.orientation != 0:
                 tot += 1
-        for index in self.edges:
-            tot += self.edges[index].orientation
-            tot += self.h1_dist[index][obj.edges[index].final_position]
+        for index in obj.edges:
+            if obj.edges[index].orientation == 0:
+                tot += self.h1_dist[index][obj.edges[index].final_position]
+            else:
+                tot += obj.edges[index].orientation
         return tot / 8
 
 

@@ -14,6 +14,8 @@ class rubik_state():
 
         self.h = h(self)
         self.f = self.g + self.h
+
+        self.compressed = self.compress_state()
         self.state = tuple([(sub.final_position, sub.orientation) for dic in [self.corners, self.edges] for sub in dic.values()])
 
     def __str__(self):
@@ -48,3 +50,23 @@ class rubik_state():
             return self.h < other.h
 
         return self.g < other.g 
+
+    def compress_state(self):
+        compressed = 0
+        # first compress corners place
+        for i in range(1, 9):
+            compressed <<= 3
+            compressed |= self.corners[i].final_position
+        # compress corners orientation
+        for i in range(1, 9):
+            compressed <<= 2
+            compressed |= self.corners[i].orientation
+        # compress edges place
+        for i in range(1, 13):
+            compressed <<= 4
+            compressed |= self.edges[i].final_position
+        # corners edges orientation
+        for i in range(1, 13):
+            compressed <<= 1
+            compressed |= self.edges[i].orientation
+        return str(compressed)

@@ -28,7 +28,7 @@ def main():
         return
 
     phase1 = rubik_state(rubik, 0, rubik.heuristic_h1)
-    ida1 = IDA(phase1, rubik.heuristic_h1, get_nexts_1)
+    ida1 = IDA(phase1, rubik.heuristic_h1, get_nexts_1, {}) # empty pruning table
     ret1 = ida1.run()
 
     print("***** Phase 1 *****\n")
@@ -37,7 +37,7 @@ def main():
         print("_______________________________________")
 
     phase2 = rubik_state(ret1[-1], 0, rubik.heuristic_h2)
-    ida2 = IDA(phase2, rubik.heuristic_h2, get_nexts_2)
+    ida2 = IDA(phase2, rubik.heuristic_h2, get_nexts_2, rubik.pruning_phase2)
     ret2 = ida2.run()
 
     print("\n***** Phase 2 *****\n")

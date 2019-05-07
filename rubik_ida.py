@@ -6,11 +6,12 @@ NOT_FOUND = "not found"
 
 class IDA:
 
-    def __init__(self, start, heuristic, get_nexts):
+    def __init__(self, start, heuristic, get_nexts, pruning):
         self.start = start
         self.start.g = 0
         self.h = heuristic
         self.get_nexts = get_nexts
+        self.pruning = pruning
 
         # if we have pruning table we can set bound to this instead and it will improve the speed a lot
         # self.bound = 9

@@ -97,7 +97,7 @@ def Br(obj):
 def U2(obj):
     #corner: 1-3 4-2, edges: 1-3 4-2
     obj.corners[1], obj.corners[3], obj.corners[4], obj.corners[2] = obj.corners[3], obj.corners[1], obj.corners[2], obj.corners[4]
-    obj.edges[1], obj.edges[3], obj.edges[4], obj.edges[2] = obj.edges[3], obj.edges[1], obj.edges[4], obj.edges[2]
+    obj.edges[1], obj.edges[3], obj.edges[4], obj.edges[2] = obj.edges[3], obj.edges[1], obj.edges[2], obj.edges[4]
 
 def R2(obj):
     #corner: 1-6 2-5, edges: 2-10 5-6

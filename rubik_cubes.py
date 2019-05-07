@@ -1,5 +1,6 @@
 from enum import Enum
 from copy import deepcopy
+from rubik_file import RubikFile
 
 class Rubik():
     def __init__(self):
@@ -8,6 +9,7 @@ class Rubik():
         self.create_dics_coord()
         self.precalc_h2()
         self.precalc_h1()
+        self.load_pruning_tables()
 
     def __str__(self):
         ret = "coins:\n"
@@ -159,6 +161,16 @@ class Rubik():
             else:
                 tot += obj.edges[index].orientation
         return tot / 8
+
+    def load_pruning_tables(self):
+        rubikfile = RubikFile("pruning_tables.h5")
+
+#        pruning_phase1 = rubikfile.read("phase1")
+#        self.pruning_phase1 = pruning_phase1.to_dict()["data"]
+
+        pruning_phase2 = rubikfile.read("phase2")
+        self.pruning_phase2 = pruning_phase2.to_dict()["data"]
+
 
 
 class rubik_corner():

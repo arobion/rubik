@@ -2,7 +2,7 @@ from rubik_moves import move
 import copy
 
 class rubik_state():
-    def __init__(self, parent, instruction):
+    def __init__(self, parent, instruction, h):
         self.g = 0
         self.edges = copy.deepcopy(parent.edges)
         self.corners = copy.deepcopy(parent.corners)
@@ -12,6 +12,8 @@ class rubik_state():
             move(self, instruction)
             self.g = parent.g + 1
 
+        self.h = h(self)
+        self.f = self.g + self.h
         self.state = tuple([(sub.final_position, sub.orientation) for dic in [self.corners, self.edges] for sub in dic.values()])
 
     def __str__(self):
@@ -37,3 +39,12 @@ class rubik_state():
         ret += "    {}        {}  {}        {}\n   {}  {}                {}  {}\n    {}        {}  {}        {}\n".format(self.edges[1].final_position,self.edges[8].final_position, self.edges[5].final_position, self.edges[9].final_position, self.edges[4].final_position, self.edges[2].final_position, self.edges[12].final_position, self.edges[10].final_position, self.edges[3].final_position, self.edges[7].final_position, self.edges[6].final_position, self.edges[11].final_position)
         '''
         return ret
+
+    def __lt__(self, other):
+        if self.f != other.f:
+            return self.f < other.f
+
+        if self.h != other.h:
+            return self.h < other.h
+
+        return self.g < other.g 

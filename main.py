@@ -27,7 +27,7 @@ def main():
         print(e)
         return
 
-    phase1 = rubik_state(rubik, 0)
+    phase1 = rubik_state(rubik, 0, rubik.heuristic_h1)
     ida1 = IDA(phase1, rubik.heuristic_h1, get_nexts_1)
     ret1 = ida1.run()
 
@@ -36,7 +36,7 @@ def main():
         print(state)
         print("_______________________________________")
 
-    phase2 = rubik_state(ret1[-1], 0)
+    phase2 = rubik_state(ret1[-1], 0, rubik.heuristic_h2)
     ida2 = IDA(phase2, rubik.heuristic_h2, get_nexts_2)
     ret2 = ida2.run()
 

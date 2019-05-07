@@ -1,9 +1,10 @@
 from rubik_state import rubik_state
+import heapq
 
-def get_nexts_1(state):
+def get_nexts_1(state, h):
     nexts = []
     for i in range(1, 19):
-        next = rubik_state(state, i)
+        next = rubik_state(state, i, h)
         nexts.append(next)
     return nexts
 
@@ -21,5 +22,11 @@ forbidden_move_phase_2 = {
     18: [18],
 }
 
-def get_nexts_2(state):
-    return [rubik_state(state, i) for i in [13, 14, 15, 16, 17, 18, 1, 4, 7, 10] if i not in forbidden_move_phase_2[state.instruction]]
+def get_nexts_2(state, h):
+    nexts = []
+    for i in [13, 14, 15, 16, 17, 18, 1, 4, 7, 10]:
+        if i not in forbidden_move_phase_2[state.instruction]:
+            heapq.heappush(nexts, rubik_state(state, i, h))
+    return nexts
+
+#    return [rubik_state(state, i) for i in [13, 14, 15, 16, 17, 18, 1, 4, 7, 10] if i not in forbidden_move_phase_2[state.instruction]]

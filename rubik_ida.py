@@ -17,11 +17,13 @@ class IDA:
         self.bound = self.h(self.start)
         self.path = [self.start]
         self.set = set()
+        self.nb = 0
     
     def run(self):
         while True:
             tmp = self.search()
             if tmp == FOUND:
+                print(self.nb)
                 return self.path
             if tmp == INFINITY:
                 return NOT_FOUND
@@ -29,6 +31,7 @@ class IDA:
             print(self.bound)
     
     def search(self):
+        self.nb += 1
         curr = self.path[-1]
 
         # optimize idea: precalculate heuristic will reduce time a lot
@@ -41,7 +44,7 @@ class IDA:
         min = INFINITY
 
         # optimize idea: change get_nexts() to create next one by one, maybe for i in range and create next base of move i, this will reduce the cost of unused state
-        for next in self.get_nexts(curr):
+        for next in self.get_nexts(curr, self.h):
             if next.state not in self.set:
 
                 # optimize idea: instead of append and pop the path, send state as argument and store parent in node
@@ -57,3 +60,13 @@ class IDA:
                 self.set.remove(next.state)
                 curr = self.path[-1]
         return min
+
+    def found_in_pruning(self, cost, curr):
+        if cost == 0:
+            return self.path
+        for next in self.get_nexts(curr, self.h):
+            if next.compressed in self.pruning.keys():
+                new_cost = self.pruning[next.compressed]
+                if new_cost < cost:
+                    self.path.append(next)
+                    return self.found_in_pruning(new_cost, next)

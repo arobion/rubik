@@ -1,4 +1,5 @@
 import time
+import copy
 
 INFINITY = 2147483647
 FOUND = "found"
@@ -19,12 +20,15 @@ class IDA:
         self.path = [self.start]
         self.set = set()
         self.nb = 0
+        self.found_in_pruning = False
+        self.pruning_path = []
     
     def run(self):
         while True:
             tmp = self.search()
             if tmp == FOUND:
-                print(self.nb)
+                if self.found_in_pruning == True:
+                    return self.pruning_path
                 return self.path
             if tmp == INFINITY:
                 return NOT_FOUND
@@ -32,8 +36,15 @@ class IDA:
             print(self.bound)
     
     def search(self):
+        if self.found_in_pruning == True:
+            return FOUND
         self.nb += 1
         curr = self.path[-1]
+
+        if curr.compressed in self.pruning.keys():
+            self.pruning_path = copy.deepcopy(self.path)
+            self.found_in_pruning = True
+            return self.find_from_pruning(self.pruning[curr.compressed], curr)
 
         # optimize idea: precalculate heuristic will reduce time a lot
         h = self.h(curr)
@@ -62,12 +73,19 @@ class IDA:
                 curr = self.path[-1]
         return min
 
-    def found_in_pruning(self, cost, curr):
+    def find_from_pruning(self, cost, curr):
         if cost == 0:
-            return self.path
+            return FOUND
+        tmp_cost = cost
+        tmp_state = None
         for next in self.get_nexts(curr, self.h):
             if next.compressed in self.pruning.keys():
                 new_cost = self.pruning[next.compressed]
-                if new_cost < cost:
-                    self.path.append(next)
-                    return self.found_in_pruning(new_cost, next)
+                if new_cost < tmp_cost:
+                    tmp_cost = new_cost
+                    tmp_state = next
+        if tmp_cost == cost:
+            raise Exception("erorr in pruning_table")
+        self.pruning_path.append(tmp_state)
+        return self.find_from_pruning(tmp_cost, tmp_state)
+

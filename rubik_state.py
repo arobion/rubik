@@ -56,7 +56,7 @@ class rubik_state():
         # first compress corners place
         for i in range(1, 9):
             compressed <<= 3
-            compressed |= self.corners[i].final_position
+            compressed |= (self.corners[i].final_position - 1)
         # compress corners orientation
         for i in range(1, 9):
             compressed <<= 2

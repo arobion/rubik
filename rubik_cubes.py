@@ -163,7 +163,7 @@ class Rubik():
         return tot / 8
 
     def load_pruning_tables(self):
-        rubikfile = RubikFile("pruning_tables.h5")
+        rubikfile = RubikFile("pruning_phase_2.h5")
 
 #        pruning_phase1 = rubikfile.read("phase1")
 #        self.pruning_phase1 = pruning_phase1.to_dict()["data"]

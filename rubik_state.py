@@ -56,20 +56,15 @@ class rubik_state():
 
     def compress_state(self):
         compressed = 0
-        # first compress corners place
+
+        # corners place
         for i in range(1, 9):
             compressed <<= 3
             compressed |= (self.corners[i].final_position - 1)
-        # compress corners orientation
-        for i in range(1, 9):
-            compressed <<= 2
-            compressed |= self.corners[i].orientation
-        # compress edges place
+
+        # edges place
         for i in range(1, 13):
             compressed <<= 4
             compressed |= self.edges[i].final_position
-        # corners edges orientation
-        for i in range(1, 13):
-            compressed <<= 1
-            compressed |= self.edges[i].orientation
+
         return str(compressed)

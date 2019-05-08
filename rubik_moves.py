@@ -145,6 +145,28 @@ move_fp = {
     18: B2
 }
 
+move_translator = {
+    0: "None",
+    1: "U",
+    2: "R",
+    3: "L",
+    4: "D",
+    5: "F",
+    6: "B",
+    7: "U'",
+    8: "R'",
+    9: "L'",
+    10: "D'",
+    11: "F'",
+    12: "B'",
+    13: "U2",
+    14: "R2",
+    15: "L2",
+    16: "D2",
+    17: "F2",
+    18: "B2"
+}
+
 def move(obj, instruction):
     move_fp[instruction](obj)
 

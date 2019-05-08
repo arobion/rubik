@@ -1,4 +1,4 @@
-from rubik_moves import move
+from rubik_moves import move, move_translator
 import copy
 
 class rubik_state():
@@ -19,7 +19,7 @@ class rubik_state():
         self.state = tuple([(sub.final_position, sub.orientation) for dic in [self.corners, self.edges] for sub in dic.values()])
 
     def __str__(self):
-        ret = "inst: {}\n".format(self.instruction)
+        ret = "inst: {}\n".format(move_translator[self.instruction])
         ret += "eo: "
         for elem in self.edges.values():
             ret += "{} ".format(elem.orientation)

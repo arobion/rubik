@@ -12,14 +12,14 @@ class rubik_state():
             move(self, instruction)
             self.g = parent.g + 1
 
+        self.corners_state = tuple([elem.orientation for elem in self.corners.values()])
+        self.edges_state = tuple([elem.orientation for elem in self.edges.values()])
+        self.slice_state = tuple([self.edges[i].final_position for i in range(5, 9)])
         self.h = h(self)
         self.f = self.g + self.h
 
         self.compressed = self.compress_state()
         self.state = tuple([(sub.final_position, sub.orientation) for dic in [self.corners, self.edges] for sub in dic.values()])
-        self.corners_state = tuple([elem.orientation for elem in self.corners.values()])
-        self.edges_state = tuple([elem.orientation for elem in self.edges.values()])
-        self.slice_state = tuple([self.edges[i].final_position for i in range(5, 9)])
 
     def __str__(self):
         ret = "inst: {}\n".format(move_translator[self.instruction])

@@ -10,6 +10,9 @@ class Rubik():
         self.precalc_h2()
         self.precalc_h1()
         self.load_pruning_tables()
+        self.corners_state = tuple([elem.orientation for elem in self.corners.values()])
+        self.edges_state = tuple([elem.orientation for elem in self.edges.values()])
+        self.slice_state = tuple([self.edges[i].final_position for i in range(5, 9)])
 
     def __str__(self):
         ret = "coins:\n"
@@ -151,24 +154,22 @@ class Rubik():
                     self.h1_dist[i][j] = 1
 
     def heuristic_h1(self, obj):
-        tot = 0
-        for elem in obj.corners.values():
-            if elem.orientation != 0:
-                tot += 1
-        for index in obj.edges:
-            if obj.edges[index].orientation == 0:
-                tot += self.h1_dist[index][obj.edges[index].final_position]
-            else:
-                tot += obj.edges[index].orientation
-        return tot / 8
+        return max(self.pruning_phase1_corners[obj.corners_state], self.pruning_phase1_edges[obj.edges_state])#, self.pruning_phase1_slice[obj.slice_state])
 
     def load_pruning_tables(self):
-        rubikfile = RubikFile("pruning_phase_2.h5")
+        rubikfile1 = RubikFile("pruning_phase_1.h5")
 
-#        pruning_phase1 = rubikfile.read("phase1")
-#        self.pruning_phase1 = pruning_phase1.to_dict()["data"]
+        dataframe = rubikfile1.read("corners")
+        self.pruning_phase1_corners = dataframe.to_dict()["data"]
 
-        pruning_phase2 = rubikfile.read("phase2")
+        dataframe = rubikfile1.read("edges")
+        self.pruning_phase1_edges = dataframe.to_dict()["data"]
+
+        dataframe = rubikfile1.read("slice")
+        self.pruning_phase1_slice = dataframe.to_dict()["data"]
+
+        rubikfile2 = RubikFile("pruning_phase_2.h5")
+        pruning_phase2 = rubikfile2.read("phase2")
         self.pruning_phase2 = pruning_phase2.to_dict()["data"]
 
 

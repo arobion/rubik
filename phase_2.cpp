@@ -6,7 +6,7 @@
 /*   By: arobion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 21:15:12 by arobion           #+#    #+#             */
-/*   Updated: 2019/05/08 22:19:33 by arobion          ###   ########.fr       */
+/*   Updated: 2019/05/09 14:12:14 by arobion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ State::State(State const & origin) :
 
 std::ostream & operator<<(std::ostream & o, State const & rhs)
 {
+	o << "instruction : " << int(rhs.instruction) << std::endl;
 	o << "corners: ";
 	for (auto i = 0; i < 8; ++i)
 		o << int(rhs.corners[i]) << " ";
@@ -93,6 +94,47 @@ State & u(State & origin)
 	return *state;
 }
 
+State & ur(State & origin)
+{ 
+	State * state = new State(origin);
+
+	char tmp = state->corners[0];
+	state->corners[0] = state->corners[1];
+	state->corners[1] = state->corners[2];
+	state->corners[2] = state->corners[3];
+	state->corners[3] = tmp;
+	tmp = state->edges[0];
+	state->edges[0] = state->edges[1];
+	state->edges[1] = state->edges[2];
+	state->edges[2] = state->edges[3];
+	state->edges[3] = tmp;
+
+	return *state;
+}
+
+State & u2(State & origin)
+{ 
+	State * state = new State(origin);
+
+	char tmp = state->corners[0];
+	state->corners[0] = state->corners[2];
+	state->corners[2] = tmp;
+
+	tmp = state->corners[1];
+	state->corners[1] = state->corners[3];
+	state->corners[3] = tmp;
+
+	tmp = state->edges[0];
+	state->edges[0] = state->edges[2];
+	state->edges[2] = tmp;
+
+	tmp = state->edges[1];
+	state->edges[1] = state->edges[3];
+	state->edges[3] = tmp;
+
+	return *state;
+}
+
 int main(void)
 {
 	/*
@@ -104,7 +146,11 @@ int main(void)
 	*/
 
 	State s{};
-	std::cout << s;
+	std::cout << s << std::endl;
 	auto s2 = u(s);
-	std::cout << s2;
+	std::cout << s2<< std::endl;
+	s2 = u2(s);
+	std::cout << s2<< std::endl;
+	s2 = ur(s);
+	std::cout << s2<< std::endl;
 }

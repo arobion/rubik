@@ -13,22 +13,29 @@
 #include <iostream>
 #include <vector>
 
+enum Instruction
+{
+	U, UR, U2,
+	EMPTY
+};
+
 struct State
 {
 	State();
 	State(State const & state);
+	State::State(State const & origin, Instruction instruction);
 
 	std::vector<char>	corners;
 	std::vector<char>	edges;
 	char				g;
-	char				instruction;
+	Instruction			instruction;
 
 	//State *				get_nexts();
 };
 
 State::State() :
 	g(0),
-	instruction(0)
+	instruction(EMPTY)
 {
 	corners.reserve(8);
 	for (auto i = 0; i < 8; ++i)
@@ -43,6 +50,13 @@ State::State(State const & origin) :
 	edges(origin.edges),
 	g(origin.g),
 	instruction(origin.instruction)
+{}
+
+State::State(State const & origin, Instruction instruction) :
+	corners(origin.corners),
+	edges(origin.edges),
+	g(origin.g),
+	instruction(instruction)
 {}
 
 std::ostream & operator<<(std::ostream & o, State const & rhs)
@@ -61,24 +75,9 @@ std::ostream & operator<<(std::ostream & o, State const & rhs)
 }
 
 
-
-/*
-   std::vector<State *> State::get_nexts()
-   {
-   return
-   }
-   */
-
-/*
-void mov(State & state, char instruction)
-{
-
-}
-*/
-
 State & u(State & origin)
 { 
-	State * state = new State(origin);
+	State * state = new State(origin, );
 
 	char tmp = state->corners[0];
 	state->corners[0] = state->corners[3];
@@ -135,6 +134,12 @@ State & u2(State & origin)
 	return *state;
 }
 
+State & move(State & origin, Instruction instruction)
+{
+	std::vector<State & (*)(State &)> move_ptr{u, ur, u2};
+	return move_ptr[instruction](origin);
+}
+
 int main(void)
 {
 	/*
@@ -147,10 +152,10 @@ int main(void)
 
 	State s{};
 	std::cout << s << std::endl;
-	auto s2 = u(s);
+	auto s2 = move(s, U);
 	std::cout << s2<< std::endl;
-	s2 = u2(s);
+	s2 = move(s, UR);
 	std::cout << s2<< std::endl;
-	s2 = ur(s);
+	s2 = move(s, U2);
 	std::cout << s2<< std::endl;
 }

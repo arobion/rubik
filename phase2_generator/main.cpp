@@ -10,8 +10,8 @@ int main(void)
 	auto s2 = move(s1, U);
 	std::cout << s2 << std::endl;
 
-	s2 = move(s1, UR);
-	std::cout << s2 << std::endl;
+	auto s3 = move(s1, UR);
+	std::cout << s3 << std::endl;
 
 	s2 = move(s1, U2);
 	std::cout << s2 << std::endl;

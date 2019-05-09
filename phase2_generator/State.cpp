@@ -1,4 +1,5 @@
 #include "State.hpp"
+#include "move.hpp"
 
 State::State() :
 	g(0),
@@ -17,16 +18,14 @@ State::State(State const & origin) :
 	corners(origin.corners),
 	edges(origin.edges),
 	g(origin.g),
-	instruction(origin.instruction),
-	compressed(this->compress())
+	instruction(origin.instruction)
 {}
 
 State::State(State const & origin, Instruction instruction) :
 	corners(origin.corners),
 	edges(origin.edges),
 	g(origin.g),
-	instruction(instruction),
-	compressed(this->compress())
+	instruction(instruction)
 {}
 
 State & State::operator=(State const & rhs)
@@ -45,6 +44,7 @@ State & State::operator=(State const & rhs)
 std::ostream & operator<<(std::ostream & o, State const & rhs)
 {
 	o << "instruction : " << rhs.instruction << std::endl;
+	o << "g: " << int(rhs.g) << std::endl;
 	o << "corners: ";
 	for (auto i = 0; i < 8; ++i)
 		o << int(rhs.corners[i]) << " ";
@@ -74,4 +74,13 @@ std::bitset<72> State::compress() const
 		ret |= this->edges[i];
 	}
 	return ret;
+}
+
+std::vector<State *> State::get_nexts()
+{
+	std::vector<Instruction> instructions{U, UR, U2, D, DR, D2, R2, L2, F2, B2};
+	std::vector<State *> nexts;
+	for (auto instruction : instructions)
+		nexts.push_back(&move(*this, instruction));
+	return nexts;
 }

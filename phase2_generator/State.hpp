@@ -2,6 +2,7 @@
 #include "Instruction.hpp"
 #include <iostream>
 #include <vector>
+#include <bitset>
 
 struct State
 {
@@ -11,6 +12,7 @@ struct State
 	State & operator=(State const &);
 	
 	std::bitset<72>		compress(void) const;
+	std::vector<State *>	get_nexts();
 
 	std::vector<char>	corners;
 	std::vector<char>	edges;

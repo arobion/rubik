@@ -227,5 +227,8 @@ State & move(State & origin, Instruction instruction)
     move_ptr[L2] = l2;
     move_ptr[F2] = f2;
     move_ptr[B2] = b2;
-	return move_ptr[instruction](origin);
+	State & ret = move_ptr[instruction](origin);
+	++ret.g;
+	ret.compressed = ret.compress();
+	return ret;
 }

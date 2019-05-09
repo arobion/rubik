@@ -1,7 +1,7 @@
 CC = g++
 CFLAG = -Wall -Wextra -Werror --std=c++14
 
-NAME = phas2_generator
+NAME = phase2_generator
 
 FILE =  main.cpp \
 		Instruction.cpp \

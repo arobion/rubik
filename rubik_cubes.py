@@ -154,7 +154,7 @@ class Rubik():
                     self.h1_dist[i][j] = 1
 
     def heuristic_h1(self, obj):
-        return max(self.pruning_phase1_corners[obj.corners_state], self.pruning_phase1_edges[obj.edges_state])#, self.pruning_phase1_slice[obj.slice_state])
+        return max(self.pruning_phase1_corners[obj.corners_state], self.pruning_phase1_edges[obj.edges_state], self.pruning_phase1_slice[obj.slice_state])
 
     def load_pruning_tables(self):
         rubikfile1 = RubikFile("pruning_phase_1.h5")

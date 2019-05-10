@@ -80,9 +80,9 @@ std::ostream & operator<<(std::ostream & o, State const & rhs)
 
 std::vector<State *> State::get_nexts()
 {
-	std::vector<Instruction> instructions{U, UR, U2, D, DR, D2, R2, L2, F2, B2};
 	std::vector<State *> nexts;
-	for (auto instruction : instructions)
-		nexts.push_back(&move(*this, instruction));
+	for (auto next_instruction : moves_map[this->instruction])
+		nexts.push_back(&move(*this, next_instruction));
+
 	return nexts;
 }

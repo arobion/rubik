@@ -612,16 +612,17 @@ State & b2(State & origin)
 
 State & move(State & origin, Instruction instruction)
 {
-	std::map<Instruction, State & (*)(State &)> move_ptr;
-    move_ptr[U] = u;
-    move_ptr[UR] = ur;
-    move_ptr[U2] = u2;
-    move_ptr[D] = d;
-    move_ptr[DR] = dr;
-    move_ptr[D2] = d2;
-    move_ptr[R2] = r2;
-    move_ptr[L2] = l2;
-    move_ptr[F2] = f2;
-    move_ptr[B2] = b2;
+	static std::map<Instruction, State & (*)(State &)> move_ptr{
+		{U, u},
+		{UR, ur},
+		{U2, u2},
+		{D, d},
+		{DR, dr},
+		{D2, d2},
+		{R2, r2},
+		{L2, l2},
+		{F2, f2},
+		{B2, b2}
+	};
 	return move_ptr[instruction](origin);
 }

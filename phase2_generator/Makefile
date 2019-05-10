@@ -1,5 +1,5 @@
 CC = g++
-CFLAG = -Wall -Wextra -Werror --std=c++14 -O3
+CFLAG = -Wall -Wextra -Werror --std=c++1z -O3
 
 NAME = phase2_generator
 

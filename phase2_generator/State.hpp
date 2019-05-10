@@ -11,11 +11,11 @@ struct State
 	State(State const & origin, Instruction instruction);
 	State & operator=(State const &);
 	
-	std::bitset<72>		compress(void) const;
+//	std::bitset<72>		compress(void) const;
 	std::vector<State *>	get_nexts();
 
-	std::vector<char>	corners;
-	std::vector<char>	edges;
+//	std::vector<char>	corners;
+//	std::vector<char>	edges;
 	char				g;
 	Instruction			instruction;
 	std::bitset<72>		compressed;

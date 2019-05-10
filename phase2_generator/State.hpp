@@ -31,6 +31,8 @@ struct State
 	char				g;
 	Instruction			instruction;
 	std::bitset<72>		compressed;
+    std::bitset<28>     orientation;
+
 };
 
 std::ostream & operator<<(std::ostream & o, State const & rhs);

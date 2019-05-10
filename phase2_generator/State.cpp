@@ -20,14 +20,16 @@ State::State() :
 State::State(State const & origin) :
 	g(origin.g),
 	instruction(origin.instruction),
-	compressed(origin.compressed)
+	compressed(origin.compressed),
+    orientation(origin.orientation)
 {
 }
 
 State::State(State const & origin, Instruction instruction) :
 	g(origin.g + 1),
 	instruction(instruction),
-	compressed(origin.compressed)
+	compressed(origin.compressed),
+    orientation(origin.orientation)
 {
 }
 
@@ -38,6 +40,7 @@ State & State::operator=(State const & rhs)
 		this->g = rhs.g;
 		this->instruction = rhs.instruction;
 		this->compressed = rhs.compressed;
+        this->orientation = rhs.orientation;
 	}
 	return *this;
 }
@@ -48,7 +51,7 @@ std::ostream & operator<<(std::ostream & o, State const & rhs)
 
 	o << "instruction : " << rhs.instruction << std::endl;
 	o << "g: " << int(rhs.g) << std::endl;
-	o << "corners: ";
+	o << "corners position: ";
 	for (auto i = 0; i < 8; i++)
 	{
 		to_print = 0;
@@ -60,7 +63,7 @@ std::ostream & operator<<(std::ostream & o, State const & rhs)
 		o << to_print << " ";
 	}
 	o << std::endl;
-	o << "edges:   ";
+	o << "edges position:   ";
 	for (auto i = 0; i < 12; i++)
 	{
 		to_print = 0;
@@ -71,9 +74,29 @@ std::ostream & operator<<(std::ostream & o, State const & rhs)
 		}
 		o << to_print << " ";
 	}
+    o << std::endl;
+    o << "corners orientation: ";
+    for (auto i = 0; i < 8; i++)
+    {
+        to_print = 0;
+        to_print |= rhs.orientation[13 + ((7 - i)*2)];
+        to_print <<= 1;
+        to_print |= rhs.orientation[12 + ((7 - i)*2)];
+        o << to_print << " ";
+    }
+    o << std::endl;
+    o << "edges orientation:   ";
+    for (auto i = 0; i < 12; i++)
+    {
+        to_print = 0;
+        to_print |= rhs.orientation[11- i];
+        o << to_print << " ";
+    }
 	o << std::endl;
 	o << "compressed:" << std::endl;
 	o << rhs.compressed << std::endl;
+	o << "orientation:" << std::endl;
+	o << rhs.orientation << std::endl;
 	o << std::endl;
 	return o;
 }

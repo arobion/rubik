@@ -40,7 +40,8 @@ map_t bfs(State * start)
 int main(void)
 {
 	State * s1 = new State{};
-	auto map = bfs(s1);
-	std::cout << map.size() << std::endl;
+//	auto map = bfs(s1);
+//	std::cout << map.size() << std::endl;
+    std::cout << *s1 << std::endl;
 }
 

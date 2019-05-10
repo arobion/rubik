@@ -37,4 +37,6 @@ int main(void)
 	State s1{};
 	auto map = bfs(s1);
 	std::cout << map.size() << std::endl;
+
 }
+

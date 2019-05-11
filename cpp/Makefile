@@ -1,11 +1,16 @@
 CC = g++
-CFLAG = -Wall -Wextra -Werror --std=c++1z -O3
+CFLAGS = -Wall -Wextra -Werror --std=c++1z -O3
 
-NAME = phase2_generator
+NAME = rubik
 FILE =  main.cpp \
 		Instruction.cpp \
 		State.cpp \
 		move.cpp
+
+SRC_DIR = src
+SRC = $(addprefix $(SRC_DIR)/,$(FILE:%.cpp=%.o))
+
+INC = -I include
 	
 OBJ_DIR = obj
 OBJ = $(addprefix $(OBJ_DIR)/,$(FILE:%.cpp=%.o))
@@ -13,13 +18,13 @@ OBJ = $(addprefix $(OBJ_DIR)/,$(FILE:%.cpp=%.o))
 all: $(NAME)
 
 $(NAME): $(OBJ_DIR) $(OBJ)
-	$(CC) $(CFLAG) -o $(NAME) $(OBJ)
+	$(CC) $(CFLAGS) $(INC) -o $(NAME) $(OBJ)
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
-$(OBJ_DIR)/%.o: %.cpp
-	$(CC) $(CFLAG) -c -o $@ $<
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 clean:
 	rm -rf $(OBJ_DIR)

@@ -10,6 +10,7 @@ struct State
 {
 
 	State();
+	State(char **argv);
 	State(State const & state);
 	State(State const & origin, Instruction instruction);
 	State & operator=(State const &);

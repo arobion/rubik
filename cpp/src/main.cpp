@@ -37,9 +37,19 @@ map_t bfs(std::shared_ptr<State> start)
 	return map;
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
-	auto s1 = std::make_shared<State>();
+	if (argc == 41)
+	{
+		auto s1 = std::make_shared<State>(argv);
+		std::cout << *s1 << std::endl;
+	}
+	else
+	{
+		auto s1 = std::make_shared<State>();
+		std::cout << *s1 << std::endl;
+	}
+	/*
 	auto s2 = move(*s1, U);
 	auto s3 = move(*s2, R2);
 	s3->g = 0;
@@ -51,5 +61,6 @@ int main(void)
 	ida.run();
 	for (auto state : ida.path)
 		std::cout << *state;
+	*/
 }
 

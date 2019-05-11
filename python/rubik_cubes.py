@@ -9,7 +9,11 @@ class Rubik():
         self.create_dics_coord()
         self.precalc_h2()
         self.precalc_h1()
-        self.load_pruning_tables()
+        self.pruning_phase1_corners = {}
+        self.pruning_phase1_edges = {}
+        self.pruning_phase1_slice = {}
+        self.pruning_phase2 = {}
+#        self.load_pruning_tables()
         self.corners_state = tuple([elem.orientation for elem in self.corners.values()])
         self.edges_state = tuple([elem.orientation for elem in self.edges.values()])
         self.slice_state = tuple([self.edges[i].final_position for i in range(5, 9)])

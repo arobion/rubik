@@ -101,11 +101,64 @@ std::ostream & operator<<(std::ostream & o, State const & rhs)
 	return o;
 }
 
-std::vector<State *> State::get_nexts()
+std::vector<State *> State::get_nexts_1()
 {
+	static std::unordered_map<Instruction, std::vector<Instruction>> moves_map{
+		{U, {D, DR, D2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}},
+		{UR, {D, DR, D2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}},
+		{U2, {D, DR, D2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}},
+
+		{D, {U, UR, U2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}},
+		{DR, {U, UR, U2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}},
+		{D2, {U, UR, U2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}},
+
+		{L, {U, UR, U2, D, DR, D2, R, RR, R2, F, FR, F2, B, BR, B2}},
+		{LR, {U, UR, U2, D, DR, D2, R, RR, R2, F, FR, F2, B, BR, B2}},
+		{L2, {U, UR, U2, D, DR, D2, R, RR, R2, F, FR, F2, B, BR, B2}},
+
+		{L, {U, UR, U2, D, DR, D2, L, LR, L2, F, FR, F2, B, BR, B2}},
+		{LR, {U, UR, U2, D, DR, D2, L, LR, L2, F, FR, F2, B, BR, B2}},
+		{L2, {U, UR, U2, D, DR, D2, L, LR, L2, F, FR, F2, B, BR, B2}},
+
+		{F, {U, UR, U2, D, DR, D2, R, RR, R2, L, LR, L2, B, BR, B2}},
+		{FR, {U, UR, U2, D, DR, D2, R, RR, R2, L, LR, L2, B, BR, B2}},
+		{F2, {U, UR, U2, D, DR, D2, R, RR, R2, L, LR, L2, B, BR, B2}},
+
+		{B, {U, UR, U2, D, DR, D2, R, RR, R2, L, LR, L2, F, FR, F2}},
+		{BR, {U, UR, U2, D, DR, D2, R, RR, R2, L, LR, L2, F, FR, F2}},
+		{B2, {U, UR, U2, D, DR, D2, R, RR, R2, L, LR, L2, F, FR, F2}},
+
+		{EMPTY, {U, UR, U2, D, DR, D2, L2, R2, F2, B2}}
+	};
+
 	std::vector<State *> nexts;
 	for (auto next_instruction : moves_map[this->instruction])
 		nexts.push_back(&move(*this, next_instruction));
+	return nexts;
+}
 
+std::vector<State *> State::get_nexts_2()
+{
+	static std::unordered_map<Instruction, std::vector<Instruction>> moves_map{
+		{U, {D, DR, D2, L2, R2, F2, B2}},
+		{UR, {D, DR, D2, L2, R2, F2, B2}},
+		{U2, {D, DR, D2, L2, R2, F2, B2}},
+
+		{D, {U, UR, U2, L2, R2, F2, B2}},
+		{DR, {U, UR, U2, L2, R2, F2, B2}},
+		{D2, {U, UR, U2, L2, R2, F2, B2}},
+
+		{L2, {U, UR, U2, D, DR, D2, R2, F2, B2}},
+		{R2, {U, UR, U2, D, DR, D2, L2, F2, B2}},
+
+		{F2, {U, UR, U2, D, DR, D2, L2, R2, B2}},
+		{B2, {U, UR, U2, D, DR, D2, L2, R2, F2}},
+
+		{EMPTY, {U, UR, U2, D, DR, D2, L2, R2, F2, B2}}
+	};
+
+	std::vector<State *> nexts;
+	for (auto next_instruction : moves_map[this->instruction])
+		nexts.push_back(&move(*this, next_instruction));
 	return nexts;
 }

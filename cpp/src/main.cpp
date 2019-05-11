@@ -1,5 +1,6 @@
 #include "State.hpp"
 #include "move.hpp"
+#include "IDA.hpp"
 #include <iostream>
 #include <bitset>
 #include <unordered_map>
@@ -20,7 +21,7 @@ map_t bfs(std::shared_ptr<State> start)
 	{
 		auto current = queue.front();
 		queue.pop_front();
-		if (current->g < 9)
+		if (current->g < 7)
 		{
 			for (auto next : current->get_nexts_2())
 			{
@@ -38,8 +39,16 @@ map_t bfs(std::shared_ptr<State> start)
 int main(void)
 {
 	auto s1 = std::make_shared<State>();
-	auto map = bfs(s1);
-	std::cout << map.size() << std::endl;
-//    std::cout << *s1 << std::endl;
+	auto s2 = move(*s1, U);
+	auto s3 = move(*s2, R2);
+	s3->g = 0;
+	s3->instruction = EMPTY;
+	// auto map = bfs(s1);
+	// std::cout << map.size() << std::endl;
+	// std::cout << *s1 << std::endl;
+	IDA ida(s3);
+	ida.run();
+	for (auto state : ida.path)
+		std::cout << *state;
 }
 

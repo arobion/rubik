@@ -20,9 +20,9 @@ map_t bfs(State * start)
 	{
 		auto current = std::unique_ptr<State>(queue.front());
 		queue.pop_front();
-		if (current->g < 10)
+		if (current->g < 7)
 		{
-			for (auto next : current->get_nexts())
+			for (auto next : current->get_nexts_2())
 			{
 				if (map.find(next->compressed) == map.end())
 				{
@@ -40,8 +40,8 @@ map_t bfs(State * start)
 int main(void)
 {
 	State * s1 = new State{};
-//	auto map = bfs(s1);
-//	std::cout << map.size() << std::endl;
-    std::cout << *s1 << std::endl;
+	auto map = bfs(s1);
+	std::cout << map.size() << std::endl;
+//    std::cout << *s1 << std::endl;
 }
 

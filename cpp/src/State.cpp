@@ -1,5 +1,6 @@
 #include "State.hpp"
 #include "move.hpp"
+#include <stdlib.h>
 
 State::State() :
 	g(0),
@@ -16,6 +17,36 @@ State::State() :
 		this->compressed |= i;
 	}
 }
+
+State::State(char **argv):
+	g(0),
+	instruction(EMPTY)
+{
+	for (auto i = 1; i < 9; i++)
+	{
+		this->compressed <<= 3;
+		this->compressed |= atoi(argv[i]);
+	}
+
+	for (auto i = 9; i < 21; i++)
+	{
+		this->compressed <<= 4;
+		this->compressed |= atoi(argv[i]);
+	}
+
+	for (auto i = 21; i < 29; i++)
+	{
+		this->corners_orientation <<= 2;
+		this->corners_orientation |= atoi(argv[i]);
+	}
+
+	for (auto i = 29; i < 41; i++)
+	{
+		this->edges_orientation <<= 1;
+		this->edges_orientation |= atoi(argv[i]);
+	}
+}
+
 
 State::State(State const & origin) :
 	g(origin.g),

@@ -1,10 +1,11 @@
 #include "move.hpp"
 #include "Instruction.hpp"
 #include <map>
+#include <memory>
 
-State & u(State & origin)
+std::shared_ptr<State> u(State & origin)
 { 
-	State * state = new State(origin, U);
+	std::shared_ptr<State> state = std::make_shared<State>(origin, U);
 
 	char tmp = 0;
 	tmp |= state->compressed[71] << 2;
@@ -53,12 +54,12 @@ State & u(State & origin)
 	state->compressed[41] = (tmp & 2) >> 1;
 	state->compressed[40] = tmp & 1;
 
-	return *state;
+	return state;
 }
 
-State & ur(State & origin)
+std::shared_ptr<State> ur(State & origin)
 { 
-	State * state = new State(origin, UR);
+	std::shared_ptr<State> state = std::make_shared<State>(origin, UR);
 
 	char tmp = 0;
 	tmp |= state->compressed[71] << 2;
@@ -107,12 +108,12 @@ State & ur(State & origin)
 	state->compressed[33] = (tmp & 2) >> 1;
 	state->compressed[32] = tmp & 1;
 
-	return *state;
+	return state;
 }
 
-State & u2(State & origin)
+std::shared_ptr<State> u2(State & origin)
 { 
-	State * state = new State(origin, U2);
+	std::shared_ptr<State> state = std::make_shared<State>(origin, U2);
 
 	char tmp = 0;
 	tmp |= state->compressed[71] << 2;
@@ -172,13 +173,13 @@ State & u2(State & origin)
 	state->compressed[33] = (tmp & 2) >> 1;
 	state->compressed[32] = tmp & 1;
 
-	return *state;
+	return state;
 }
 
 
-State & d(State & origin)
+std::shared_ptr<State> d(State & origin)
 { 
-	State * state = new State(origin, D);
+	std::shared_ptr<State> state = std::make_shared<State>(origin, D);
 
 	char tmp = 0;
 	tmp |= state->compressed[59] << 2;
@@ -227,12 +228,12 @@ State & d(State & origin)
 	state->compressed[1] = (tmp & 2) >> 1;
 	state->compressed[0] = tmp & 1;
 
-	return *state;
+	return state;
 }
 
-State & dr(State & origin)
+std::shared_ptr<State> dr(State & origin)
 { 
-	State * state = new State(origin, DR);
+	std::shared_ptr<State> state = std::make_shared<State>(origin, DR);
 
 	char tmp = 0;
 	tmp |= state->compressed[59] << 2;
@@ -281,12 +282,12 @@ State & dr(State & origin)
 	state->compressed[9] = (tmp & 2) >> 1;
 	state->compressed[8] = tmp & 1;
 
-	return *state;
+	return state;
 }
 
-State & d2(State & origin)
+std::shared_ptr<State> d2(State & origin)
 { 
-	State * state = new State(origin, D2);
+	std::shared_ptr<State> state = std::make_shared<State>(origin, D2);
 
 	char tmp = 0;
 	tmp |= state->compressed[59] << 2;
@@ -346,12 +347,12 @@ State & d2(State & origin)
 	state->compressed[1] = (tmp & 2) >> 1;
 	state->compressed[0] = tmp & 1;
 
-	return *state;
+	return state;
 }
 
-State & r2(State & origin)
+std::shared_ptr<State> r2(State & origin)
 { 
-	State * state = new State(origin, R2);
+	std::shared_ptr<State> state = std::make_shared<State>(origin, R2);
 
 	char tmp = 0;
 	tmp |= state->compressed[71] << 2;
@@ -411,12 +412,12 @@ State & r2(State & origin)
 	state->compressed[29] = (tmp & 2) >> 1;
 	state->compressed[28] = tmp & 1;
 
-	return *state;
+	return state;
 }
 
-State & l2(State & origin)
+std::shared_ptr<State> l2(State & origin)
 { 
-	State * state = new State(origin, L2);
+	std::shared_ptr<State> state = std::make_shared<State>(origin, L2);
 
 	char tmp = 0;
 	tmp |= state->compressed[62] << 2;
@@ -476,12 +477,12 @@ State & l2(State & origin)
 	state->compressed[17] = (tmp & 2) >> 1;
 	state->compressed[16] = tmp & 1;
 
-	return *state;
+	return state;
 }
 
-State & f2(State & origin)
+std::shared_ptr<State> f2(State & origin)
 { 
-	State * state = new State(origin, F2);
+	std::shared_ptr<State> state = std::make_shared<State>(origin, F2);
 
 	char tmp = 0;
 	tmp |= state->compressed[68] << 2;
@@ -541,13 +542,13 @@ State & f2(State & origin)
 	state->compressed[25] = (tmp & 2) >> 1;
 	state->compressed[24] = tmp & 1;
 
-	return *state;
+	return state;
 }
 
 
-State & b2(State & origin)
+std::shared_ptr<State> b2(State & origin)
 { 
-	State * state = new State(origin, B2);
+	std::shared_ptr<State> state = std::make_shared<State>(origin, B2);
 
 	char tmp = 0;
 	tmp |= state->compressed[71] << 2;
@@ -607,12 +608,12 @@ State & b2(State & origin)
 	state->compressed[17] = (tmp & 2) >> 1;
 	state->compressed[16] = tmp & 1;
 
-	return *state;
+	return state;
 }
 
-State & move(State & origin, Instruction instruction)
+std::shared_ptr<State> move(State & origin, Instruction instruction)
 {
-	static std::map<Instruction, State & (*)(State &)> move_ptr{
+	static std::map<Instruction, std::shared_ptr<State> (*)(State &)> move_ptr{
 		{U, u},
 		{UR, ur},
 		{U2, u2},

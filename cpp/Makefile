@@ -5,7 +5,8 @@ NAME = rubik
 FILE =  main.cpp \
 		Instruction.cpp \
 		State.cpp \
-		move.cpp
+		move.cpp \
+		IDA.cpp
 
 SRC_DIR = src
 SRC = $(addprefix $(SRC_DIR)/,$(FILE:%.cpp=%.o))

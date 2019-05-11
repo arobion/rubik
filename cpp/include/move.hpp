@@ -1,4 +1,4 @@
 #pragma once
 #include "State.hpp"
 
-State & move(State & origin, Instruction instruction);
+std::shared_ptr<State> move(State & origin, Instruction instruction);

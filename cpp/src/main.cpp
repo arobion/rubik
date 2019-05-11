@@ -8,19 +8,19 @@
 
 typedef std::unordered_map<std::bitset<72>, char> map_t;
 
-map_t bfs(State * start)
+map_t bfs(std::shared_ptr<State> start)
 {
     map_t map;
 	map[start->compressed] = start->g;
 
-	std::list<State *> queue;
+	std::list<std::shared_ptr<State>> queue;
 	queue.push_back(start);
 
 	while (queue.size())
 	{
-		auto current = std::unique_ptr<State>(queue.front());
+		auto current = queue.front();
 		queue.pop_front();
-		if (current->g < 7)
+		if (current->g < 9)
 		{
 			for (auto next : current->get_nexts_2())
 			{
@@ -29,8 +29,6 @@ map_t bfs(State * start)
 					map[next->compressed] = next->g;
 					queue.push_back(next);
 				}
-				else
-					delete next;
 			}
 		}
 	}
@@ -39,7 +37,7 @@ map_t bfs(State * start)
 
 int main(void)
 {
-	State * s1 = new State{};
+	auto s1 = std::make_shared<State>();
 	auto map = bfs(s1);
 	std::cout << map.size() << std::endl;
 //    std::cout << *s1 << std::endl;

@@ -101,7 +101,8 @@ std::ostream & operator<<(std::ostream & o, State const & rhs)
 	return o;
 }
 
-std::vector<State *> State::get_nexts_1()
+/*
+std::vector<std::shared_ptr<State>> State::get_nexts_1()
 {
 	static std::unordered_map<Instruction, std::vector<Instruction>> moves_map{
 		{U, {D, DR, D2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}},
@@ -131,13 +132,14 @@ std::vector<State *> State::get_nexts_1()
 		{EMPTY, {U, UR, U2, D, DR, D2, L2, R2, F2, B2}}
 	};
 
-	std::vector<State *> nexts;
+	std::vector<std::shared_ptr<State>> nexts;
 	for (auto next_instruction : moves_map[this->instruction])
 		nexts.push_back(&move(*this, next_instruction));
 	return nexts;
 }
+*/
 
-std::vector<State *> State::get_nexts_2()
+std::vector<std::shared_ptr<State>> State::get_nexts_2()
 {
 	static std::unordered_map<Instruction, std::vector<Instruction>> moves_map{
 		{U, {D, DR, D2, L2, R2, F2, B2}},
@@ -157,8 +159,8 @@ std::vector<State *> State::get_nexts_2()
 		{EMPTY, {U, UR, U2, D, DR, D2, L2, R2, F2, B2}}
 	};
 
-	std::vector<State *> nexts;
+	std::vector<std::shared_ptr<State>> nexts;
 	for (auto next_instruction : moves_map[this->instruction])
-		nexts.push_back(&move(*this, next_instruction));
+		nexts.push_back(move(*this, next_instruction));
 	return nexts;
 }

@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <list>
 #include <memory>
+#include <stdlib.h>
 
 typedef std::unordered_map<std::bitset<72>, char> map_t;
 

@@ -4,7 +4,8 @@ def U(obj):
     obj.edges[1], obj.edges[2], obj.edges[3], obj.edges[4] = obj.edges[4], obj.edges[1], obj.edges[2], obj.edges[3]
 
 def R(obj):
-    #corner: 1 5 6 2, edges: 2 5 1 6
+    #corner: 1 5 6 2, edges: 2 5 10 6
+    # 0 -> 4 -> 5 -> 1 -> 0.        1 -> 4 -> 9 -> 5 -> 1
     obj.corners[2].orientation, obj.corners[5].orientation = (obj.corners[2].orientation + 1) % 3, (obj.corners[5].orientation + 1) % 3
     obj.corners[1].orientation, obj.corners[6].orientation = (obj.corners[1].orientation - 1) % 3, (obj.corners[6].orientation - 1) % 3
     
@@ -13,6 +14,7 @@ def R(obj):
 
 def L(obj):
     #corner: 4 3 7 8, edges: 4 7 12 8
+    # 3 -> 2 -> 6 -> 7 -> 3      3 -> 6 -> 11 -> 7 -> 3
     obj.corners[4].orientation, obj.corners[7].orientation = (obj.corners[4].orientation + 1) % 3, (obj.corners[7].orientation + 1) % 3
     obj.corners[3].orientation, obj.corners[8].orientation = (obj.corners[3].orientation - 1) % 3, (obj.corners[8].orientation - 1) % 3
     
@@ -26,6 +28,7 @@ def D(obj):
 
 def F(obj):
     #corner: 3 2 6 7, edges: 3 6 11 7
+    # 2 -> 1 -> 5 -> 6 -> 2     2 -> 5 -> 10 -> 6 -> 2
     obj.corners[3].orientation, obj.corners[6].orientation = (obj.corners[3].orientation + 1) % 3, (obj.corners[6].orientation + 1) % 3
     obj.corners[2].orientation, obj.corners[7].orientation = (obj.corners[2].orientation - 1) % 3, (obj.corners[7].orientation - 1) % 3
     
@@ -37,6 +40,7 @@ def F(obj):
 
 def B(obj):
     #corner: 1 4 8 5, edges: 1 8 9 5
+    # 0 -> 3 -> 7 -> 4 -> 0     0 -> 7 -> 8 -> 4 -> 0
     obj.corners[1].orientation, obj.corners[8].orientation = (obj.corners[1].orientation + 1) % 3, (obj.corners[8].orientation + 1) % 3
     obj.corners[4].orientation, obj.corners[5].orientation = (obj.corners[4].orientation - 1) % 3, (obj.corners[5].orientation - 1) % 3
     
@@ -53,6 +57,7 @@ def Ur(obj):
 
 def Rr(obj):
     #corner: 2 6 5 1, edges: 6 10 5 2
+    # 1 -> 5 -> 4 -> 0 -> 1     5 -> 9 -> 4 -> 1 -> 5
     obj.corners[2].orientation, obj.corners[5].orientation = (obj.corners[2].orientation + 1) % 3, (obj.corners[5].orientation + 1) % 3
     obj.corners[6].orientation, obj.corners[1].orientation = (obj.corners[6].orientation - 1) % 3, (obj.corners[1].orientation - 1) % 3
     
@@ -61,6 +66,7 @@ def Rr(obj):
 
 def Lr(obj):
     #corner: 8 7 3 4, edges: 8 12 7 4
+    # 7 -> 6 -> 2 -> 3 -> 7     7 -> 11 -> 6 -> 3 -> 7
     obj.corners[7].orientation, obj.corners[4].orientation = (obj.corners[7].orientation + 1) % 3, (obj.corners[4].orientation + 1) % 3
     obj.corners[8].orientation, obj.corners[3].orientation = (obj.corners[8].orientation - 1) % 3, (obj.corners[3].orientation - 1) % 3
     
@@ -74,6 +80,7 @@ def Dr(obj):
 
 def Fr(obj):
     #corner:7 6 2 3, edges: 7 11 6 3
+    # 6 -> 5 -> 1 -> 2 -> 6     6 -> 10 -> 5 -> 2 -> 6
     obj.corners[6].orientation, obj.corners[3].orientation = (obj.corners[6].orientation + 1) % 3, (obj.corners[3].orientation + 1) % 3
     obj.corners[7].orientation, obj.corners[2].orientation = (obj.corners[7].orientation - 1) % 3, (obj.corners[2].orientation - 1) % 3
     
@@ -85,6 +92,7 @@ def Fr(obj):
 
 def Br(obj):
     #corner: 5 8 4 1, edges: 5 9 8 1
+    # 4 -> 7 -> 3 -> 0 -> 4     4 -> 8 -> 7 -> 0 -> 4
     obj.corners[1].orientation, obj.corners[8].orientation = (obj.corners[1].orientation + 1) % 3, (obj.corners[8].orientation + 1) % 3
     obj.corners[4].orientation, obj.corners[5].orientation = (obj.corners[4].orientation - 1) % 3, (obj.corners[5].orientation - 1) % 3
     

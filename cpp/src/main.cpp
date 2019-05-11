@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <list>
 #include <memory>
+#include <stdlib.h>
 
 typedef std::unordered_map<std::bitset<72>, char> map_t;
 
@@ -38,8 +39,13 @@ map_t bfs(std::shared_ptr<State> start)
 int main(void)
 {
 	auto s1 = std::make_shared<State>();
-	auto map = bfs(s1);
-	std::cout << map.size() << std::endl;
-//    std::cout << *s1 << std::endl;
+//	auto map = bfs(s1);
+//	std::cout << map.size() << std::endl;
+    //std::cout << s1->get_UD_slice_permutation() << std::endl;
+	for (auto next : s1->get_nexts_1())
+		std::cout << *next << std::endl;
+	
+
+
 }
 

@@ -1,6 +1,6 @@
 #include "State.hpp"
 #include "move.hpp"
-#include "IDA.hpp"
+#include "Phase2.hpp"
 #include <iostream>
 #include <bitset>
 #include <unordered_map>
@@ -37,8 +37,9 @@ map_t bfs(std::shared_ptr<State> start)
 	return map;
 }
 
-int main(int argc, char **argv)
+int main(/*int argc, char **argv*/)
 {
+	/* python wrap
 	if (argc == 41)
 	{
 		auto s1 = std::make_shared<State>(argv);
@@ -49,18 +50,22 @@ int main(int argc, char **argv)
 		auto s1 = std::make_shared<State>();
 		std::cout << *s1 << std::endl;
 	}
-	/*
+	*/
+
+	/* bfs
+	auto map = bfs(s1);
+	std::cout << map.size() << std::endl;
+	std::cout << *s1 << std::endl;
+	*/
+
+	auto s1 = std::make_shared<State>();
 	auto s2 = move(*s1, U);
 	auto s3 = move(*s2, R2);
 	s3->g = 0;
 	s3->instruction = EMPTY;
-	// auto map = bfs(s1);
-	// std::cout << map.size() << std::endl;
-	// std::cout << *s1 << std::endl;
-	IDA ida(s3);
-	ida.run();
-	for (auto state : ida.path)
+	Phase2 phase2(s3);
+	phase2.run();
+	for (auto state : phase2.path)
 		std::cout << *state;
-	*/
 }
 

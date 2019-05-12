@@ -6,7 +6,7 @@ FILE =  main.cpp \
 		Instruction.cpp \
 		State.cpp \
 		move.cpp \
-		IDA.cpp
+		Phase2.cpp
 
 SRC_DIR = src
 SRC = $(addprefix $(SRC_DIR)/,$(FILE:%.cpp=%.o))

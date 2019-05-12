@@ -4,7 +4,7 @@
 
 Phase2::Phase2(std::shared_ptr<State> start) :
 	start(start),
-	bound(start->heuristic_dummy())
+	bound(heuristic(start))
 {
 	path.push_back(start);
 }

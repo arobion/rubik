@@ -3,7 +3,7 @@
 #include <map>
 #include <memory>
 
-void    move_bits_orientation_corners1(std::bitset<16> set, char pos[4])
+void    move_bits_orientation_corners1(std::bitset<16> & set, char pos[4])
 {
     char tmp = 0;
     tmp |= set[15 - (pos[0] * 2)] << 1;
@@ -22,7 +22,7 @@ void    move_bits_orientation_corners1(std::bitset<16> set, char pos[4])
     set[14 - (pos[3] * 2)] = tmp & 1;
 }
 
-void    move_bits_orientation_corners2(std::bitset<16> set, char pos[4])
+void    move_bits_orientation_corners2(std::bitset<16> & set, char pos[4])
 {
     char tmp = 0;
     tmp |= set[15 - (pos[0] * 2)] << 1;
@@ -45,7 +45,7 @@ void    move_bits_orientation_corners2(std::bitset<16> set, char pos[4])
     set[14 - (pos[3] * 2)] = tmp & 1;
 }
 
-void    move_bits_orientation_edges1(std::bitset<12> set, char pos[4])
+void    move_bits_orientation_edges1(std::bitset<12> & set, char pos[4])
 {
     char tmp = 0;
     tmp |= set[11 - pos[0]];
@@ -59,7 +59,7 @@ void    move_bits_orientation_edges1(std::bitset<12> set, char pos[4])
     set[11 - pos[3]] = tmp;
 }
 
-void    move_bits_orientation_edges2(std::bitset<12> set, char pos[4])
+void    move_bits_orientation_edges2(std::bitset<12> & set, char pos[4])
 {
     char tmp = 0;
     tmp |= set[11 - pos[0]];

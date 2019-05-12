@@ -6,6 +6,7 @@ FILE =  main.cpp \
 		Instruction.cpp \
 		State.cpp \
 		move.cpp \
+		Phase1.cpp \
 		Phase2.cpp
 
 SRC_DIR = src

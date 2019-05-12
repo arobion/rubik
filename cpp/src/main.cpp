@@ -1,5 +1,6 @@
 #include "State.hpp"
 #include "move.hpp"
+#include "Phase1.hpp"
 #include "Phase2.hpp"
 #include <iostream>
 #include <bitset>
@@ -58,12 +59,24 @@ int main(/*int argc, char **argv*/)
 	std::cout << *s1 << std::endl;
 	*/
 
+	std::cout << "**************************\nPhase 1\n**************************\n";
 	auto s1 = std::make_shared<State>();
-	auto s2 = move(*s1, U);
-	auto s3 = move(*s2, R2);
+	auto s2 = move(*s1, R);
+	auto s3 = move(*s2, U);
 	s3->g = 0;
 	s3->instruction = EMPTY;
-	Phase2 phase2(s3);
+
+	Phase1 phase1(s3);
+	phase1.run();
+	for (auto state : phase1.path)
+		std::cout << *state;
+
+	std::cout << "**************************\nPhase 2\n**************************\n";
+	auto s4 = phase1.path.back();
+	s4->g = 0;
+	s4->instruction = EMPTY;
+
+	Phase2 phase2(s4);
 	phase2.run();
 	for (auto state : phase2.path)
 		std::cout << *state;

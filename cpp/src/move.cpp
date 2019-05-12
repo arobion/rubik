@@ -3,6 +3,25 @@
 #include <map>
 #include <memory>
 
+void    move_bits_orientation_corners(std::bitset<16> set, char[4] pos)
+{
+    char tmp = 0;
+    tmp |= this->corners_orientation[15 - (pos[0] * 2)] << 1;
+    tmp |= this->corners_orientation[14 - (pos[0] * 2)];
+
+    this->corners_orientation[15 - (pos[0] * 2)] = this->corners_orientation[15 - (pos[1] * 2)];
+    this->corners_orientation[14 - (pos[0] * 2)] = this->corners_orientation[14 - (pos[1] * 2)];
+
+    this->corners_orientation[15 - (pos[1] * 2)] = this->corners_orientation[15 - (pos[2] * 2)];
+    this->corners_orientation[14 - (pos[1] * 2)] = this->corners_orientation[14 - (pos[2] * 2)];
+    
+    this->corners_orientation[15 - (pos[2] * 2)] = this->corners_orientation[15 - (pos[3] * 2)];
+    this->corners_orientation[14 - (pos[2] * 2)] = this->corners_orientation[14 - (pos[3] * 2)];
+
+    this->corners_orientation[15 - (pos[3] * 2)] = tmp >> 1;
+    this->corners_orientation[14 - (pos[3] * 2)] = tmp & 1;
+}
+
 std::shared_ptr<State> u(State & origin)
 { 
 	std::shared_ptr<State> state = std::make_shared<State>(origin, U);
@@ -54,6 +73,7 @@ std::shared_ptr<State> u(State & origin)
 	state->compressed[41] = (tmp & 2) >> 1;
 	state->compressed[40] = tmp & 1;
 
+    move_bits_orientation_corners(state->corners_orientation, [0, 3, 2, 1]);
 	return state;
 }
 
@@ -108,6 +128,7 @@ std::shared_ptr<State> ur(State & origin)
 	state->compressed[33] = (tmp & 2) >> 1;
 	state->compressed[32] = tmp & 1;
 
+    move_bits_orientation_corners(state->corners_orientation, [0, 1, 2, 3]);
 	return state;
 }
 

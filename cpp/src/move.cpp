@@ -3,79 +3,6 @@
 #include <map>
 #include <memory>
 
-void    move_bits_orientation_corners1(std::bitset<16> & set, char pos[4])
-{
-    char tmp = 0;
-    tmp |= set[15 - (pos[0] * 2)] << 1;
-    tmp |= set[14 - (pos[0] * 2)];
-
-    set[15 - (pos[0] * 2)] = set[15 - (pos[1] * 2)];
-    set[14 - (pos[0] * 2)] = set[14 - (pos[1] * 2)];
-
-    set[15 - (pos[1] * 2)] = set[15 - (pos[2] * 2)];
-    set[14 - (pos[1] * 2)] = set[14 - (pos[2] * 2)];
-    
-    set[15 - (pos[2] * 2)] = set[15 - (pos[3] * 2)];
-    set[14 - (pos[2] * 2)] = set[14 - (pos[3] * 2)];
-
-    set[15 - (pos[3] * 2)] = tmp >> 1;
-    set[14 - (pos[3] * 2)] = tmp & 1;
-}
-
-void    move_bits_orientation_corners2(std::bitset<16> & set, char pos[4])
-{
-    char tmp = 0;
-    tmp |= set[15 - (pos[0] * 2)] << 1;
-    tmp |= set[14 - (pos[0] * 2)];
-
-    set[15 - (pos[0] * 2)] = set[15 - (pos[1] * 2)];
-    set[14 - (pos[0] * 2)] = set[14 - (pos[1] * 2)];
-
-    set[15 - (pos[1] * 2)] = tmp >> 1;
-    set[14 - (pos[1] * 2)] = tmp & 1;
-    
-    tmp = 0;
-    tmp |= set[15 - (pos[2] * 2)] << 1;
-    tmp |= set[14 - (pos[2] * 2)];
-
-    set[15 - (pos[2] * 2)] = set[15 - (pos[3] * 2)];
-    set[14 - (pos[2] * 2)] = set[14 - (pos[3] * 2)];
-
-    set[15 - (pos[3] * 2)] = tmp >> 1;
-    set[14 - (pos[3] * 2)] = tmp & 1;
-}
-
-void    move_bits_orientation_edges1(std::bitset<12> & set, char pos[4])
-{
-    char tmp = 0;
-    tmp |= set[11 - pos[0]];
-
-    set[11 - pos[0]] = set[11 - pos[1]];
-
-    set[11 - pos[1]] = set[11 - pos[2]];
-    
-    set[11 - pos[2]] = set[11 - pos[3]];
-
-    set[11 - pos[3]] = tmp;
-}
-
-void    move_bits_orientation_edges2(std::bitset<12> & set, char pos[4])
-{
-    char tmp = 0;
-    tmp |= set[11 - pos[0]];
-
-    set[11 - pos[0]] = set[11 - pos[1]];
-
-    set[11 - pos[0]] = tmp;
-    
-    tmp = 0;
-    tmp |= set[11 - pos[2]];
-
-    set[11 - pos[2]] = set[11 - pos[3]];
-
-    set[11 - pos[3]] = tmp;
-}
-
 std::shared_ptr<State> u(State & origin)
 { 
 	std::shared_ptr<State> state = std::make_shared<State>(origin, U);
@@ -127,10 +54,30 @@ std::shared_ptr<State> u(State & origin)
 	state->compressed[41] = (tmp & 2) >> 1;
 	state->compressed[40] = tmp & 1;
 
-    char t[4] = {0, 3, 2, 1};
-    move_bits_orientation_corners1(state->corners_orientation, t);
-    char t2[4] = {0, 3, 2, 1};
-    move_bits_orientation_edges1(state->edges_orientation, t2);
+	tmp = 0;
+	tmp |= state->corners_orientation[15] << 1;
+	tmp |= state->corners_orientation[14];
+
+	state->corners_orientation[15] = state->corners_orientation[9];
+	state->corners_orientation[14] = state->corners_orientation[8];
+
+	state->corners_orientation[9] = state->corners_orientation[11];
+	state->corners_orientation[8] = state->corners_orientation[10];
+
+	state->corners_orientation[11] = state->corners_orientation[13];
+	state->corners_orientation[10] = state->corners_orientation[12];
+
+	state->corners_orientation[13] = tmp >> 1;
+	state->corners_orientation[12] = tmp & 1;
+
+	tmp = 0;
+	tmp = state->edges_orientation[11];
+
+	state->edges_orientation[11] = state->edges_orientation[8];
+	state->edges_orientation[8] = state->edges_orientation[9];
+	state->edges_orientation[9] = state->edges_orientation[10];
+	state->edges_orientation[10] = tmp;
+
 	return state;
 }
 
@@ -185,10 +132,30 @@ std::shared_ptr<State> ur(State & origin)
 	state->compressed[33] = (tmp & 2) >> 1;
 	state->compressed[32] = tmp & 1;
 
-    char t[4] = {0, 1, 2, 3};
-    move_bits_orientation_corners1(state->corners_orientation, t);
-    char t2[4] = {0, 1, 2, 3};
-    move_bits_orientation_edges1(state->edges_orientation, t2);
+	tmp = 0;
+	tmp |= state->corners_orientation[15] << 1;
+	tmp |= state->corners_orientation[14];
+
+	state->corners_orientation[15] = state->corners_orientation[13];
+	state->corners_orientation[14] = state->corners_orientation[12];
+
+	state->corners_orientation[13] = state->corners_orientation[11];
+	state->corners_orientation[12] = state->corners_orientation[10];
+
+	state->corners_orientation[11] = state->corners_orientation[9];
+	state->corners_orientation[10] = state->corners_orientation[8];
+
+	state->corners_orientation[9] = tmp >> 1;
+	state->corners_orientation[8] = tmp & 1;
+
+	tmp = 0;
+	tmp = state->edges_orientation[11];
+
+	state->edges_orientation[11] = state->edges_orientation[10];
+	state->edges_orientation[10] = state->edges_orientation[9];
+	state->edges_orientation[9] = state->edges_orientation[8];
+	state->edges_orientation[8] = tmp;
+
 	return state;
 }
 
@@ -254,10 +221,38 @@ std::shared_ptr<State> u2(State & origin)
 	state->compressed[33] = (tmp & 2) >> 1;
 	state->compressed[32] = tmp & 1;
 
-    char t[4] = {0, 2, 1, 3};
-    move_bits_orientation_corners2(state->corners_orientation, t);
-    char t2[4] = {0, 2, 1, 3};
-    move_bits_orientation_edges2(state->edges_orientation, t2);
+	tmp = 0;
+	tmp |= state->corners_orientation[15] << 1;
+	tmp |= state->corners_orientation[14];
+
+	state->corners_orientation[15] = state->corners_orientation[11];
+	state->corners_orientation[14] = state->corners_orientation[10];
+
+	state->corners_orientation[11] = tmp >> 1;
+	state->corners_orientation[10] = tmp & 1;
+
+	tmp = 0;
+	tmp |= state->corners_orientation[13] << 1;
+	tmp |= state->corners_orientation[12];
+
+	state->corners_orientation[13] = state->corners_orientation[9];
+	state->corners_orientation[12] = state->corners_orientation[8];
+
+	state->corners_orientation[9] = tmp >> 1;
+	state->corners_orientation[8] = tmp & 1;
+
+	tmp = 0;
+	tmp = state->edges_orientation[11];
+
+	state->edges_orientation[11] = state->edges_orientation[9];
+	state->edges_orientation[9] = tmp;
+
+	tmp = 0;
+	tmp = state->edges_orientation[10];
+
+	state->edges_orientation[10] = state->edges_orientation[8];
+	state->edges_orientation[8] = tmp;
+
 	return state;
 }
 
@@ -313,10 +308,30 @@ std::shared_ptr<State> d(State & origin)
 	state->compressed[1] = (tmp & 2) >> 1;
 	state->compressed[0] = tmp & 1;
 
-    char t[4] = {4, 5, 6, 7};
-    move_bits_orientation_corners1(state->corners_orientation, t);
-    char t2[4] = {4, 5, 6, 7};
-    move_bits_orientation_edges1(state->edges_orientation, t2);
+	tmp = 0;
+	tmp |= state->corners_orientation[7] << 1;
+	tmp |= state->corners_orientation[6];
+
+	state->corners_orientation[7] = state->corners_orientation[5];
+	state->corners_orientation[6] = state->corners_orientation[4];
+
+	state->corners_orientation[5] = state->corners_orientation[3];
+	state->corners_orientation[4] = state->corners_orientation[2];
+
+	state->corners_orientation[3] = state->corners_orientation[1];
+	state->corners_orientation[2] = state->corners_orientation[0];
+
+	state->corners_orientation[1] = tmp >> 1;
+	state->corners_orientation[0] = tmp & 1;
+
+	tmp = 0;
+	tmp = state->edges_orientation[7];
+
+	state->edges_orientation[7] = state->edges_orientation[6];
+	state->edges_orientation[6] = state->edges_orientation[5];
+	state->edges_orientation[5] = state->edges_orientation[4];
+	state->edges_orientation[4] = tmp;
+
 	return state;
 }
 
@@ -371,10 +386,30 @@ std::shared_ptr<State> dr(State & origin)
 	state->compressed[9] = (tmp & 2) >> 1;
 	state->compressed[8] = tmp & 1;
 
-    char t[4] = {4, 7, 6, 5};
-    move_bits_orientation_corners1(state->corners_orientation, t);
-    char t2[4] = {4, 7, 6, 5};
-    move_bits_orientation_edges1(state->edges_orientation, t2);
+	tmp = 0;
+	tmp |= state->corners_orientation[7] << 1;
+	tmp |= state->corners_orientation[6];
+
+	state->corners_orientation[7] = state->corners_orientation[1];
+	state->corners_orientation[6] = state->corners_orientation[0];
+
+	state->corners_orientation[1] = state->corners_orientation[3];
+	state->corners_orientation[0] = state->corners_orientation[2];
+
+	state->corners_orientation[3] = state->corners_orientation[5];
+	state->corners_orientation[2] = state->corners_orientation[4];
+
+	state->corners_orientation[5] = tmp >> 1;
+	state->corners_orientation[4] = tmp & 1;
+
+	tmp = 0;
+	tmp = state->edges_orientation[7];
+
+	state->edges_orientation[7] = state->edges_orientation[4];
+	state->edges_orientation[4] = state->edges_orientation[5];
+	state->edges_orientation[5] = state->edges_orientation[6];
+	state->edges_orientation[6] = tmp;
+
 	return state;
 }
 
@@ -440,10 +475,38 @@ std::shared_ptr<State> d2(State & origin)
 	state->compressed[1] = (tmp & 2) >> 1;
 	state->compressed[0] = tmp & 1;
 
-    char t[4] = {4, 6, 5, 7};
-    move_bits_orientation_corners2(state->corners_orientation, t);
-    char t2[4] = {8, 10, 9, 11};
-    move_bits_orientation_edges2(state->edges_orientation, t2);
+	tmp = 0;
+	tmp |= state->corners_orientation[7] << 1;
+	tmp |= state->corners_orientation[6];
+
+	state->corners_orientation[7] = state->corners_orientation[3];
+	state->corners_orientation[6] = state->corners_orientation[2];
+
+	state->corners_orientation[3] = tmp >> 1;
+	state->corners_orientation[2] = tmp & 1;
+
+	tmp = 0;
+	tmp |= state->corners_orientation[5] << 1;
+	tmp |= state->corners_orientation[4];
+
+	state->corners_orientation[5] = state->corners_orientation[1];
+	state->corners_orientation[4] = state->corners_orientation[0];
+
+	state->corners_orientation[1] = tmp >> 1;
+	state->corners_orientation[0] = tmp & 1;
+
+	tmp = 0;
+	tmp = state->edges_orientation[3];
+
+	state->edges_orientation[3] = state->edges_orientation[1];
+	state->edges_orientation[1] = tmp;
+
+	tmp = 0;
+	tmp = state->edges_orientation[2];
+
+	state->edges_orientation[2] = state->edges_orientation[0];
+	state->edges_orientation[0] = tmp;
+
 	return state;
 }
 
@@ -514,10 +577,30 @@ std::shared_ptr<State> r(State & origin)
 	state->corners_orientation[6] = state->corners_orientation[7];
 	state->corners_orientation[7] = !(state->corners_orientation[7] | tmp);
 
-    char t[4] = {0, 1, 5, 4};
-    move_bits_orientation_corners1(state->corners_orientation, t);
-    char t2[4] = {1, 5, 9, 4};
-    move_bits_orientation_edges1(state->edges_orientation, t2);
+	tmp = 0;
+	tmp |= state->corners_orientation[15] << 1;
+	tmp |= state->corners_orientation[14];
+
+	state->corners_orientation[15] = state->corners_orientation[13];
+	state->corners_orientation[14] = state->corners_orientation[12];
+
+	state->corners_orientation[13] = state->corners_orientation[5];
+	state->corners_orientation[12] = state->corners_orientation[4];
+
+	state->corners_orientation[5] = state->corners_orientation[7];
+	state->corners_orientation[4] = state->corners_orientation[6];
+
+	state->corners_orientation[7] = tmp >> 1;
+	state->corners_orientation[6] = tmp & 1;
+
+	tmp = 0;
+	tmp = state->edges_orientation[10];
+
+	state->edges_orientation[10] = state->edges_orientation[6];
+	state->edges_orientation[6] = state->edges_orientation[2];
+	state->edges_orientation[2] = state->edges_orientation[7];
+	state->edges_orientation[7] = tmp;
+
 	return state;
 }
 
@@ -588,10 +671,30 @@ std::shared_ptr<State> rr(State & origin)
 	state->corners_orientation[6] = state->corners_orientation[7];
 	state->corners_orientation[7] = !(state->corners_orientation[7] | tmp);
 
-    char t[4] = {0, 4, 5, 1};
-    move_bits_orientation_corners1(state->corners_orientation, t);
-    char t2[4] = {1, 4, 9, 5};
-    move_bits_orientation_edges1(state->edges_orientation, t2);
+	tmp = 0;
+	tmp |= state->corners_orientation[15] << 1;
+	tmp |= state->corners_orientation[14];
+
+	state->corners_orientation[15] = state->corners_orientation[7];
+	state->corners_orientation[14] = state->corners_orientation[6];
+
+	state->corners_orientation[7] = state->corners_orientation[5];
+	state->corners_orientation[6] = state->corners_orientation[4];
+
+	state->corners_orientation[5] = state->corners_orientation[13];
+	state->corners_orientation[4] = state->corners_orientation[12];
+
+	state->corners_orientation[13] = tmp >> 1;
+	state->corners_orientation[12] = tmp & 1;
+
+	tmp = 0;
+	tmp = state->edges_orientation[10];
+
+	state->edges_orientation[10] = state->edges_orientation[7];
+	state->edges_orientation[7] = state->edges_orientation[2];
+	state->edges_orientation[2] = state->edges_orientation[6];
+	state->edges_orientation[6] = tmp;
+
 	return state;
 }
 
@@ -657,10 +760,38 @@ std::shared_ptr<State> r2(State & origin)
 	state->compressed[29] = (tmp & 2) >> 1;
 	state->compressed[28] = tmp & 1;
 
-    char t[4] = {0, 5, 1, 4};
-    move_bits_orientation_corners2(state->corners_orientation, t);
-    char t2[4] = {1, 9, 4, 5};
-    move_bits_orientation_edges2(state->edges_orientation, t2);
+	tmp = 0;
+	tmp |= state->corners_orientation[15] << 1;
+	tmp |= state->corners_orientation[14];
+
+	state->corners_orientation[15] = state->corners_orientation[5];
+	state->corners_orientation[14] = state->corners_orientation[4];
+
+	state->corners_orientation[5] = tmp >> 1;
+	state->corners_orientation[4] = tmp & 1;
+
+	tmp = 0;
+	tmp |= state->corners_orientation[13] << 1;
+	tmp |= state->corners_orientation[12];
+
+	state->corners_orientation[13] = state->corners_orientation[7];
+	state->corners_orientation[12] = state->corners_orientation[6];
+
+	state->corners_orientation[7] = tmp >> 1;
+	state->corners_orientation[6] = tmp & 1;
+
+	tmp = 0;
+	tmp = state->edges_orientation[10];
+
+	state->edges_orientation[10] = state->edges_orientation[2];
+	state->edges_orientation[2] = tmp;
+
+	tmp = 0;
+	tmp = state->edges_orientation[7];
+
+	state->edges_orientation[7] = state->edges_orientation[6];
+	state->edges_orientation[6] = tmp;
+
 	return state;
 }
 
@@ -731,10 +862,30 @@ std::shared_ptr<State> l(State & origin)
 	state->corners_orientation[2] = state->corners_orientation[3];
 	state->corners_orientation[3] = !(state->corners_orientation[3] | tmp);
 
-    char t[4] = {3, 7, 6, 2};
-    move_bits_orientation_corners1(state->corners_orientation, t);
-    char t2[4] = {3, 7, 11, 6};
-    move_bits_orientation_edges1(state->edges_orientation, t2);
+	tmp = 0;
+	tmp |= state->corners_orientation[9] << 1;
+	tmp |= state->corners_orientation[8];
+
+	state->corners_orientation[9] = state->corners_orientation[1];
+	state->corners_orientation[8] = state->corners_orientation[0];
+
+	state->corners_orientation[1] = state->corners_orientation[3];
+	state->corners_orientation[0] = state->corners_orientation[2];
+
+	state->corners_orientation[3] = state->corners_orientation[11];
+	state->corners_orientation[2] = state->corners_orientation[10];
+
+	state->corners_orientation[11] = tmp >> 1;
+	state->corners_orientation[10] = tmp & 1;
+
+	tmp = 0;
+	tmp = state->edges_orientation[8];
+
+	state->edges_orientation[8] = state->edges_orientation[4];
+	state->edges_orientation[4] = state->edges_orientation[0];
+	state->edges_orientation[0] = state->edges_orientation[5];
+	state->edges_orientation[5] = tmp;
+
 	return state;
 }
 
@@ -805,10 +956,30 @@ std::shared_ptr<State> lr(State & origin)
 	state->corners_orientation[2] = state->corners_orientation[3];
 	state->corners_orientation[3] = !(state->corners_orientation[3] | tmp);
 
-    char t[4] = {3, 2, 6, 7};
-    move_bits_orientation_corners1(state->corners_orientation, t);
-    char t2[4] = {3, 6, 11, 7};
-    move_bits_orientation_edges1(state->edges_orientation, t2);
+	tmp = 0;
+	tmp |= state->corners_orientation[9] << 1;
+	tmp |= state->corners_orientation[8];
+
+	state->corners_orientation[9] = state->corners_orientation[11];
+	state->corners_orientation[8] = state->corners_orientation[10];
+
+	state->corners_orientation[11] = state->corners_orientation[3];
+	state->corners_orientation[10] = state->corners_orientation[2];
+
+	state->corners_orientation[3] = state->corners_orientation[1];
+	state->corners_orientation[2] = state->corners_orientation[0];
+
+	state->corners_orientation[1] = tmp >> 1;
+	state->corners_orientation[0] = tmp & 1;
+
+	tmp = 0;
+	tmp = state->edges_orientation[8];
+
+	state->edges_orientation[8] = state->edges_orientation[5];
+	state->edges_orientation[5] = state->edges_orientation[0];
+	state->edges_orientation[0] = state->edges_orientation[4];
+	state->edges_orientation[4] = tmp;
+
 	return state;
 }
 
@@ -874,10 +1045,38 @@ std::shared_ptr<State> l2(State & origin)
 	state->compressed[17] = (tmp & 2) >> 1;
 	state->compressed[16] = tmp & 1;
 
-    char t[4] = {2, 7, 3, 6};
-    move_bits_orientation_corners2(state->corners_orientation, t);
-    char t2[4] = {3, 11, 6, 7};
-    move_bits_orientation_edges2(state->edges_orientation, t2);
+	tmp = 0;
+	tmp |= state->corners_orientation[11] << 1;
+	tmp |= state->corners_orientation[10];
+
+	state->corners_orientation[11] = state->corners_orientation[1];
+	state->corners_orientation[10] = state->corners_orientation[0];
+
+	state->corners_orientation[1] = tmp >> 1;
+	state->corners_orientation[0] = tmp & 1;
+
+	tmp = 0;
+	tmp |= state->corners_orientation[9] << 1;
+	tmp |= state->corners_orientation[8];
+
+	state->corners_orientation[9] = state->corners_orientation[3];
+	state->corners_orientation[8] = state->corners_orientation[2];
+
+	state->corners_orientation[3] = tmp >> 1;
+	state->corners_orientation[2] = tmp & 1;
+
+	tmp = 0;
+	tmp = state->edges_orientation[8];
+
+	state->edges_orientation[8] = state->edges_orientation[0];
+	state->edges_orientation[0] = tmp;
+
+	tmp = 0;
+	tmp = state->edges_orientation[5];
+
+	state->edges_orientation[5] = state->edges_orientation[4];
+	state->edges_orientation[4] = tmp;
+
 	return state;
 }
 
@@ -953,10 +1152,30 @@ std::shared_ptr<State> f(State & origin)
 	state->edges_orientation[1] = !(state->edges_orientation[1]);
 	state->edges_orientation[6] = !(state->edges_orientation[6]);
 
-    char t[4] = {2, 6, 5, 1};
-    move_bits_orientation_corners1(state->corners_orientation, t);
-    char t2[4] = {2, 6, 10, 5};
-    move_bits_orientation_edges1(state->edges_orientation, t2);
+	tmp = 0;
+	tmp |= state->corners_orientation[11] << 1;
+	tmp |= state->corners_orientation[10];
+
+	state->corners_orientation[11] = state->corners_orientation[3];
+	state->corners_orientation[10] = state->corners_orientation[2];
+
+	state->corners_orientation[3] = state->corners_orientation[5];
+	state->corners_orientation[2] = state->corners_orientation[4];
+
+	state->corners_orientation[5] = state->corners_orientation[13];
+	state->corners_orientation[4] = state->corners_orientation[12];
+
+	state->corners_orientation[13] = tmp >> 1;
+	state->corners_orientation[12] = tmp & 1;
+
+	tmp = 0;
+	tmp = state->edges_orientation[9];
+
+	state->edges_orientation[9] = state->edges_orientation[5];
+	state->edges_orientation[5] = state->edges_orientation[1];
+	state->edges_orientation[1] = state->edges_orientation[6];
+	state->edges_orientation[6] = tmp;
+
 	return state;
 }
 
@@ -1032,10 +1251,30 @@ std::shared_ptr<State> fr(State & origin)
 	state->edges_orientation[1] = !(state->edges_orientation[1]);
 	state->edges_orientation[6] = !(state->edges_orientation[6]);
 
-    char t[4] = {2, 1, 5, 6};
-    move_bits_orientation_corners1(state->corners_orientation, t);
-    char t2[4] = {2, 5, 10, 6};
-    move_bits_orientation_edges1(state->edges_orientation, t2);
+	tmp = 0;
+	tmp |= state->corners_orientation[11] << 1;
+	tmp |= state->corners_orientation[10];
+
+	state->corners_orientation[11] = state->corners_orientation[13];
+	state->corners_orientation[10] = state->corners_orientation[12];
+
+	state->corners_orientation[13] = state->corners_orientation[5];
+	state->corners_orientation[12] = state->corners_orientation[4];
+
+	state->corners_orientation[5] = state->corners_orientation[3];
+	state->corners_orientation[4] = state->corners_orientation[2];
+
+	state->corners_orientation[3] = tmp >> 1;
+	state->corners_orientation[2] = tmp & 1;
+
+	tmp = 0;
+	tmp = state->edges_orientation[9];
+
+	state->edges_orientation[9] = state->edges_orientation[6];
+	state->edges_orientation[6] = state->edges_orientation[1];
+	state->edges_orientation[1] = state->edges_orientation[5];
+	state->edges_orientation[5] = tmp;
+
 	return state;
 }
 
@@ -1101,10 +1340,38 @@ std::shared_ptr<State> f2(State & origin)
 	state->compressed[25] = (tmp & 2) >> 1;
 	state->compressed[24] = tmp & 1;
 
-    char t[4] = {1, 6, 2, 5};
-    move_bits_orientation_corners2(state->corners_orientation, t);
-    char t2[4] = {2, 10, 5, 6};
-    move_bits_orientation_edges2(state->edges_orientation, t2);
+	tmp = 0;
+	tmp |= state->corners_orientation[13] << 1;
+	tmp |= state->corners_orientation[12];
+
+	state->corners_orientation[13] = state->corners_orientation[3];
+	state->corners_orientation[12] = state->corners_orientation[2];
+
+	state->corners_orientation[3] = tmp >> 1;
+	state->corners_orientation[2] = tmp & 1;
+
+	tmp = 0;
+	tmp |= state->corners_orientation[11] << 1;
+	tmp |= state->corners_orientation[10];
+
+	state->corners_orientation[11] = state->corners_orientation[5];
+	state->corners_orientation[10] = state->corners_orientation[4];
+
+	state->corners_orientation[5] = tmp >> 1;
+	state->corners_orientation[4] = tmp & 1;
+
+	tmp = 0;
+	tmp = state->edges_orientation[9];
+
+	state->edges_orientation[9] = state->edges_orientation[1];
+	state->edges_orientation[1] = tmp;
+
+	tmp = 0;
+	tmp = state->edges_orientation[6];
+
+	state->edges_orientation[6] = state->edges_orientation[5];
+	state->edges_orientation[5] = tmp;
+
 	return state;
 }
 
@@ -1180,10 +1447,30 @@ std::shared_ptr<State> b(State & origin)
 	state->edges_orientation[4] = !(state->edges_orientation[4]);
 	state->edges_orientation[7] = !(state->edges_orientation[7]);
 
-    char t[4] = {0, 4, 7, 3};
-    move_bits_orientation_corners1(state->corners_orientation, t);
-    char t2[4] = {0, 4, 8, 7};
-    move_bits_orientation_edges1(state->edges_orientation, t2);
+	tmp = 0;
+	tmp |= state->corners_orientation[15] << 1;
+	tmp |= state->corners_orientation[14];
+
+	state->corners_orientation[15] = state->corners_orientation[7];
+	state->corners_orientation[14] = state->corners_orientation[6];
+
+	state->corners_orientation[7] = state->corners_orientation[1];
+	state->corners_orientation[6] = state->corners_orientation[0];
+
+	state->corners_orientation[1] = state->corners_orientation[9];
+	state->corners_orientation[0] = state->corners_orientation[8];
+
+	state->corners_orientation[9] = tmp >> 1;
+	state->corners_orientation[8] = tmp & 1;
+
+	tmp = 0;
+	tmp = state->edges_orientation[11];
+
+	state->edges_orientation[11] = state->edges_orientation[7];
+	state->edges_orientation[7] = state->edges_orientation[3];
+	state->edges_orientation[3] = state->edges_orientation[4];
+	state->edges_orientation[4] = tmp;
+
 	return state;
 }
 
@@ -1259,10 +1546,30 @@ std::shared_ptr<State> br(State & origin)
 	state->edges_orientation[4] = !(state->edges_orientation[4]);
 	state->edges_orientation[7] = !(state->edges_orientation[7]);
 
-    char t[4] = {0, 3, 7, 4};
-    move_bits_orientation_corners1(state->corners_orientation, t);
-    char t2[4] = {0, 7, 8, 4};
-    move_bits_orientation_edges1(state->edges_orientation, t2);
+	tmp = 0;
+	tmp |= state->corners_orientation[15] << 1;
+	tmp |= state->corners_orientation[14];
+
+	state->corners_orientation[15] = state->corners_orientation[9];
+	state->corners_orientation[14] = state->corners_orientation[8];
+
+	state->corners_orientation[9] = state->corners_orientation[1];
+	state->corners_orientation[8] = state->corners_orientation[0];
+
+	state->corners_orientation[1] = state->corners_orientation[7];
+	state->corners_orientation[0] = state->corners_orientation[6];
+
+	state->corners_orientation[7] = tmp >> 1;
+	state->corners_orientation[6] = tmp & 1;
+
+	tmp = 0;
+	tmp = state->edges_orientation[11];
+
+	state->edges_orientation[11] = state->edges_orientation[4];
+	state->edges_orientation[4] = state->edges_orientation[3];
+	state->edges_orientation[3] = state->edges_orientation[7];
+	state->edges_orientation[7] = tmp;
+
 	return state;
 }
 
@@ -1328,10 +1635,38 @@ std::shared_ptr<State> b2(State & origin)
 	state->compressed[17] = (tmp & 2) >> 1;
 	state->compressed[16] = tmp & 1;
 
-    char t[4] = {0, 7, 3, 4};
-    move_bits_orientation_corners2(state->corners_orientation, t);
-    char t2[4] = {0, 8, 4, 7};
-    move_bits_orientation_edges2(state->edges_orientation, t2);
+	tmp = 0;
+	tmp |= state->corners_orientation[15] << 1;
+	tmp |= state->corners_orientation[14];
+
+	state->corners_orientation[15] = state->corners_orientation[1];
+	state->corners_orientation[14] = state->corners_orientation[0];
+
+	state->corners_orientation[1] = tmp >> 1;
+	state->corners_orientation[0] = tmp & 1;
+
+	tmp = 0;
+	tmp |= state->corners_orientation[9] << 1;
+	tmp |= state->corners_orientation[8];
+
+	state->corners_orientation[9] = state->corners_orientation[7];
+	state->corners_orientation[8] = state->corners_orientation[6];
+
+	state->corners_orientation[7] = tmp >> 1;
+	state->corners_orientation[6] = tmp & 1;
+
+	tmp = 0;
+	tmp = state->edges_orientation[11];
+
+	state->edges_orientation[11] = state->edges_orientation[3];
+	state->edges_orientation[3] = tmp;
+
+	tmp = 0;
+	tmp = state->edges_orientation[7];
+
+	state->edges_orientation[7] = state->edges_orientation[4];
+	state->edges_orientation[4] = tmp;
+
 	return state;
 }
 

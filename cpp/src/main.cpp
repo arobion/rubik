@@ -45,7 +45,9 @@ void solve(std::shared_ptr<State> s1)
 	phase1.run();
 	for (auto state : phase1.path)
 		std::cout << *state;
+	std::cout << s1->tot << std::endl;
 
+	/*
 	std::cout << "**************************\nPhase 2\n**************************\n";
 	auto s2 = phase1.path.back();
 	s2->g = 0;
@@ -55,6 +57,7 @@ void solve(std::shared_ptr<State> s1)
 	phase2.run();
 	for (auto state : phase2.path)
 		std::cout << *state;
+		*/
 }
 
 int main(int argc, char **argv)

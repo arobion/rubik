@@ -2,6 +2,8 @@
 #include "move.hpp"
 #include <stdlib.h>
 
+int		State::tot = 0;
+
 State::State() :
 	g(0),
 	instruction(EMPTY)
@@ -16,6 +18,7 @@ State::State() :
 		this->compressed <<= 4;
 		this->compressed |= i;
 	}
+	tot++;
 }
 
 State::State(char **argv):
@@ -45,6 +48,7 @@ State::State(char **argv):
 		this->edges_orientation <<= 1;
 		this->edges_orientation |= atoi(argv[i]);
 	}
+	tot++;
 }
 
 
@@ -55,6 +59,7 @@ State::State(State const & origin) :
     corners_orientation(origin.corners_orientation),
     edges_orientation(origin.edges_orientation)
 {
+	tot++;
 }
 
 State::State(State const & origin, Instruction instruction) :
@@ -64,6 +69,7 @@ State::State(State const & origin, Instruction instruction) :
     corners_orientation(origin.corners_orientation),
     edges_orientation(origin.edges_orientation)
 {
+	tot++;
 }
 
 State & State::operator=(State const & rhs)
@@ -76,6 +82,7 @@ State & State::operator=(State const & rhs)
         this->corners_orientation = rhs.corners_orientation;
         this->edges_orientation = rhs.edges_orientation;
 	}
+	tot++;
 	return *this;
 }
 

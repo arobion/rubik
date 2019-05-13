@@ -42,6 +42,7 @@ private:
 
 		{EMPTY, {U, UR, U2, D, DR, D2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}}
 	};
+
 	std::shared_ptr<State> solved = std::make_shared<State>();
 
 	std::shared_ptr<State> start;
@@ -53,9 +54,12 @@ private:
 	std::unordered_set<std::bitset<100>> visited;
 
 	std::vector<std::shared_ptr<State>> get_nexts(std::shared_ptr<State>);
+	std::vector<std::shared_ptr<State>> get_nexts_for_slice_map(std::shared_ptr<State>);
 	void generate_co_map();
 	void generate_eo_map();
-	//void generate_slice_map();
+	void generate_slice_map();
+	std::bitset<8>	get_edges_around_slice(std::shared_ptr<State>, char pos1, char pos2);
+	void			add_new_entry_permuted(int to_perm[4], std::list<std::shared_ptr<State>>);
 	float heuristic(std::shared_ptr<State> state);
 	float search();
 };

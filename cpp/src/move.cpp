@@ -561,21 +561,21 @@ std::shared_ptr<State> r(State & origin)
 	state->compressed[29] = (tmp & 2) >> 1;
 	state->compressed[28] = tmp & 1;
 
-	tmp = state->corners_orientation[15] | state->corners_orientation[14];
-	state->corners_orientation[15] = state->corners_orientation[14];
-	state->corners_orientation[14] = !(state->corners_orientation[14] | tmp);
+	tmp = state->corners_orientation[13] | state->corners_orientation[12];
+	state->corners_orientation[13] = state->corners_orientation[12];
+	state->corners_orientation[12] = !(state->corners_orientation[12] | tmp);
 
-	tmp = state->corners_orientation[5] | state->corners_orientation[4];
-	state->corners_orientation[5] = state->corners_orientation[4];
-	state->corners_orientation[4] = !(state->corners_orientation[4] | tmp);
+	tmp = state->corners_orientation[7] | state->corners_orientation[6];
+	state->corners_orientation[7] = state->corners_orientation[6];
+	state->corners_orientation[6] = !(state->corners_orientation[6] | tmp);
 
-	tmp = state->corners_orientation[12] | state->corners_orientation[13];
-	state->corners_orientation[12] = state->corners_orientation[13];
-	state->corners_orientation[13] = !(state->corners_orientation[13] | tmp);
+	tmp = state->corners_orientation[14] | state->corners_orientation[15];
+	state->corners_orientation[14] = state->corners_orientation[15];
+	state->corners_orientation[15] = !(state->corners_orientation[15] | tmp);
 
-	tmp = state->corners_orientation[6] | state->corners_orientation[7];
-	state->corners_orientation[6] = state->corners_orientation[7];
-	state->corners_orientation[7] = !(state->corners_orientation[7] | tmp);
+	tmp = state->corners_orientation[4] | state->corners_orientation[5];
+	state->corners_orientation[4] = state->corners_orientation[5];
+	state->corners_orientation[5] = !(state->corners_orientation[5] | tmp);
 
 	tmp = 0;
 	tmp |= state->corners_orientation[15] << 1;
@@ -655,21 +655,21 @@ std::shared_ptr<State> rr(State & origin)
 	state->compressed[9] = (tmp & 2) >> 1;
 	state->compressed[8] = tmp & 1;
 
-	tmp = state->corners_orientation[15] | state->corners_orientation[14];
-	state->corners_orientation[15] = state->corners_orientation[14];
-	state->corners_orientation[14] = !(state->corners_orientation[14] | tmp);
+	tmp = state->corners_orientation[13] | state->corners_orientation[12];
+	state->corners_orientation[13] = state->corners_orientation[12];
+	state->corners_orientation[12] = !(state->corners_orientation[12] | tmp);
 
-	tmp = state->corners_orientation[5] | state->corners_orientation[4];
-	state->corners_orientation[5] = state->corners_orientation[4];
-	state->corners_orientation[4] = !(state->corners_orientation[4] | tmp);
+	tmp = state->corners_orientation[7] | state->corners_orientation[6];
+	state->corners_orientation[7] = state->corners_orientation[6];
+	state->corners_orientation[6] = !(state->corners_orientation[6] | tmp);
 
-	tmp = state->corners_orientation[12] | state->corners_orientation[13];
-	state->corners_orientation[12] = state->corners_orientation[13];
-	state->corners_orientation[13] = !(state->corners_orientation[13] | tmp);
+	tmp = state->corners_orientation[14] | state->corners_orientation[15];
+	state->corners_orientation[14] = state->corners_orientation[15];
+	state->corners_orientation[15] = !(state->corners_orientation[15] | tmp);
 
-	tmp = state->corners_orientation[6] | state->corners_orientation[7];
-	state->corners_orientation[6] = state->corners_orientation[7];
-	state->corners_orientation[7] = !(state->corners_orientation[7] | tmp);
+	tmp = state->corners_orientation[4] | state->corners_orientation[5];
+	state->corners_orientation[4] = state->corners_orientation[5];
+	state->corners_orientation[5] = !(state->corners_orientation[5] | tmp);
 
 	tmp = 0;
 	tmp |= state->corners_orientation[15] << 1;
@@ -846,21 +846,21 @@ std::shared_ptr<State> l(State & origin)
 	state->compressed[21] = (tmp & 2) >> 1;
 	state->compressed[20] = tmp & 1;
 
-	tmp = state->corners_orientation[1] | state->corners_orientation[0];
-	state->corners_orientation[1] = state->corners_orientation[0];
-	state->corners_orientation[0] = !(state->corners_orientation[0] | tmp);
+	tmp = state->corners_orientation[9] | state->corners_orientation[8];
+	state->corners_orientation[9] = state->corners_orientation[8];
+	state->corners_orientation[8] = !(state->corners_orientation[8] | tmp);
 
-	tmp = state->corners_orientation[11] | state->corners_orientation[10];
-	state->corners_orientation[11] = state->corners_orientation[10];
-	state->corners_orientation[10] = !(state->corners_orientation[10] | tmp);
+	tmp = state->corners_orientation[3] | state->corners_orientation[2];
+	state->corners_orientation[3] = state->corners_orientation[2];
+	state->corners_orientation[2] = !(state->corners_orientation[2] | tmp);
 
-	tmp = state->corners_orientation[8] | state->corners_orientation[9];
-	state->corners_orientation[8] = state->corners_orientation[9];
-	state->corners_orientation[9] = !(state->corners_orientation[9] | tmp);
+	tmp = state->corners_orientation[0] | state->corners_orientation[1];
+	state->corners_orientation[0] = state->corners_orientation[1];
+	state->corners_orientation[1] = !(state->corners_orientation[1] | tmp);
 
-	tmp = state->corners_orientation[2] | state->corners_orientation[3];
-	state->corners_orientation[2] = state->corners_orientation[3];
-	state->corners_orientation[3] = !(state->corners_orientation[3] | tmp);
+	tmp = state->corners_orientation[10] | state->corners_orientation[11];
+	state->corners_orientation[10] = state->corners_orientation[11];
+	state->corners_orientation[11] = !(state->corners_orientation[11] | tmp);
 
 	tmp = 0;
 	tmp |= state->corners_orientation[9] << 1;
@@ -940,21 +940,21 @@ std::shared_ptr<State> lr(State & origin)
 	state->compressed[1] = (tmp & 2) >> 1;
 	state->compressed[0] = tmp & 1;
 
-	tmp = state->corners_orientation[1] | state->corners_orientation[0];
-	state->corners_orientation[1] = state->corners_orientation[0];
-	state->corners_orientation[0] = !(state->corners_orientation[0] | tmp);
+	tmp = state->corners_orientation[9] | state->corners_orientation[8];
+	state->corners_orientation[9] = state->corners_orientation[8];
+	state->corners_orientation[8] = !(state->corners_orientation[8] | tmp);
 
-	tmp = state->corners_orientation[11] | state->corners_orientation[10];
-	state->corners_orientation[11] = state->corners_orientation[10];
-	state->corners_orientation[10] = !(state->corners_orientation[10] | tmp);
+	tmp = state->corners_orientation[3] | state->corners_orientation[2];
+	state->corners_orientation[3] = state->corners_orientation[2];
+	state->corners_orientation[2] = !(state->corners_orientation[2] | tmp);
 
-	tmp = state->corners_orientation[8] | state->corners_orientation[9];
-	state->corners_orientation[8] = state->corners_orientation[9];
-	state->corners_orientation[9] = !(state->corners_orientation[9] | tmp);
+	tmp = state->corners_orientation[0] | state->corners_orientation[1];
+	state->corners_orientation[0] = state->corners_orientation[1];
+	state->corners_orientation[1] = !(state->corners_orientation[1] | tmp);
 
-	tmp = state->corners_orientation[2] | state->corners_orientation[3];
-	state->corners_orientation[2] = state->corners_orientation[3];
-	state->corners_orientation[3] = !(state->corners_orientation[3] | tmp);
+	tmp = state->corners_orientation[10] | state->corners_orientation[11];
+	state->corners_orientation[10] = state->corners_orientation[11];
+	state->corners_orientation[11] = !(state->corners_orientation[11] | tmp);
 
 	tmp = 0;
 	tmp |= state->corners_orientation[9] << 1;
@@ -1131,21 +1131,21 @@ std::shared_ptr<State> f(State & origin)
 	state->compressed[25] = (tmp & 2) >> 1;
 	state->compressed[24] = tmp & 1;
 
-	tmp = state->corners_orientation[13] | state->corners_orientation[12];
-	state->corners_orientation[13] = state->corners_orientation[12];
-	state->corners_orientation[12] = !(state->corners_orientation[12] | tmp);
+	tmp = state->corners_orientation[11] | state->corners_orientation[10];
+	state->corners_orientation[11] = state->corners_orientation[10];
+	state->corners_orientation[10] = !(state->corners_orientation[10] | tmp);
 
-	tmp = state->corners_orientation[3] | state->corners_orientation[2];
-	state->corners_orientation[3] = state->corners_orientation[2];
-	state->corners_orientation[2] = !(state->corners_orientation[2] | tmp);
+	tmp = state->corners_orientation[5] | state->corners_orientation[4];
+	state->corners_orientation[5] = state->corners_orientation[4];
+	state->corners_orientation[4] = !(state->corners_orientation[4] | tmp);
 
-	tmp = state->corners_orientation[10] | state->corners_orientation[11];
-	state->corners_orientation[10] = state->corners_orientation[11];
-	state->corners_orientation[11] = !(state->corners_orientation[11] | tmp);
+	tmp = state->corners_orientation[12] | state->corners_orientation[13];
+	state->corners_orientation[12] = state->corners_orientation[13];
+	state->corners_orientation[13] = !(state->corners_orientation[13] | tmp);
 
-	tmp = state->corners_orientation[4] | state->corners_orientation[5];
-	state->corners_orientation[4] = state->corners_orientation[5];
-	state->corners_orientation[5] = !(state->corners_orientation[5] | tmp);
+	tmp = state->corners_orientation[2] | state->corners_orientation[3];
+	state->corners_orientation[2] = state->corners_orientation[3];
+	state->corners_orientation[3] = !(state->corners_orientation[3] | tmp);
 
 	state->edges_orientation[9] = !(state->edges_orientation[9]);
 	state->edges_orientation[5] = !(state->edges_orientation[5]);
@@ -1230,21 +1230,21 @@ std::shared_ptr<State> fr(State & origin)
 	state->compressed[5] = (tmp & 2) >> 1;
 	state->compressed[4] = tmp & 1;
 
-	tmp = state->corners_orientation[13] | state->corners_orientation[12];
-	state->corners_orientation[13] = state->corners_orientation[12];
-	state->corners_orientation[12] = !(state->corners_orientation[12] | tmp);
+	tmp = state->corners_orientation[11] | state->corners_orientation[10];
+	state->corners_orientation[11] = state->corners_orientation[10];
+	state->corners_orientation[10] = !(state->corners_orientation[10] | tmp);
 
-	tmp = state->corners_orientation[3] | state->corners_orientation[2];
-	state->corners_orientation[3] = state->corners_orientation[2];
-	state->corners_orientation[2] = !(state->corners_orientation[2] | tmp);
+	tmp = state->corners_orientation[5] | state->corners_orientation[4];
+	state->corners_orientation[5] = state->corners_orientation[4];
+	state->corners_orientation[4] = !(state->corners_orientation[4] | tmp);
 
-	tmp = state->corners_orientation[10] | state->corners_orientation[11];
-	state->corners_orientation[10] = state->corners_orientation[11];
-	state->corners_orientation[11] = !(state->corners_orientation[11] | tmp);
+	tmp = state->corners_orientation[12] | state->corners_orientation[13];
+	state->corners_orientation[12] = state->corners_orientation[13];
+	state->corners_orientation[13] = !(state->corners_orientation[13] | tmp);
 
-	tmp = state->corners_orientation[4] | state->corners_orientation[5];
-	state->corners_orientation[4] = state->corners_orientation[5];
-	state->corners_orientation[5] = !(state->corners_orientation[5] | tmp);
+	tmp = state->corners_orientation[2] | state->corners_orientation[3];
+	state->corners_orientation[2] = state->corners_orientation[3];
+	state->corners_orientation[3] = !(state->corners_orientation[3] | tmp);
 
 	state->edges_orientation[9] = !(state->edges_orientation[9]);
 	state->edges_orientation[5] = !(state->edges_orientation[5]);
@@ -1426,21 +1426,21 @@ std::shared_ptr<State> b(State & origin)
 	state->compressed[17] = (tmp & 2) >> 1;
 	state->compressed[16] = tmp & 1;
 
-	tmp = state->corners_orientation[9] | state->corners_orientation[8];
-	state->corners_orientation[9] = state->corners_orientation[8];
-	state->corners_orientation[8] = !(state->corners_orientation[8] | tmp);
+	tmp = state->corners_orientation[15] | state->corners_orientation[14];
+	state->corners_orientation[15] = state->corners_orientation[14];
+	state->corners_orientation[14] = !(state->corners_orientation[14] | tmp);
 
-	tmp = state->corners_orientation[7] | state->corners_orientation[6];
-	state->corners_orientation[7] = state->corners_orientation[6];
-	state->corners_orientation[6] = !(state->corners_orientation[6] | tmp);
+	tmp = state->corners_orientation[1] | state->corners_orientation[0];
+	state->corners_orientation[1] = state->corners_orientation[0];
+	state->corners_orientation[0] = !(state->corners_orientation[0] | tmp);
 
-	tmp = state->corners_orientation[14] | state->corners_orientation[15];
-	state->corners_orientation[14] = state->corners_orientation[15];
-	state->corners_orientation[15] = !(state->corners_orientation[15] | tmp);
+	tmp = state->corners_orientation[8] | state->corners_orientation[9];
+	state->corners_orientation[8] = state->corners_orientation[9];
+	state->corners_orientation[9] = !(state->corners_orientation[9] | tmp);
 
-	tmp = state->corners_orientation[0] | state->corners_orientation[1];
-	state->corners_orientation[0] = state->corners_orientation[1];
-	state->corners_orientation[1] = !(state->corners_orientation[1] | tmp);
+	tmp = state->corners_orientation[6] | state->corners_orientation[7];
+	state->corners_orientation[6] = state->corners_orientation[7];
+	state->corners_orientation[7] = !(state->corners_orientation[7] | tmp);
 
 	state->edges_orientation[11] = !(state->edges_orientation[11]);
 	state->edges_orientation[3] = !(state->edges_orientation[3]);
@@ -1525,21 +1525,21 @@ std::shared_ptr<State> br(State & origin)
 	state->compressed[13] = (tmp & 2) >> 1;
 	state->compressed[12] = tmp & 1;
 
-	tmp = state->corners_orientation[9] | state->corners_orientation[8];
-	state->corners_orientation[9] = state->corners_orientation[8];
-	state->corners_orientation[8] = !(state->corners_orientation[8] | tmp);
+	tmp = state->corners_orientation[15] | state->corners_orientation[14];
+	state->corners_orientation[15] = state->corners_orientation[14];
+	state->corners_orientation[14] = !(state->corners_orientation[14] | tmp);
 
-	tmp = state->corners_orientation[7] | state->corners_orientation[6];
-	state->corners_orientation[7] = state->corners_orientation[6];
-	state->corners_orientation[6] = !(state->corners_orientation[6] | tmp);
+	tmp = state->corners_orientation[1] | state->corners_orientation[0];
+	state->corners_orientation[1] = state->corners_orientation[0];
+	state->corners_orientation[0] = !(state->corners_orientation[0] | tmp);
 
-	tmp = state->corners_orientation[14] | state->corners_orientation[15];
-	state->corners_orientation[14] = state->corners_orientation[15];
-	state->corners_orientation[15] = !(state->corners_orientation[15] | tmp);
+	tmp = state->corners_orientation[8] | state->corners_orientation[9];
+	state->corners_orientation[8] = state->corners_orientation[9];
+	state->corners_orientation[9] = !(state->corners_orientation[9] | tmp);
 
-	tmp = state->corners_orientation[0] | state->corners_orientation[1];
-	state->corners_orientation[0] = state->corners_orientation[1];
-	state->corners_orientation[1] = !(state->corners_orientation[1] | tmp);
+	tmp = state->corners_orientation[6] | state->corners_orientation[7];
+	state->corners_orientation[6] = state->corners_orientation[7];
+	state->corners_orientation[7] = !(state->corners_orientation[7] | tmp);
 
 	state->edges_orientation[11] = !(state->edges_orientation[11]);
 	state->edges_orientation[3] = !(state->edges_orientation[3]);

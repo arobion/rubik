@@ -176,6 +176,18 @@ void Phase1::generate_slice_map()
 			}
 		}
 	}
+	/*
+	std::unordered_map<int, char> resume_map;
+	for (auto elem : slice_map)
+	{
+		if (resume_map.find(slice_map.find(elem)) == resume_map.end())
+			resume_map[slice_map[elem]] = 0;
+		else
+			resume_map[slice_map[elem]] += 1;
+	}
+	for (auto elem : resume_map)
+		std::cout << elem << resume_map[elem] << std::endl;
+		*/
 }
 
 float Phase1::heuristic(std::shared_ptr<State> state)

@@ -22,6 +22,7 @@ struct State
 	float					heuristic_dummy();
 
 	char				g;
+	static int			tot;
 	Instruction			instruction;
 	std::bitset<72>		compressed;
     std::bitset<16>     corners_orientation;

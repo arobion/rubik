@@ -1,18 +1,19 @@
 #include "Phase1.hpp"
 #include "move.hpp"
 #include <iostream>
+#include <algorithm>
 
 Phase1::Phase1(std::shared_ptr<State> start) :
 	start(start)
 {
 	generate_co_map();
 	generate_eo_map();
-	//generate_slice_map();
+	generate_slice_map();
 
 	std::cout << "Generate phase 1 maps\n";
 	std::cout << "corners: " << co_map.size() << std::endl;
 	std::cout << "edges: " << eo_map.size() << std::endl;
-	//std::cout << "slices: " << slice_map.size() << std::endl;
+	std::cout << "slices: " << slice_map.size() << std::endl;
 	std::cout << std::endl;
 
 	bound = heuristic(start);
@@ -75,9 +76,111 @@ void Phase1::generate_eo_map()
 	}
 }
 
+std::bitset<8>	Phase1::get_edges_around_slice(std::shared_ptr<State> curr, char pos1, char pos2)
+{
+	std::bitset<8> ret;
+
+	ret[7] = curr->compressed[((11 - pos1) * 4) + 3];
+	ret[6] = curr->compressed[((11 - pos1) * 4) + 2];
+	ret[5] = curr->compressed[((11 - pos1) * 4) + 1];
+	ret[4] = curr->compressed[((11 - pos1) * 4)];
+
+	
+	ret[3] = curr->compressed[((11 - pos2) * 4) + 3];
+	ret[2] = curr->compressed[((11 - pos2) * 4) + 2];
+	ret[1] = curr->compressed[((11 - pos2) * 4) + 1];
+	ret[0] = curr->compressed[((11 - pos2) * 4)];
+
+	return ret;
+}
+
+void	Phase1::add_new_entry_permuted(int to_perm[4], std::list<std::shared_ptr<State>> queue)
+{
+	auto s1 = std::make_shared<State>();
+	s1->compressed[31] = to_perm[0] >> 3;
+	s1->compressed[30] = (to_perm[0] & 4) >> 2;
+	s1->compressed[29] = (to_perm[0] & 2) >> 1;
+	s1->compressed[28] = (to_perm[0] & 1);
+
+	s1->compressed[27] = to_perm[1] >> 3;
+	s1->compressed[26] = (to_perm[1] & 4) >> 2;
+	s1->compressed[25] = (to_perm[1] & 2) >> 1;
+	s1->compressed[24] = (to_perm[1] & 1);
+
+	s1->compressed[23] = to_perm[2] >> 3;
+	s1->compressed[22] = (to_perm[2] & 4) >> 2;
+	s1->compressed[21] = (to_perm[2] & 2) >> 1;
+	s1->compressed[20] = (to_perm[2] & 1);
+
+	s1->compressed[19] = to_perm[3] >> 3;
+	s1->compressed[18] = (to_perm[3] & 4) >> 2;
+	s1->compressed[17] = (to_perm[3] & 2) >> 1;
+	s1->compressed[16] = (to_perm[3] & 1);
+	slice_map[s1->get_UD_slice_permutation()] = s1->g;
+	queue.push_back(s1);
+}
+
+void Phase1::generate_slice_map()
+{
+	auto current = solved;
+	std::list<std::shared_ptr<State>> queue;
+
+	slice_map[current->get_UD_slice_permutation()] = current->g;
+	queue.push_back(current);
+	
+	int to_perm[] = {4, 5, 6, 7};
+	while (std::next_permutation(to_perm, to_perm + 4))
+		add_new_entry_permuted(to_perm, queue);
+
+	std::unordered_set<std::bitset<8>> set1;
+	std::unordered_set<std::bitset<8>> set2;
+	std::unordered_set<std::bitset<8>> set3;
+	std::unordered_set<std::bitset<8>> set4;
+	
+	while (queue.size())
+	{
+		current = queue.front();
+		queue.pop_front();
+		auto nexts = get_nexts(current);
+		for (auto next : nexts)
+		{
+			if (slice_map.find(next->get_UD_slice_permutation()) == slice_map.end())
+			{
+				slice_map[next->get_UD_slice_permutation()] = next->g;
+				queue.push_back(next);
+
+				set1.insert(get_edges_around_slice(next, 2, 10));
+				set2.insert(get_edges_around_slice(next, 10, 2));
+				set3.insert(get_edges_around_slice(next, 2, 11));
+				set4.insert(get_edges_around_slice(next, 11, 2));
+			}
+			else if (set1.find(get_edges_around_slice(next, 2, 10)) == set1.end())
+			{
+				queue.push_back(next);
+				set1.insert(get_edges_around_slice(next, 2, 10));
+			}
+			else if (set2.find(get_edges_around_slice(next, 10, 2)) == set2.end())
+			{
+				queue.push_back(next);
+				set2.insert(get_edges_around_slice(next, 10, 2));
+			}
+			else if (set3.find(get_edges_around_slice(next, 2, 11)) == set3.end())
+			{
+				queue.push_back(next);
+				set3.insert(get_edges_around_slice(next, 2, 11));
+			}
+			else if (set4.find(get_edges_around_slice(next, 11, 2)) == set4.end())
+			{
+				queue.push_back(next);
+				set4.insert(get_edges_around_slice(next, 11, 2));
+			}
+		}
+	}
+}
+
 float Phase1::heuristic(std::shared_ptr<State> state)
 {
-	return std::max(co_map[state->corners_orientation], eo_map[state->edges_orientation]);
+	return std::max(std::max(co_map[state->corners_orientation], eo_map[state->edges_orientation]), slice_map[state->get_UD_slice_permutation()]);
 }
 
 
@@ -94,6 +197,7 @@ void Phase1::run()
 			break;
 		}
 		bound = tmp;
+		std::cout << "update bound: " << bound << std::endl;
 	}
 }
 

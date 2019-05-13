@@ -22,10 +22,11 @@ void Phase2::run()
 			break;
 		}
 		bound = tmp;
+		std::cout << "update bound: " << bound << std::endl;
 	}
 }
 
-char Phase2::search()
+float Phase2::search()
 {
 	auto current = path.back();
 	float h = heuristic(current);
@@ -34,7 +35,7 @@ char Phase2::search()
 		return f;
 	if (h == 0)
 		return 0;
-	char min = BOUND_INF;
+	float min = BOUND_INF;
 
 	for (auto next : get_nexts(current))
 	{

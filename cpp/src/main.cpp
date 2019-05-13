@@ -23,7 +23,7 @@ map_t bfs(std::shared_ptr<State> start)
 	{
 		auto current = queue.front();
 		queue.pop_front();
-		if (current->g < 7)
+		if (current->g < 9)
 		{
 			for (auto next : current->get_nexts_2())
 			{
@@ -38,47 +38,43 @@ map_t bfs(std::shared_ptr<State> start)
 	return map;
 }
 
-int main(/*int argc, char **argv*/)
+void solve(std::shared_ptr<State> s1)
 {
-	/* python wrap
+	std::cout << "**************************\nPhase 1\n**************************\n";
+	Phase1 phase1(s1);
+	phase1.run();
+	for (auto state : phase1.path)
+		std::cout << *state;
+
+	std::cout << "**************************\nPhase 2\n**************************\n";
+	auto s2 = phase1.path.back();
+	s2->g = 0;
+	s2->instruction = EMPTY;
+
+	Phase2 phase2(s2);
+	phase2.run();
+	for (auto state : phase2.path)
+		std::cout << *state;
+}
+
+int main(int argc, char **argv)
+{
 	if (argc == 41)
 	{
 		auto s1 = std::make_shared<State>(argv);
-		std::cout << *s1 << std::endl;
+		solve(s1);
 	}
 	else
 	{
 		auto s1 = std::make_shared<State>();
 		std::cout << *s1 << std::endl;
 	}
-	*/
 
-	/* bfs
+	/*
+	auto s1 = std::make_shared<State>();
 	auto map = bfs(s1);
 	std::cout << map.size() << std::endl;
 	std::cout << *s1 << std::endl;
 	*/
-
-	std::cout << "**************************\nPhase 1\n**************************\n";
-	auto s1 = std::make_shared<State>();
-	auto s2 = move(*s1, R);
-	auto s3 = move(*s2, U);
-	s3->g = 0;
-	s3->instruction = EMPTY;
-
-	Phase1 phase1(s3);
-	phase1.run();
-	for (auto state : phase1.path)
-		std::cout << *state;
-
-	std::cout << "**************************\nPhase 2\n**************************\n";
-	auto s4 = phase1.path.back();
-	s4->g = 0;
-	s4->instruction = EMPTY;
-
-	Phase2 phase2(s4);
-	phase2.run();
-	for (auto state : phase2.path)
-		std::cout << *state;
 }
 

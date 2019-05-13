@@ -97,7 +97,7 @@ void Phase1::run()
 	}
 }
 
-char Phase1::search()
+float Phase1::search()
 {
 	auto current = path.back();
 	float h = heuristic(current);
@@ -106,7 +106,7 @@ char Phase1::search()
 		return f;
 	if (h == 0)
 		return 0;
-	char min = BOUND_INF;
+	float min = BOUND_INF;
 
 	for (auto next : get_nexts(current))
 	{

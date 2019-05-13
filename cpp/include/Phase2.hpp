@@ -5,7 +5,7 @@
 #include <limits>
 #include <unordered_set>
 
-#define BOUND_INF std::numeric_limits<char>::max()
+#define BOUND_INF std::numeric_limits<float>::max()
 
 class Phase2
 {
@@ -39,7 +39,7 @@ private:
 		{EMPTY, {U, UR, U2, D, DR, D2, L2, R2, F2, B2}}
 	};
 
-	char search();
+	float search();
 	float heuristic(std::shared_ptr<State> state);
 	std::vector<std::shared_ptr<State>> get_nexts(std::shared_ptr<State>);
 };

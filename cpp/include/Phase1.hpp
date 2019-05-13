@@ -5,7 +5,7 @@
 #include <limits>
 #include <unordered_set>
 
-#define BOUND_INF std::numeric_limits<char>::max()
+#define BOUND_INF std::numeric_limits<float>::max()
 
 class Phase1
 {
@@ -57,5 +57,5 @@ private:
 	void generate_eo_map();
 	//void generate_slice_map();
 	float heuristic(std::shared_ptr<State> state);
-	char search();
+	float search();
 };

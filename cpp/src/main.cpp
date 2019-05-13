@@ -42,12 +42,13 @@ void solve(std::shared_ptr<State> s1)
 {
 	std::cout << "**************************\nPhase 1\n**************************\n";
 	Phase1 phase1(s1);
+	/*
 	phase1.run();
 	for (auto state : phase1.path)
 		std::cout << *state;
 	std::cout << s1->tot << std::endl;
 
-	/*
+	
 	std::cout << "**************************\nPhase 2\n**************************\n";
 	auto s2 = phase1.path.back();
 	s2->g = 0;
@@ -57,7 +58,25 @@ void solve(std::shared_ptr<State> s1)
 	phase2.run();
 	for (auto state : phase2.path)
 		std::cout << *state;
-		*/
+	std::cout << "nb moves: " << phase1.path.size() + phase2.path.size() - 2 << std::endl;
+	std::cout << "solution: ";
+	int i = 0;
+	for (auto state : phase1.path)
+	{
+		if(i != 0)
+			std::cout << state->instruction << " ";
+		i++;
+	}
+	i = 0;
+	for (auto state : phase2.path)
+	{
+		if(i != 0)
+			std::cout << state->instruction << " ";
+		i++;
+	}
+	std::cout << std::endl;
+	*/
+
 }
 
 int main(int argc, char **argv)
@@ -73,11 +92,5 @@ int main(int argc, char **argv)
 		std::cout << *s1 << std::endl;
 	}
 
-	/*
-	auto s1 = std::make_shared<State>();
-	auto map = bfs(s1);
-	std::cout << map.size() << std::endl;
-	std::cout << *s1 << std::endl;
-	*/
 }
 

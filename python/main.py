@@ -1,6 +1,7 @@
 import argparse
 import time
 import subprocess
+import kociemba
 
 from rubik_cubes import Rubik
 from rubik_moves import move, move_by_notation, move_translator
@@ -30,7 +31,7 @@ def launch_cpp(rubik):
     for i in range(1, 13):
         eo += str(rubik.edges[i].orientation) + " "
 
-    subprocess.run(["../cpp/rubik {}{}{}{}".format(corners, edges, co, eo)], shell=True)
+    subprocess.call(["../cpp/rubik {}{}{}{}".format(corners, edges, co, eo)], shell=True)
 
 
 def null_h(obj):
@@ -47,7 +48,10 @@ def main():
         print(e)
         return
     rub = rubik_state(rubik, 0, null_h)
+#    kociemba.solve('FLBUULFFLFDURRDBUBUUDDFFBRDDBLRDRFLLRLRULFUDRRBDBBBUFL')
+
     launch_cpp(rub)
+    print("scramble: {}".format(args.scramble))
 
 #    phase1 = rubik_state(rubik, 0, rubik.heuristic_h1)
 #    ida1 = IDA(phase1, rubik.heuristic_h1, get_nexts_1, {}) # empty pruning table

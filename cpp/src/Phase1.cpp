@@ -153,17 +153,6 @@ void Phase1::generate_slice_map()
 	slice_map[current->get_UD_slice_permutation()] = current->g;
 	queue.push_back(current);
 	
-	/*
-	int to_perm[] = {4, 5, 6, 7};
-	while (std::next_permutation(to_perm, to_perm + 4))
-		add_new_entry_permuted(to_perm, queue);
-
-	std::unordered_set<std::bitset<8>> set1;
-	std::unordered_set<std::bitset<8>> set2;
-	std::unordered_set<std::bitset<8>> set3;
-	std::unordered_set<std::bitset<8>> set4;
-	*/
-	
 	while (queue.size())
 	{
 		current = queue.front();
@@ -175,49 +164,9 @@ void Phase1::generate_slice_map()
 			{
 				slice_map[next->get_UD_slice_permutation()] = next->g;
 				queue.push_back(next);
-/*
-				set1.insert(get_edges_around_slice(next, 2, 10));
-				set2.insert(get_edges_around_slice(next, 10, 2));
-				set3.insert(get_edges_around_slice(next, 2, 11));
-				set4.insert(get_edges_around_slice(next, 11, 2));
-				*/
 			}
-			/*
-			else if (set1.find(get_edges_around_slice(next, 2, 10)) == set1.end())
-			{
-				queue.push_back(next);
-				set1.insert(get_edges_around_slice(next, 2, 10));
-			}
-			else if (set2.find(get_edges_around_slice(next, 10, 2)) == set2.end())
-			{
-				queue.push_back(next);
-				set2.insert(get_edges_around_slice(next, 10, 2));
-			}
-			else if (set3.find(get_edges_around_slice(next, 2, 11)) == set3.end())
-			{
-				queue.push_back(next);
-				set3.insert(get_edges_around_slice(next, 2, 11));
-			}
-			else if (set4.find(get_edges_around_slice(next, 11, 2)) == set4.end())
-			{
-				queue.push_back(next);
-				set4.insert(get_edges_around_slice(next, 11, 2));
-			}
-			*/
 		}
 	}
-	/*
-	std::unordered_map<int, char> resume_map;
-	for (auto elem : slice_map)
-	{
-		if (resume_map.find(slice_map.find(elem)) == resume_map.end())
-			resume_map[slice_map[elem]] = 0;
-		else
-			resume_map[slice_map[elem]] += 1;
-	}
-	for (auto elem : resume_map)
-		std::cout << elem << resume_map[elem] << std::endl;
-		*/
 }
 
 float Phase1::heuristic(std::shared_ptr<State> state)

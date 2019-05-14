@@ -325,12 +325,12 @@ std::shared_ptr<State> d(State & origin)
 	state->corners_orientation[0] = tmp & 1;
 
 	tmp = 0;
-	tmp = state->edges_orientation[7];
+	tmp = state->edges_orientation[3];
 
-	state->edges_orientation[7] = state->edges_orientation[6];
-	state->edges_orientation[6] = state->edges_orientation[5];
-	state->edges_orientation[5] = state->edges_orientation[4];
-	state->edges_orientation[4] = tmp;
+	state->edges_orientation[3] = state->edges_orientation[2];
+	state->edges_orientation[2] = state->edges_orientation[1];
+	state->edges_orientation[1] = state->edges_orientation[0];
+	state->edges_orientation[0] = tmp;
 
 	return state;
 }
@@ -403,12 +403,12 @@ std::shared_ptr<State> dr(State & origin)
 	state->corners_orientation[4] = tmp & 1;
 
 	tmp = 0;
-	tmp = state->edges_orientation[7];
+	tmp = state->edges_orientation[3];
 
-	state->edges_orientation[7] = state->edges_orientation[4];
-	state->edges_orientation[4] = state->edges_orientation[5];
-	state->edges_orientation[5] = state->edges_orientation[6];
-	state->edges_orientation[6] = tmp;
+	state->edges_orientation[3] = state->edges_orientation[0];
+	state->edges_orientation[0] = state->edges_orientation[1];
+	state->edges_orientation[1] = state->edges_orientation[2];
+	state->edges_orientation[2] = tmp;
 
 	return state;
 }

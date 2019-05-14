@@ -76,6 +76,31 @@ void Phase1::generate_eo_map()
 	}
 }
 
+/*
+void Phase1::generate_eo_map()
+{
+	auto current = solved;
+	std::list<std::shared_ptr<State>> queue;
+
+	eo_map[current->get_full_orientation()] = current->g;
+	queue.push_back(current);
+
+	while (queue.size())
+	{
+		current = queue.front();
+		queue.pop_front();
+		auto nexts = get_nexts(current);
+		for (auto next : nexts)
+		{
+			if (eo_map.find(next->get_full_orientation()) == eo_map.end())
+			{
+				eo_map[next->get_full_orientation()] = next->g;
+				queue.push_back(next);
+			}
+		}
+	}
+}
+*/
 std::bitset<8>	Phase1::get_edges_around_slice(std::shared_ptr<State> curr, char pos1, char pos2)
 {
 	std::bitset<8> ret;
@@ -128,6 +153,7 @@ void Phase1::generate_slice_map()
 	slice_map[current->get_UD_slice_permutation()] = current->g;
 	queue.push_back(current);
 	
+	/*
 	int to_perm[] = {4, 5, 6, 7};
 	while (std::next_permutation(to_perm, to_perm + 4))
 		add_new_entry_permuted(to_perm, queue);
@@ -136,6 +162,7 @@ void Phase1::generate_slice_map()
 	std::unordered_set<std::bitset<8>> set2;
 	std::unordered_set<std::bitset<8>> set3;
 	std::unordered_set<std::bitset<8>> set4;
+	*/
 	
 	while (queue.size())
 	{
@@ -148,12 +175,14 @@ void Phase1::generate_slice_map()
 			{
 				slice_map[next->get_UD_slice_permutation()] = next->g;
 				queue.push_back(next);
-
+/*
 				set1.insert(get_edges_around_slice(next, 2, 10));
 				set2.insert(get_edges_around_slice(next, 10, 2));
 				set3.insert(get_edges_around_slice(next, 2, 11));
 				set4.insert(get_edges_around_slice(next, 11, 2));
+				*/
 			}
+			/*
 			else if (set1.find(get_edges_around_slice(next, 2, 10)) == set1.end())
 			{
 				queue.push_back(next);
@@ -174,6 +203,7 @@ void Phase1::generate_slice_map()
 				queue.push_back(next);
 				set4.insert(get_edges_around_slice(next, 11, 2));
 			}
+			*/
 		}
 	}
 	/*

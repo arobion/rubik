@@ -3,10 +3,42 @@
 #include <iostream>
 
 Phase2::Phase2(std::shared_ptr<State> start) :
-	start(start),
-	bound(heuristic(start))
+	start(start)
 {
+	generate_bfs_map();
+	std::cout << "Generate phase 2 map" << std::endl;
+	std::cout << "bfs_map: " << bfs_map.size() << std::endl;
+	std::cout << std::endl;
+
+
+	this->bound = map_heuristic(start);
 	path.push_back(start);
+}
+
+void Phase2::generate_bfs_map()
+{
+	auto dep = std::make_shared<State>();
+	bfs_map[dep->compressed] = dep->g;
+
+	std::list<std::shared_ptr<State>> queue;
+	queue.push_back(dep);
+
+	while (queue.size())
+	{
+		auto current = queue.front();
+		queue.pop_front();
+		if (current->g < 7)
+		{
+			for (auto next : current->get_nexts_2())
+			{
+				if (bfs_map.find(next->compressed) == bfs_map.end())
+				{
+					bfs_map[next->compressed] = next->g;
+					queue.push_back(next);
+				}
+			}
+		}
+	}
 }
 
 void Phase2::run()
@@ -26,10 +58,39 @@ void Phase2::run()
 	}
 }
 
+void Phase2::run_from_pruning()
+{
+	auto dep = path.back();
+	auto cost = bfs_map[dep->compressed];
+	search_from_pruning(cost, dep);
+
+}
+
+void Phase2::search_from_pruning(char cost, std::shared_ptr<State> current)
+{
+	if (cost == 0)
+		return ;
+	char tmp_cost = cost;
+	auto tmp_state = current;
+	for (auto next : get_nexts(current))
+	{
+		if (bfs_map.find(next->compressed) != bfs_map.end())
+		{
+			if (bfs_map[next->compressed] < tmp_cost)
+			{
+				tmp_cost = bfs_map[next->compressed];
+				tmp_state = next;
+			}
+		}
+	}
+	path.push_back(tmp_state);
+	search_from_pruning(tmp_cost, tmp_state);
+}
+
 float Phase2::search()
 {
 	auto current = path.back();
-	float h = heuristic(current);
+	float h = map_heuristic(current);
 	float f = float(current->g) + h;
 	if (f > bound)
 		return f;
@@ -58,6 +119,15 @@ float Phase2::search()
 	}
 	return min;
 }
+
+float Phase2::map_heuristic(std::shared_ptr<State> state)
+{
+	if (bfs_map.find(state->compressed) == bfs_map.end())
+		return heuristic(state);
+	return 0;
+	return bfs_map[state->compressed];
+}
+
 
 float Phase2::heuristic(std::shared_ptr<State> state)
 {
@@ -91,6 +161,7 @@ float Phase2::heuristic(std::shared_ptr<State> state)
 	}
 	return std::max(sum_edges / 4, sum_corners / 4);
 }
+
 
 std::vector<std::shared_ptr<State>> Phase2::get_nexts(std::shared_ptr<State> current)
 {

@@ -1,11 +1,20 @@
 import argparse
 import random
 
+def get_next(set_moves, last_move):
+    new_move = random.choice(set_moves)
+    while (new_move[0] == last_move[0]):
+        new_move = random.choice(set_moves)
+    return new_move
+
 
 def gen_scramble(set_moves, size):
     ret = "\""
+    last_move = "E"
     for i in range(size):
-        ret += random.choice(set_moves) + " "
+        move = get_next(set_moves, last_move);
+        ret += move + " "
+        last_move = move
     print(ret[:-1] + "\"")
 
 def main():

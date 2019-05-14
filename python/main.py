@@ -30,6 +30,7 @@ def launch_cpp(rubik):
     for i in range(1, 13):
         eo += str(rubik.edges[i].orientation) + " "
 
+#    print("../cpp/rubik {}{}{}{}".format(corners, edges, co, eo))
     subprocess.call(["../cpp/rubik {}{}{}{}".format(corners, edges, co, eo)], shell=True)
 
 

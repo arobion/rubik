@@ -15,6 +15,7 @@ public:
 	std::list<std::shared_ptr<State>> path;
 
 	void run();
+	void run_from_pruning();
 
 private:
 	std::shared_ptr<State> start;
@@ -39,7 +40,11 @@ private:
 		{EMPTY, {U, UR, U2, D, DR, D2, L2, R2, F2, B2}}
 	};
 
-	float search();
-	float heuristic(std::shared_ptr<State> state);
+	std::unordered_map<std::bitset<72>, char> bfs_map;
+	void	generate_bfs_map();
+	float 	search();
+	void	search_from_pruning(char, std::shared_ptr<State>);
+	float 	heuristic(std::shared_ptr<State> state);
+	float 	map_heuristic(std::shared_ptr<State> state);
 	std::vector<std::shared_ptr<State>> get_nexts(std::shared_ptr<State>);
 };

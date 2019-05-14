@@ -56,8 +56,11 @@ void solve(std::shared_ptr<State> s1)
 
 	Phase2 phase2(s2);
 	phase2.run();
+	phase2.run_from_pruning();
+	
 	for (auto state : phase2.path)
 		std::cout << *state;
+		
 	std::cout << "nb moves: " << phase1.path.size() + phase2.path.size() - 2 << std::endl;
 	std::cout << "solution: ";
 	int i = 0;

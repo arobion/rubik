@@ -217,6 +217,17 @@ std::bitset<100> State::get_bitset()
 	return ret;
 }
 
+std::bitset<28>	State::get_full_orientation()
+{
+	std::bitset<28> ret;
+	for (auto i = 0; i < 16; ++i)
+		ret[i] = corners_orientation[i];
+	for (auto i = 0; i < 12; ++i)
+		ret[i+16] = edges_orientation[i];
+	return ret;
+
+}
+
 float State::heuristic_dummy()
 {
 	// compare edges
@@ -254,26 +265,74 @@ std::bitset<16>		State::get_UD_slice_permutation(void)
 {
 	
 	std::bitset<16> ret;
+	char	index = 0;
 
-	ret[15] = this->compressed[31];
-	ret[14] = this->compressed[30];
-	ret[13] = this->compressed[29];
-	ret[12] = this->compressed[28];
-
-	ret[11] = this->compressed[27];
-	ret[10] = this->compressed[26];
-	ret[9] = this->compressed[25];
-	ret[8] = this->compressed[24];
-
-	ret[7] = this->compressed[23];
-	ret[6] = this->compressed[22];
-	ret[5] = this->compressed[21];
-	ret[4] = this->compressed[20];
-
-	ret[3] = this->compressed[19];
-	ret[2] = this->compressed[18];
-	ret[1] = this->compressed[17];
-	ret[0] = this->compressed[16];
+	if (this->compressed[46] == 1) // pos 0
+		index++;
+	if (this->compressed[42] == 1) // pos 1
+	{
+		ret[(3 - index) * 4] = 1;
+		index++;
+	}
+	if (this->compressed[38] == 1) // pos 2
+	{
+		ret[(3 - index) *4 + 1] = 1;
+		index++;
+	}
+	if (this->compressed[34] == 1) // pos 3
+	{
+		ret[(3 - index) *4 + 1] = 1;
+		ret[(3 - index) *4] = 1;
+		index++;
+	}
+	if (this->compressed[30] == 1) // pos 4
+	{
+		ret[(3 - index) *4 + 2] = 1;
+		index++;
+	}
+	if (this->compressed[26] == 1) // pos 5
+	{
+		ret[(3 - index) *4 + 2] = 1;
+		ret[(3 - index) *4] = 1;
+		index++;
+	}
+	if (this->compressed[22] == 1) // pos 6
+	{
+		ret[(3 - index) *4 + 2] = 1;
+		ret[(3 - index) *4 + 1] = 1;
+		index++;
+	}
+	if (this->compressed[18] == 1) // pos 7
+	{
+		ret[(3 - index) *4 + 1] = 1;
+		ret[(3 - index) *4 + 2] = 1;
+		ret[(3 - index) *4 + 3] = 1;
+		index++;
+	}
+	if (this->compressed[14] == 1) // pos 8
+	{
+		ret[(3 - index) *4 + 3] = 1;
+		index++;
+	}
+	if (this->compressed[10] == 1) // pos 9
+	{
+		ret[(3 - index) *4 + 3] = 1;
+		ret[(3 - index) *4] = 1;
+		index++;
+	}
+	if (this->compressed[6] == 1) // pos 10
+	{
+		ret[(3 - index) *4 + 3] = 1;
+		ret[(3 - index) *4 + 1] = 1;
+		index++;
+	}
+	if (this->compressed[2] == 1) // pos 11
+	{
+		ret[(3 - index) *4 + 3] = 1;
+		ret[(3 - index) *4 + 1] = 1;
+		ret[(3 - index) *4] = 1;
+		index++;
+	}
 
 	return ret;
 }

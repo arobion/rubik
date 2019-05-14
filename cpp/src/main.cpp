@@ -42,7 +42,7 @@ void solve(std::shared_ptr<State> s1)
 {
 	std::cout << "**************************\nPhase 1\n**************************\n";
 	Phase1 phase1(s1);
-	/*
+	
 	phase1.run();
 	for (auto state : phase1.path)
 		std::cout << *state;
@@ -75,7 +75,7 @@ void solve(std::shared_ptr<State> s1)
 		i++;
 	}
 	std::cout << std::endl;
-	*/
+	
 
 }
 

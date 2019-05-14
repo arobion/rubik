@@ -1,7 +1,6 @@
 import argparse
 import time
 import subprocess
-import kociemba
 
 from rubik_cubes import Rubik
 from rubik_moves import move, move_by_notation, move_translator

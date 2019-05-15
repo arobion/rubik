@@ -8,6 +8,7 @@
 #include <list>
 #include <memory>
 #include <stdlib.h>
+#include <sstream>
 
 typedef std::unordered_map<std::bitset<72>, char> map_t;
 
@@ -40,17 +41,23 @@ map_t bfs(std::shared_ptr<State> start)
 
 void solve(std::shared_ptr<State> s1)
 {
+	std::stringstream result;
 	std::cout << "**************************\nPhase 1\n**************************\n";
 	Phase1 phase1(s1);
 	
 	phase1.run();
 	for (auto state : phase1.path)
-		std::cout << *state;
+	{
+	//	std::cout << *state;
+		if (state->instruction != EMPTY)
+			result << state->instruction << " ";
+	}
 	std::cout << s1->tot << std::endl;
 
 	
 	std::cout << "**************************\nPhase 2\n**************************\n";
 	auto s2 = phase1.path.back();
+	auto save_end_p1 = s2->instruction;
 	s2->g = 0;
 	s2->instruction = EMPTY;
 
@@ -59,24 +66,15 @@ void solve(std::shared_ptr<State> s1)
 	phase2.run_from_pruning();
 	
 	for (auto state : phase2.path)
-		std::cout << *state;
+	{
+	//	std::cout << *state;
+		if (state->instruction != EMPTY)
+			result << state->instruction << " ";
+	}
 		
 	std::cout << "nb moves: " << phase1.path.size() + phase2.path.size() - 2 << std::endl;
 	std::cout << "solution: ";
-	int i = 0;
-	for (auto state : phase1.path)
-	{
-		if(i != 0)
-			std::cout << state->instruction << " ";
-		i++;
-	}
-	i = 0;
-	for (auto state : phase2.path)
-	{
-		if(i != 0)
-			std::cout << state->instruction << " ";
-		i++;
-	}
+	std::cout << result.str();
 	std::cout << std::endl;
 	
 

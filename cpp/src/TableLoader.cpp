@@ -124,29 +124,45 @@ void TableLoader::get_key_from_bin(char* buffer, int start_index, std::bitset<72
 	(*ret)[2] = (buffer[start_index] & 4) >> 2;
 	(*ret)[1] = (buffer[start_index] & 2) >> 1;
 	(*ret)[0] = (buffer[start_index] & 1);
-	/*
-	for (auto i = 0; i < 9; i++)
-	{
-		for (auto j = 7; j >= 0; j--)
-			(*ret)[(8 - i) * 8 + j] = (buffer[start_index + i] & (1 << j)) >> j;
-	}
-	*/
 }
 
 void TableLoader::get_key_from_bin(char* buffer, int start_index, std::bitset<32> *ret)
 {
-	/*
-	 * previous bug here
-	ret[27] = (buffer[start_index] & 8) >> 3;
-	ret[26] = (buffer[start_index] & 4) >> 2;
-	ret[25] = (buffer[start_index] & 2) >> 1;
-	ret[24] = (buffer[start_index] & 1) >> 0;
-	*/
-	for (auto i = 0; i < 4; i++)
-	{
-		for (auto j = 7; j >= 0; j--)
-			(*ret)[(3 - i) * 8 + j] = (buffer[start_index + i] & (1 << j)) >> j;
-	}
+	(*ret)[31] = (buffer[start_index]) >> 7;
+	(*ret)[30] = (buffer[start_index] & 64) >> 6;
+	(*ret)[29] = (buffer[start_index] & 32) >> 5;
+	(*ret)[28] = (buffer[start_index] & 16) >> 4;
+	(*ret)[27] = (buffer[start_index] & 8) >> 3;
+	(*ret)[26] = (buffer[start_index] & 4) >> 2;
+	(*ret)[25] = (buffer[start_index] & 2) >> 1;
+	(*ret)[24] = (buffer[start_index] & 1);
+	start_index++;
+	(*ret)[23] = (buffer[start_index]) >> 7;
+	(*ret)[22] = (buffer[start_index] & 64) >> 6;
+	(*ret)[21] = (buffer[start_index] & 32) >> 5;
+	(*ret)[20] = (buffer[start_index] & 16) >> 4;
+	(*ret)[19] = (buffer[start_index] & 8) >> 3;
+	(*ret)[18] = (buffer[start_index] & 4) >> 2;
+	(*ret)[17] = (buffer[start_index] & 2) >> 1;
+	(*ret)[16] = (buffer[start_index] & 1);
+	start_index++;
+	(*ret)[15] = (buffer[start_index]) >> 7;
+	(*ret)[14] = (buffer[start_index] & 64) >> 6;
+	(*ret)[13] = (buffer[start_index] & 32) >> 5;
+	(*ret)[12] = (buffer[start_index] & 16) >> 4;
+	(*ret)[11] = (buffer[start_index] & 8) >> 3;
+	(*ret)[10] = (buffer[start_index] & 4) >> 2;
+	(*ret)[9] = (buffer[start_index] & 2) >> 1;
+	(*ret)[8] = (buffer[start_index] & 1);
+	start_index++;
+	(*ret)[7] = (buffer[start_index]) >> 7;
+	(*ret)[6] = (buffer[start_index] & 64) >> 6;
+	(*ret)[5] = (buffer[start_index] & 32) >> 5;
+	(*ret)[4] = (buffer[start_index] & 16) >> 4;
+	(*ret)[3] = (buffer[start_index] & 8) >> 3;
+	(*ret)[2] = (buffer[start_index] & 4) >> 2;
+	(*ret)[1] = (buffer[start_index] & 2) >> 1;
+	(*ret)[0] = (buffer[start_index] & 1);
 }
 
 void TableLoader::string_to_bitset(char* buffer, std::unordered_map<std::bitset<72>, char> *map, int len)

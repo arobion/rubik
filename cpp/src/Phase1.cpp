@@ -6,13 +6,26 @@
 Phase1::Phase1(std::shared_ptr<State> start) :
 	start(start)
 {
-	generate_co_map();
-	generate_eo_map();
+	TableLoader loader("phase1.bin");
+	if (loader.file.fail())
+	{
+		std::cout << "Generating phase 1 maps\n";
+		generate_o_map();
+		loader.dump_map(&o_map);
+	}
+	else
+	{
+		std::cout << "Loading phase 1 maps" << std::endl;
+		loader.load_map(&o_map);
+	}
+		
+
+//	generate_co_map();
+//	generate_eo_map();
 	generate_slice_map();
 
-	std::cout << "Generate phase 1 maps\n";
-	std::cout << "corners: " << co_map.size() << std::endl;
-	std::cout << "edges: " << eo_map.size() << std::endl;
+	//std::cout << "corners: " << co_map.size() << std::endl;
+	std::cout << "edges: " << o_map.size() << std::endl;
 	std::cout << "slices: " << slice_map.size() << std::endl;
 	std::cout << std::endl;
 
@@ -28,6 +41,7 @@ std::vector<std::shared_ptr<State>> Phase1::get_nexts(std::shared_ptr<State> cur
 	return nexts;
 }
 
+/*
 void Phase1::generate_co_map()
 {
 	auto current = solved;
@@ -52,6 +66,7 @@ void Phase1::generate_co_map()
 	}
 }
 
+
 void Phase1::generate_eo_map()
 {
 	auto current = solved;
@@ -75,14 +90,14 @@ void Phase1::generate_eo_map()
 		}
 	}
 }
+*/
 
-/*
-void Phase1::generate_eo_map()
+void Phase1::generate_o_map()
 {
 	auto current = solved;
 	std::list<std::shared_ptr<State>> queue;
 
-	eo_map[current->get_full_orientation()] = current->g;
+	o_map[current->get_full_orientation()] = current->g;
 	queue.push_back(current);
 
 	while (queue.size())
@@ -92,15 +107,15 @@ void Phase1::generate_eo_map()
 		auto nexts = get_nexts(current);
 		for (auto next : nexts)
 		{
-			if (eo_map.find(next->get_full_orientation()) == eo_map.end())
+			if (o_map.find(next->get_full_orientation()) == o_map.end())
 			{
-				eo_map[next->get_full_orientation()] = next->g;
+				o_map[next->get_full_orientation()] = next->g;
 				queue.push_back(next);
 			}
 		}
 	}
 }
-*/
+
 std::bitset<8>	Phase1::get_edges_around_slice(std::shared_ptr<State> curr, char pos1, char pos2)
 {
 	std::bitset<8> ret;
@@ -171,7 +186,7 @@ void Phase1::generate_slice_map()
 
 float Phase1::heuristic(std::shared_ptr<State> state)
 {
-	return std::max(std::max(co_map[state->corners_orientation], eo_map[state->edges_orientation]), slice_map[state->get_UD_slice_permutation()]);
+	return std::max(o_map[state->get_full_orientation()], slice_map[state->get_UD_slice_permutation()]);
 }
 
 

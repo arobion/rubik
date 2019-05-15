@@ -217,9 +217,9 @@ std::bitset<100> State::get_bitset()
 	return ret;
 }
 
-std::bitset<28>	State::get_full_orientation()
+std::bitset<32>	State::get_full_orientation()
 {
-	std::bitset<28> ret;
+	std::bitset<32> ret;
 	for (auto i = 0; i < 16; ++i)
 		ret[i] = corners_orientation[i];
 	for (auto i = 0; i < 12; ++i)

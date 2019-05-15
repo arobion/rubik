@@ -1,6 +1,7 @@
 #pragma once
 
 #include "State.hpp"
+#include "TableLoader.hpp"
 #include <list>
 #include <limits>
 #include <unordered_set>

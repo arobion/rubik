@@ -57,7 +57,6 @@ void solve(std::shared_ptr<State> s1)
 	
 	std::cout << "**************************\nPhase 2\n**************************\n";
 	auto s2 = phase1.path.back();
-	auto save_end_p1 = s2->instruction;
 	s2->g = 0;
 	s2->instruction = EMPTY;
 

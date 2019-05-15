@@ -7,6 +7,7 @@
 #include <unordered_set>
 
 #define BOUND_INF std::numeric_limits<float>::max()
+#define MAP_DEPTH 8
 
 class Phase2
 {

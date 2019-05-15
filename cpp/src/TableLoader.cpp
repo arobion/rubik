@@ -1,5 +1,16 @@
 #include "TableLoader.hpp"
 
+TableLoader::TableLoader(std::string file_name):
+	file_name(file_name)
+{
+	openFile();
+}
+
+void TableLoader::openFile()
+{
+	file.open(file_name);
+}
+
 void TableLoader::bitset_to_string(char* buffer, int buffer_index, std::bitset<72> set)
 {
 	for (auto i = 0; i < 9; i++)
@@ -23,26 +34,34 @@ void TableLoader::get_key_from_bin(char* buffer, int start_index, std::bitset<72
 
 void TableLoader::string_to_bitset(char* buffer, std::unordered_map<std::bitset<72>, char> *map, int len)
 {
-	(void)buffer;
-	(void)map;
 	int i = 0;
+	std::bitset<72> set;
 	while (i < len)
 	{
-		//(*map)[get_key_from_bin(buffer, i)] = buffer[i + 9];
+		get_key_from_bin(buffer, i, &set);
+		(*map)[set] = buffer[i + 9];
 		i += 10;
 	}
 }
 
-void load_map(std::string file_name, std::unordered_map<std::bitset<72>, char> *map)
+void TableLoader::load_map(std::unordered_map<std::bitset<72>, char> *map)
 {
-	(void)file_name;
-	(void)map;
-	/*
-	//write in file
-	std::ofstream phase2FileW ("phase2File.bin", std::ofstream::binary);
-	char buffer[10000];
+	char buffer[BUFF_SIZE];
+	
+	while (file.read(buffer, BUFF_SIZE))
+		string_to_bitset(buffer, map, file.gcount());
+	string_to_bitset(buffer, map, file.gcount());
+	file.close();
+}
+
+void TableLoader::dump_map(std::unordered_map<std::bitset<72>, char> *map)
+{
+	char buffer[BUFF_SIZE];
+
+	std::ofstream Wfile (file_name, std::ofstream::binary);
 	int i = 0;
-	for (auto data : bfs_map)
+
+	for (auto data : (*map))
 	{
 		bitset_to_string(buffer, i, data.first);
 		buffer[i + 9] = data.second;
@@ -50,19 +69,9 @@ void load_map(std::string file_name, std::unordered_map<std::bitset<72>, char> *
 		if (i == BUFF_SIZE)
 		{
 			i = 0;
-			phase2FileW.write(buffer, BUFF_SIZE);
+			Wfile.write(buffer, BUFF_SIZE);
 		}
 	}
-	phase2FileW.write(buffer, i);
-	phase2FileW.close();
-	//read in file
-	std::unordered_map<std::bitset<72>, char> test;
-	std::ifstream phase2FileR ("phase2File.bin", std::ofstream::binary);
-
-	while (phase2FileR.read(buffer, BUFF_SIZE))
-		string_to_bitset(buffer, &test, phase2FileR.gcount());
-	string_to_bitset(buffer, &test, phase2FileR.gcount());
-	phase2FileR.close();
-	*/
-
+	Wfile.write(buffer, i);
+	Wfile.close();
 }

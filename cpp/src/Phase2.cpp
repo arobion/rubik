@@ -4,8 +4,18 @@
 Phase2::Phase2(std::shared_ptr<State> start) :
 	start(start)
 {
-	generate_bfs_map();
-	std::cout << "Generate phase 2 map" << std::endl;
+	TableLoader loader("phase2.bin");
+	if (loader.file.fail())
+	{
+		std::cout << "Generating phase 2 map" << std::endl;
+		generate_bfs_map();
+		loader.dump_map(&bfs_map);
+	}
+	else
+	{
+		std::cout << "Loading phase 2 map" << std::endl;
+		loader.load_map(&bfs_map);
+	}
 	std::cout << "bfs_map: " << bfs_map.size() << std::endl;
 	std::cout << std::endl;
 	
@@ -25,7 +35,7 @@ void Phase2::generate_bfs_map()
 	{
 		auto current = queue.front();
 		queue.pop_front();
-		if (current->g < 7)
+		if (current->g < MAP_DEPTH)
 		{
 			for (auto next : current->get_nexts_2())
 			{

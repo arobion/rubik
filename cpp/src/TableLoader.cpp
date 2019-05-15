@@ -25,13 +25,6 @@ void TableLoader::bitset_to_string(char* buffer, int buffer_index, std::bitset<7
 
 void TableLoader::bitset_to_string(char* buffer, int buffer_index, std::bitset<32> set)
 {
-	/*
-	buffer[buffer_index] = 0;
-	buffer[buffer_index] |= set[27] << 3;
-	buffer[buffer_index] |= set[26] << 2;
-	buffer[buffer_index] |= set[25] << 1;
-	buffer[buffer_index] |= set[24];
-	*/
 	for (auto i = 0; i < 4; i++)
 	{
 		buffer[buffer_index + i] = 0;
@@ -179,7 +172,6 @@ void TableLoader::string_to_bitset(char* buffer, std::unordered_map<std::bitset<
 
 void TableLoader::string_to_bitset(char* buffer, std::unordered_map<std::bitset<32>, char> *map, int len)
 {
-	//std::cout << buffer << std::endl;
 	int i = 0;
 	std::bitset<32> set;
 	while (i < len)

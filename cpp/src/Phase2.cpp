@@ -1,6 +1,5 @@
 #include "Phase2.hpp"
 #include "move.hpp"
-#include <iostream>
 
 Phase2::Phase2(std::shared_ptr<State> start) :
 	start(start)
@@ -9,8 +8,7 @@ Phase2::Phase2(std::shared_ptr<State> start) :
 	std::cout << "Generate phase 2 map" << std::endl;
 	std::cout << "bfs_map: " << bfs_map.size() << std::endl;
 	std::cout << std::endl;
-
-
+	
 	this->bound = map_heuristic(start);
 	path.push_back(start);
 }
@@ -128,7 +126,6 @@ float Phase2::map_heuristic(std::shared_ptr<State> state)
 	return bfs_map[state->compressed];
 }
 
-
 float Phase2::heuristic(std::shared_ptr<State> state)
 {
 	// compare edges
@@ -161,7 +158,6 @@ float Phase2::heuristic(std::shared_ptr<State> state)
 	}
 	return std::max(sum_edges / 4, sum_corners / 4);
 }
-
 
 std::vector<std::shared_ptr<State>> Phase2::get_nexts(std::shared_ptr<State> current)
 {

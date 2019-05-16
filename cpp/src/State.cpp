@@ -154,68 +154,6 @@ std::ostream & operator<<(std::ostream & o, State const & rhs)
 	return o;
 }
 
-std::vector<std::shared_ptr<State>> State::get_nexts_1()
-{
-	static std::unordered_map<Instruction, std::vector<Instruction>> moves_map_1{
-		{U, {D, DR, D2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}},
-		{UR, {D, DR, D2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}},
-		{U2, {D, DR, D2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}},
-
-		{D, {U, UR, U2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}},
-		{DR, {U, UR, U2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}},
-		{D2, {U, UR, U2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}},
-
-		{L, {U, UR, U2, D, DR, D2, R, RR, R2, F, FR, F2, B, BR, B2}},
-		{LR, {U, UR, U2, D, DR, D2, R, RR, R2, F, FR, F2, B, BR, B2}},
-		{L2, {U, UR, U2, D, DR, D2, R, RR, R2, F, FR, F2, B, BR, B2}},
-
-		{L, {U, UR, U2, D, DR, D2, L, LR, L2, F, FR, F2, B, BR, B2}},
-		{LR, {U, UR, U2, D, DR, D2, L, LR, L2, F, FR, F2, B, BR, B2}},
-		{L2, {U, UR, U2, D, DR, D2, L, LR, L2, F, FR, F2, B, BR, B2}},
-
-		{F, {U, UR, U2, D, DR, D2, R, RR, R2, L, LR, L2, B, BR, B2}},
-		{FR, {U, UR, U2, D, DR, D2, R, RR, R2, L, LR, L2, B, BR, B2}},
-		{F2, {U, UR, U2, D, DR, D2, R, RR, R2, L, LR, L2, B, BR, B2}},
-
-		{B, {U, UR, U2, D, DR, D2, R, RR, R2, L, LR, L2, F, FR, F2}},
-		{BR, {U, UR, U2, D, DR, D2, R, RR, R2, L, LR, L2, F, FR, F2}},
-		{B2, {U, UR, U2, D, DR, D2, R, RR, R2, L, LR, L2, F, FR, F2}},
-
-		{EMPTY, {U, UR, U2, D, DR, D2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}}
-	};
-
-	std::vector<std::shared_ptr<State>> nexts;
-	for (auto next_instruction : moves_map_1[this->instruction])
-		nexts.push_back(move(*this, next_instruction));
-	return nexts;
-}
-
-std::vector<std::shared_ptr<State>> State::get_nexts_2()
-{
-	static std::unordered_map<Instruction, std::vector<Instruction>> moves_map_2{
-		{U, {D, DR, D2, L2, R2, F2, B2}},
-		{UR, {D, DR, D2, L2, R2, F2, B2}},
-		{U2, {D, DR, D2, L2, R2, F2, B2}},
-
-		{D, {U, UR, U2, L2, R2, F2, B2}},
-		{DR, {U, UR, U2, L2, R2, F2, B2}},
-		{D2, {U, UR, U2, L2, R2, F2, B2}},
-
-		{L2, {U, UR, U2, D, DR, D2, R2, F2, B2}},
-		{R2, {U, UR, U2, D, DR, D2, L2, F2, B2}},
-
-		{F2, {U, UR, U2, D, DR, D2, L2, R2, B2}},
-		{B2, {U, UR, U2, D, DR, D2, L2, R2, F2}},
-
-		{EMPTY, {U, UR, U2, D, DR, D2, L2, R2, F2, B2}}
-	};
-
-	std::vector<std::shared_ptr<State>> nexts;
-	for (auto next_instruction : moves_map_2[this->instruction])
-		nexts.push_back(move(*this, next_instruction));
-	return nexts;
-}
-
 // fix this
 std::bitset<100> State::get_bitset()
 {
@@ -240,39 +178,6 @@ std::bitset<32>	State::get_full_orientation()
 
 }
 
-float State::heuristic_dummy()
-{
-	// compare edges
-	float sum_edges = 0;
-	for (auto i = 0; i < 12; ++i)
-	{
-		std::bitset<4> num(i);
-		for (auto j = 0; j < 4; ++j)
-		{
-			if (num[j] != compressed[(11-i)*4 + j])
-			{
-				++sum_edges;
-				break;
-			}
-		}
-	}
-
-	// compare corners
-	float sum_corners = 0;
-	for (auto i = 0; i < 8; ++i)
-	{
-		std::bitset<3> num(i);
-		for (auto j = 0; j < 3; ++j)
-		{
-			if (num[j] != compressed[48+(7-i)*3 + j])
-			{
-				++sum_corners;
-				break;
-			}
-		}
-	}
-	return std::max(sum_edges / 4, sum_corners / 4);
-}
 std::bitset<16>		State::get_UD_slice_permutation(void)
 {
 	

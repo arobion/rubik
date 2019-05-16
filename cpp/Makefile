@@ -8,7 +8,8 @@ FILE =  main.cpp \
 		move.cpp \
 		Phase1.cpp \
 		Phase2.cpp \
-		TableLoader.cpp
+		TableLoader.cpp \
+		Solver.cpp
 
 SRC_DIR = src
 SRC = $(addprefix $(SRC_DIR)/,$(FILE:%.cpp=%.o))

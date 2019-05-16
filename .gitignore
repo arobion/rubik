@@ -105,3 +105,8 @@ venv.bak/
 
 # vscode
 .vscode
+
+# pruning tables
+phase1.bin
+phase2.bin
+

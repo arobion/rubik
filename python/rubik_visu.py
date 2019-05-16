@@ -156,23 +156,6 @@ class RubikVisu:
             self.face_b[2], self.face_b[1], self.face_b[0] = self.face_r[8], self.face_r[5], self.face_r[2]
             self.face_r[8], self.face_r[5], self.face_r[2] = tmp[0], tmp[1], tmp[2]
             tmp = self.face_d[0]
-            self.face_d[0] = self.face_d[2]
-            self.face_d[2] = self.face_d[8]
-            self.face_d[8] = self.face_d[6]
-            self.face_d[6] = tmp
-            tmp = self.face_d[1]
-            self.face_d[1] = self.face_d[5]
-            self.face_d[5] = self.face_d[7]
-            self.face_d[7] = self.face_d[3]
-            self.face_d[3] = tmp
-
-        if move == "D'":
-            tmp = [self.face_f[6], self.face_f[7], self.face_f[8]]
-            self.face_f[6], self.face_f[7], self.face_f[8] = self.face_r[8], self.face_r[5], self.face_r[2]
-            self.face_r[8], self.face_r[5], self.face_r[2] = self.face_b[2], self.face_b[1], self.face_b[0]
-            self.face_b[2], self.face_b[1], self.face_b[0] = self.face_l[0], self.face_l[3], self.face_l[6]
-            self.face_l[0], self.face_l[3], self.face_l[6] = tmp[0], tmp[1], tmp[2]
-            tmp = self.face_d[0]
             self.face_d[0] = self.face_d[6]
             self.face_d[6] = self.face_d[8]
             self.face_d[8] = self.face_d[2]
@@ -182,11 +165,28 @@ class RubikVisu:
             self.face_d[3] = self.face_d[7]
             self.face_d[7] = self.face_d[5]
             self.face_d[5] = tmp
+
+        if move == "D'":
+            tmp = [self.face_f[6], self.face_f[7], self.face_f[8]]
+            self.face_f[6], self.face_f[7], self.face_f[8] = self.face_r[8], self.face_r[5], self.face_r[2]
+            self.face_r[8], self.face_r[5], self.face_r[2] = self.face_b[2], self.face_b[1], self.face_b[0]
+            self.face_b[2], self.face_b[1], self.face_b[0] = self.face_l[0], self.face_l[3], self.face_l[6]
+            self.face_l[0], self.face_l[3], self.face_l[6] = tmp[0], tmp[1], tmp[2]
+            tmp = self.face_d[0]
+            self.face_d[0] = self.face_d[2]
+            self.face_d[2] = self.face_d[8]
+            self.face_d[8] = self.face_d[6]
+            self.face_d[6] = tmp
+            tmp = self.face_d[1]
+            self.face_d[1] = self.face_d[5]
+            self.face_d[5] = self.face_d[7]
+            self.face_d[7] = self.face_d[3]
+            self.face_d[3] = tmp
         
         if move == "R":
             tmp = [self.face_f[2], self.face_f[5], self.face_f[8]]
-            self.face_f[2], self.face_f[5], self.face_f[8] = self.face_d[8], self.face_d[5], self.face_d[2]
-            self.face_d[8], self.face_d[5], self.face_d[2] = self.face_b[2], self.face_b[5], self.face_b[8]
+            self.face_f[2], self.face_f[5], self.face_f[8] = self.face_d[6], self.face_d[3], self.face_d[0]
+            self.face_d[6], self.face_d[3], self.face_d[0] = self.face_b[2], self.face_b[5], self.face_b[8]
             self.face_b[2], self.face_b[5], self.face_b[8] = self.face_u[2], self.face_u[5], self.face_u[8]
             self.face_u[2], self.face_u[5], self.face_u[8] = tmp[0], tmp[1], tmp[2]
             tmp = self.face_r[0]
@@ -204,8 +204,8 @@ class RubikVisu:
             tmp = [self.face_f[2], self.face_f[5], self.face_f[8]]
             self.face_f[2], self.face_f[5], self.face_f[8] = self.face_u[2], self.face_u[5], self.face_u[8]
             self.face_u[2], self.face_u[5], self.face_u[8] = self.face_b[2], self.face_b[5], self.face_b[8]
-            self.face_b[2], self.face_b[5], self.face_b[8] = self.face_d[8], self.face_d[5], self.face_d[2]
-            self.face_d[8], self.face_d[5], self.face_d[2] = tmp[0], tmp[1], tmp[2]
+            self.face_b[2], self.face_b[5], self.face_b[8] = self.face_d[6], self.face_d[3], self.face_d[0]
+            self.face_d[6], self.face_d[3], self.face_d[0] = tmp[0], tmp[1], tmp[2]
             tmp = self.face_r[0]
             self.face_r[0] = self.face_r[2]
             self.face_r[2] = self.face_r[8]
@@ -219,8 +219,8 @@ class RubikVisu:
         
         if move == "L'":
             tmp = [self.face_f[0], self.face_f[3], self.face_f[6]]
-            self.face_f[0], self.face_f[3], self.face_f[6] = self.face_d[6], self.face_d[3], self.face_d[0]
-            self.face_d[6], self.face_d[3], self.face_d[0] = self.face_b[0], self.face_b[3], self.face_b[6]
+            self.face_f[0], self.face_f[3], self.face_f[6] = self.face_d[8], self.face_d[5], self.face_d[2]
+            self.face_d[8], self.face_d[5], self.face_d[2] = self.face_b[0], self.face_b[3], self.face_b[6]
             self.face_b[0], self.face_b[3], self.face_b[6] = self.face_u[0], self.face_u[3], self.face_u[6]
             self.face_u[0], self.face_u[3], self.face_u[6] = tmp[0], tmp[1], tmp[2]
             tmp = self.face_l[0]
@@ -238,8 +238,8 @@ class RubikVisu:
             tmp = [self.face_f[0], self.face_f[3], self.face_f[6]]
             self.face_f[0], self.face_f[3], self.face_f[6] = self.face_u[0], self.face_u[3], self.face_u[6]
             self.face_u[0], self.face_u[3], self.face_u[6] = self.face_b[0], self.face_b[3], self.face_b[6]
-            self.face_b[0], self.face_b[3], self.face_b[6] = self.face_d[6], self.face_d[3], self.face_d[0]
-            self.face_d[6], self.face_d[3], self.face_d[0] = tmp[0], tmp[1], tmp[2]
+            self.face_b[0], self.face_b[3], self.face_b[6] = self.face_d[8], self.face_d[5], self.face_d[2]
+            self.face_d[8], self.face_d[5], self.face_d[2] = tmp[0], tmp[1], tmp[2]
             tmp = self.face_l[0]
             self.face_l[0] = self.face_l[6]
             self.face_l[6] = self.face_l[8]
@@ -254,8 +254,8 @@ class RubikVisu:
         if move == "F":
             tmp = [self.face_u[6], self.face_u[7], self.face_u[8]]
             self.face_u[6], self.face_u[7], self.face_u[8] = self.face_l[6], self.face_l[7], self.face_l[8]
-            self.face_l[6], self.face_l[7], self.face_l[8] = self.face_d[8], self.face_d[7], self.face_d[6]
-            self.face_d[8], self.face_d[7], self.face_d[6] = self.face_r[6], self.face_r[7], self.face_r[8]
+            self.face_l[6], self.face_l[7], self.face_l[8] = self.face_d[6], self.face_d[7], self.face_d[8]
+            self.face_d[6], self.face_d[7], self.face_d[8] = self.face_r[6], self.face_r[7], self.face_r[8]
             self.face_r[6], self.face_r[7], self.face_r[8] = tmp[0], tmp[1], tmp[2]
             tmp = self.face_f[0]
             self.face_f[0] = self.face_f[6]
@@ -271,8 +271,8 @@ class RubikVisu:
         if move == "F'":
             tmp = [self.face_u[6], self.face_u[7], self.face_u[8]]
             self.face_u[6], self.face_u[7], self.face_u[8] = self.face_r[6], self.face_r[7], self.face_r[8]
-            self.face_r[6], self.face_r[7], self.face_r[8] = self.face_d[8], self.face_d[7], self.face_d[6]
-            self.face_d[8], self.face_d[7], self.face_d[6] = self.face_l[6], self.face_l[7], self.face_l[8]
+            self.face_r[6], self.face_r[7], self.face_r[8] = self.face_d[6], self.face_d[7], self.face_d[8]
+            self.face_d[6], self.face_d[7], self.face_d[8] = self.face_l[6], self.face_l[7], self.face_l[8]
             self.face_l[6], self.face_l[7], self.face_l[8] = tmp[0], tmp[1], tmp[2]
             tmp = self.face_f[0]
             self.face_f[0] = self.face_f[2]
@@ -288,8 +288,8 @@ class RubikVisu:
         if move == "B'":
             tmp = [self.face_u[0], self.face_u[1], self.face_u[2]]
             self.face_u[0], self.face_u[1], self.face_u[2] = self.face_l[0], self.face_l[1], self.face_l[2]
-            self.face_l[0], self.face_l[1], self.face_l[2] = self.face_d[2], self.face_d[1], self.face_d[0]
-            self.face_d[2], self.face_d[1], self.face_d[0] = self.face_r[0], self.face_r[1], self.face_r[2]
+            self.face_l[0], self.face_l[1], self.face_l[2] = self.face_d[0], self.face_d[1], self.face_d[2]
+            self.face_d[0], self.face_d[1], self.face_d[2] = self.face_r[0], self.face_r[1], self.face_r[2]
             self.face_r[0], self.face_r[1], self.face_r[2] = tmp[0], tmp[1], tmp[2]
             tmp = self.face_b[0]
             self.face_b[0] = self.face_b[2]
@@ -305,8 +305,8 @@ class RubikVisu:
         if move == "B":
             tmp = [self.face_u[0], self.face_u[1], self.face_u[2]]
             self.face_u[0], self.face_u[1], self.face_u[2] = self.face_r[0], self.face_r[1], self.face_r[2]
-            self.face_r[0], self.face_r[1], self.face_r[2] = self.face_d[2], self.face_d[1], self.face_d[0]
-            self.face_d[2], self.face_d[1], self.face_d[0] = self.face_l[0], self.face_l[1], self.face_l[2]
+            self.face_r[0], self.face_r[1], self.face_r[2] = self.face_d[0], self.face_d[1], self.face_d[2]
+            self.face_d[0], self.face_d[1], self.face_d[2] = self.face_l[0], self.face_l[1], self.face_l[2]
             self.face_l[0], self.face_l[1], self.face_l[2] = tmp[0], tmp[1], tmp[2]
             tmp = self.face_b[0]
             self.face_b[0] = self.face_b[6]

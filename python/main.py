@@ -33,7 +33,6 @@ def launch_cpp(rubik):
 #    print("../cpp/rubik {}{}{}{}".format(corners, edges, co, eo))
     subprocess.call(["../cpp/rubik {}{}{}{}".format(corners, edges, co, eo)], shell=True)
 
-
 def null_h(obj):
     return 0
 
@@ -48,8 +47,6 @@ def main():
         print(e)
         return
     rub = rubik_state(rubik, 0, null_h)
-#    kociemba.solve('FLBUULFFLFDURRDBUBUUDDFFBRDDBLRDRFLLRLRULFUDRRBDBBBUFL')
-
     launch_cpp(rub)
     print("scramble: {}".format(args.scramble))
 
@@ -79,7 +76,6 @@ def main():
 #    print("scramble: {}".format(args.scramble))
 #    print("solution: {}".format(total_moves[:-1]))
 #    print(len(ret1) + len(ret2) - 2)
-
 
 if __name__ == "__main__":
     main()

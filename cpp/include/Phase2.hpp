@@ -12,10 +12,11 @@
 class Phase2
 {
 public:
-	Phase2(std::shared_ptr<State> start);
+	Phase2();
 
 	std::list<std::shared_ptr<State>> path;
 
+	void set_start(std::shared_ptr<State>);
 	void run();
 	void run_from_pruning();
 

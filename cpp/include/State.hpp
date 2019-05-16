@@ -10,7 +10,7 @@ struct State
 {
 
 	State();
-	State(char **argv);
+	State(std::string);
 	State(State const & state);
 	State(State const & origin, Instruction instruction);
 	State & operator=(State const &);

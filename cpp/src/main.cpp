@@ -8,6 +8,7 @@
 #include <list>
 #include <memory>
 #include <stdlib.h>
+#include <unistd.h>
 #include <sstream>
 
 typedef std::unordered_map<std::bitset<72>, char> map_t;
@@ -39,6 +40,7 @@ map_t bfs(std::shared_ptr<State> start)
 	return map;
 }
 
+/*
 void solve(std::shared_ptr<State> s1)
 {
 	std::stringstream result;
@@ -77,20 +79,40 @@ void solve(std::shared_ptr<State> s1)
 	std::cout << std::endl;
 	
 
+}*/
+void solve(std::shared_ptr<State> s1, Phase1 phase1, Phase2 phase2)
+{
+	std::stringstream result;
+
+	phase1.set_start(s1);
+	phase1.run();
+	for (auto state : phase1.path)
+		if (state->instruction != EMPTY)
+			result << state->instruction << " ";
+	auto s2 = phase1.path.back();
+	s2->g = 0;
+	s2->instruction = EMPTY;
+	phase2.set_start(s2);
+	phase2.run();
+	phase2.run_from_pruning();
+	for (auto state : phase2.path)
+		if (state->instruction != EMPTY)
+			result << state->instruction << " ";
+	std::cout << result.str() << std::endl;
 }
 
-int main(int argc, char **argv)
+int main()
 {
-	if (argc == 41)
+	std::string input;
+	Phase1 phase1{};
+	Phase2 phase2{};
+	std::cout << "Ready" << std::endl;
+	
+	while(true)
 	{
-		auto s1 = std::make_shared<State>(argv);
-		solve(s1);
+		std::getline(std::cin, input);
+		auto s1 = std::make_shared<State>(input);
+		solve(s1, phase1, phase2);
 	}
-	else
-	{
-		auto s1 = std::make_shared<State>();
-		std::cout << *s1 << std::endl;
-	}
-
 }
 

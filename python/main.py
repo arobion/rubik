@@ -16,7 +16,7 @@ def scramble(string, rubik):
             raise Exception("Error unvalid move : {}, look at usage for more information".format(elem))
         move_by_notation(rubik, elem)
 
-def launch_cpp(rubik):
+def handle_cpp(cpp, rubik):
     corners = ""
     for i in range(1, 9):
         corners += str(rubik.corners[i].final_position - 1) + " "
@@ -30,56 +30,36 @@ def launch_cpp(rubik):
     for i in range(1, 13):
         eo += str(rubik.edges[i].orientation) + " "
 
-#    print("../cpp/rubik {}{}{}{}".format(corners, edges, co, eo))
-    subprocess.call(["../cpp/rubik {}{}{}{}".format(corners, edges, co, eo)], shell=True)
+    cpp.stdin.write("{}{}{}{}\n".format(corners, edges, co, eo))
+    solution = cpp.stdout.readline()
+    print("nb moves: {}".format(len(solution.split())))
+    print("solution: {}".format(solution), end="")
 
-
-def null_h(obj):
-    return 0
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("scramble", help="Please enter a scramble composed of following moves :<U, U', U2, R, R', R2, L, L', L2, D, D', D2, F, F', F2, B, B', B2> ")
-    args = parser.parse_args()
-    rubik = Rubik()
-    try:
-        scramble(args.scramble, rubik)
-    except Exception as e:
-        print(e)
-        return
-    rub = rubik_state(rubik, 0, null_h)
-#    kociemba.solve('FLBUULFFLFDURRDBUBUUDDFFBRDDBLRDRFLLRLRULFUDRRBDBBBUFL')
-
-    launch_cpp(rub)
-    print("scramble: {}".format(args.scramble))
-
-#    phase1 = rubik_state(rubik, 0, rubik.heuristic_h1)
-#    ida1 = IDA(phase1, rubik.heuristic_h1, get_nexts_1, {}) # empty pruning table
-#    ret1 = ida1.run()
-#
-#    total_moves = ""
-#    print("***** Phase 1 *****\n")
-#    for state in ret1:
-#        print(state)
-#        print("_______________________________________")
-#        if state.instruction != 0:
-#            total_moves += move_translator[state.instruction] + " "
-#
-#    phase2 = rubik_state(ret1[-1], 0, rubik.heuristic_h2)
-#    ida2 = IDA(phase2, rubik.heuristic_h2, get_nexts_2, rubik.pruning_phase2)
-#    ret2 = ida2.run()
-#
-#    print("\n***** Phase 2 *****\n")
-#    for state in ret2:
-#        print(state)
-#        print("_______________________________________")
-#        if state.instruction != 0:
-#            total_moves += move_translator[state.instruction] + " "
-#
-#    print("scramble: {}".format(args.scramble))
-#    print("solution: {}".format(total_moves[:-1]))
-#    print(len(ret1) + len(ret2) - 2)
-
+#    parser = argparse.ArgumentParser()
+#    parser.add_argument("scramble", help="Please enter a scramble composed of following moves :<U, U', U2, R, R', R2, L, L', L2, D, D', D2, F, F', F2, B, B', B2> ")
+#    args = parser.parse_args()
+    print("Loading C++ program :")
+    subprocess.run(["make -C ../cpp/."], shell=True, capture_output=True)
+    print('\tcompilation Done')
+    cpp = subprocess.Popen(["../cpp/rubik"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
+    read = cpp.stdout.readline()
+    while read != "Ready\n":
+        print("\t" + read, end="")
+        read = cpp.stdout.readline()
+    print("C++ program is Ready")
+    print("Please enter a scramble :")
+    instruction = input()
+    while instruction != "exit":
+        try:
+            rubik = Rubik()
+            scramble(instruction, rubik)
+            handle_cpp(cpp, rubik)
+        except Exception as e:
+            print(e)
+        print("Please enter a scramble :")
+        instruction = input()
 
 if __name__ == "__main__":
     main()

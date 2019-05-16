@@ -1,13 +1,19 @@
 import argparse
 import random
-import time
 import subprocess
+import sys
+import time
+
+import pygame as pg
+from pygame.locals import *
 
 from rubik_cubes import Rubik
 from rubik_moves import move, move_by_notation, move_translator
-from rubik_state import rubik_state
-from rubik_next import get_nexts_1, get_nexts_2
-from rubik_ida import IDA
+from rubik_visu import *
+#from rubik_state import rubik_state
+#from rubik_next import get_nexts_1, get_nexts_2
+#from rubik_ida import IDA
+
 
 def random_scramble(number):
     ret = ""
@@ -51,6 +57,7 @@ def handle_cpp(cpp, rubik, instructions):
     print("time resolution: {:.2f} s".format(time.time() - start_time))
     print("nb moves: {}".format(len(solution.split())))
     print("solution: {}".format(solution), end="")
+    return solution
 
 def launch_cmd(cpp):
     print("\nPlease enter a specific scramble or a size for a random scramble:")
@@ -73,7 +80,70 @@ def launch_cmd(cpp):
     cpp.kill()
 
 def launch_visu(cpp):
-    pass
+    pg.init()
+    size = width, height = 1200, 600
+    window = pg.display.set_mode(size)
+    backgound = pg.image.load("./resource/background.png").convert()
+    cube = RubikVisu(window)
+    input_box = InputBox(650, 240, 400, 32)
+    
+    font_title = pg.font.Font("./resource/04B_30__.TTF", 50)
+    font = pg.font.Font("./resource/04B_30__.TTF", 20)
+    title = font_title.render("MEGA Rubik's solver 3000", True, (255, 0, 0))
+    text_to_solve = font.render("Press S to solve", True, (0, 0, 0))
+    text_to_reset = font.render("Press X to reset", True, (0, 0, 0))
+    text_to_input = font.render("Enter number or scramble", True, (0, 0, 0))
+    
+    text = ""
+    flag_scrambled = False
+    solution = []
+    while 1:
+        window.fill((30, 30, 30))
+        window.blit(backgound, (0, 0))
+        window.blit(title, (100, 50))
+        window.blit(text_to_solve, (650, 160))
+        window.blit(text_to_reset, (650, 190))
+        window.blit(text_to_input, (650, 220))
+        cube.put_cube2window(window)
+        if len(solution):
+            cube.make_move(solution.pop(0))
+            cube.put_cube2window(window)
+        else:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    cpp.kill()
+                    sys.exit()
+                else:
+                    if event.type == pg.KEYDOWN:
+                        if event.key == pg.K_s:
+                            print(flag_scrambled)
+                            if flag_scrambled == True:
+                                flag_scrambled = False
+                                solution = handle_cpp(cpp, rubik, cube.melange).split()
+                        if event.key == pg.K_x:
+                            cube.reset_visu()
+                            cube.put_cube2window(window)
+                    text = input_box.handle_event(event)
+                    if text != "":
+                        rubik = Rubik()
+                        cube.reset_visu()
+                        try:
+                            number = int(text)
+                            text = random_scramble(number)
+                        except Exception as e:
+                            pass
+                        try:
+                            scramble(text, rubik)
+                            cube.scramble(text)
+                        except Exception as e:
+                            print("entrer un melange valide")
+                        cube.melange = text
+                        text = ""
+                        cube.put_cube2window(window)
+                        flag_scrambled = True
+        input_box.update()
+        input_box.draw(window)
+        pg.display.flip()
 
 def main():
     parser = argparse.ArgumentParser()

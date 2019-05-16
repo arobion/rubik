@@ -17,7 +17,7 @@ class InputBox:
         self.rect = pg.Rect(x, y, w, h)
         self.color = COLOR_INACTIVE
         self.text = text
-        self.txt_surface = FONT.render(text, True, self.color)
+        self.txt_surface = pg.font.Font(None, 32).render(text, True, self.color)
         self.active = False
 
     def handle_event(self, event):
@@ -37,7 +37,7 @@ class InputBox:
                     self.text = self.text[:-1]
                 else:
                     self.text += event.unicode
-                self.txt_surface = FONT.render(self.text, True, self.color)
+                self.txt_surface = pg.font.Font(None, 32).render(self.text, True, self.color)
         return tmp
 
     def update(self):
@@ -70,6 +70,14 @@ class RubikVisu:
         self.img_b = pg.image.load("./resource/cube_green.png").convert()
         self.img_r = pg.image.load("./resource/cube_red.png").convert()
         self.img_l = pg.image.load("./resource/cube_orange.png").convert()
+        self.face_u = [1] * 9
+        self.face_d = [2] * 9
+        self.face_f = [3] * 9
+        self.face_b = [4] * 9
+        self.face_r = [5] * 9
+        self.face_l = [6] * 9
+
+    def reset_visu(self):
         self.face_u = [1] * 9
         self.face_d = [2] * 9
         self.face_f = [3] * 9
@@ -114,6 +122,10 @@ class RubikVisu:
             y += 1 
             x = 2
 
+    def scramble(self, moves):
+        for elem in moves.split():
+            self.make_move(elem)
+    
     def make_move(self, move):
         if move == "U'":
             tmp = [self.face_f[0], self.face_f[1], self.face_f[2]]
@@ -338,44 +350,3 @@ class RubikVisu:
             self.make_move("L")
             self.make_move("L")
 
-pg.init()
-FONT = pg.font.Font(None, 32)
-size = width, height = 1200, 600
-window = pg.display.set_mode(size)
-backgound = pg.image.load("./resource/background.png").convert()
-cube = RubikVisu(window)
-input_box = InputBox(650, 240, 400, 32)
-
-font_title = pg.font.Font("./resource/04B_30__.TTF", 50)
-font = pg.font.Font("./resource/04B_30__.TTF", 20)
-title = font_title.render("MEGA Rubik's solver 3000", True, (255, 0, 0))
-text_to_solve = font.render("Press S to solve", True, (255, 255, 255))
-text_to_reset = font.render("Press X to reset", True, (255, 255, 255))
-text_to_input = font.render("Enter number or scramble", True, (255, 255, 255))
-
-while 1:
-    text = ""
-    window.fill((30, 30, 30))
-    window.blit(backgound, (0, 0))
-    window.blit(title, (100, 50))
-    window.blit(text_to_solve, (650, 160))
-    window.blit(text_to_reset, (650, 190))
-    window.blit(text_to_input, (650, 220))
-    cube.put_cube2window(window)
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
-            sys.exit()
-        else:
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_s:
-                    print("solve")
-                if event.key == pg.K_x:
-                    print("reset")
-            text = input_box.handle_event(event)
-            if text != "":
-                print("mix")
-    input_box.update()
-    input_box.draw(window)
-    if text != "":
-        print(text)
-    pg.display.flip()

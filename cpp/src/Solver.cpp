@@ -139,12 +139,13 @@ void Solver::solve(StatePtr start)
 	std::stringstream result;
 
 	// phase 1
-	Phase1 phase1(p1_orientation_table, p1_slice_table, start);
+	Phase1 phase1(p1_orientation_table, p1_slice_table, p2_table, start);
 	phase1.run();
 	for (auto state : phase1.path)
 		if (state->instruction != EMPTY)
 			result << state->instruction << " ";
 
+	/*
 	// prepare strarting state for phase 2
 	auto s2 = phase1.path.back();
 	s2->g = 0;
@@ -157,5 +158,6 @@ void Solver::solve(StatePtr start)
 		if (state->instruction != EMPTY)
 			result << state->instruction << " ";
 
+	*/
 	std::cout << result.str() << std::endl;
 }

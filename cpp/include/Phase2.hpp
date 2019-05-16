@@ -10,16 +10,17 @@
 class Phase2
 {
 public:
-	Phase2(P2Table & p2_table, StatePtr start);
+	Phase2(P2Table & p2_table, StatePtr start, float max_depth);
 
 	std::list<StatePtr>					path;
 	static std::vector<StatePtr>		get_nexts(StatePtr current);
-	void								run();
+	bool								run();
 	void								run_from_pruning();
 
 private:
 	P2Table &							p2_table;
 	StatePtr							start;
+	float								max_depth;
 	float								bound;
 	std::unordered_set<std::bitset<72>>	visited;
 

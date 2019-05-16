@@ -1,9 +1,10 @@
 #include "Phase2.hpp"
 #include "move.hpp"
 
-Phase2::Phase2(P2Table & p2_table, StatePtr start) :
+Phase2::Phase2(P2Table & p2_table, StatePtr start, float max_depth) :
 	p2_table(p2_table),
 	start(start),
+	max_depth(max_depth),
 	bound(heuristic(start))
 {
 	path.push_back(start);
@@ -57,11 +58,13 @@ float Phase2::heuristic_moves(StatePtr state)
 	return std::max(sum_edges / 4, sum_corners / 4);
 }
 
-void Phase2::run()
+bool Phase2::run()
 {
 	while (1)
 	{
 		auto tmp = search();
+		if (tmp > max_depth)
+			return false;
 		if (tmp == 0)
 			break;
 		else if (tmp == BOUND_INF)
@@ -74,7 +77,10 @@ void Phase2::run()
 
 	auto dep = path.back();
 	auto cost = p2_table[dep->compressed];
+	if (path.size() + cost - 1 > max_depth)
+		return false;
 	search_with_table(cost, dep);
+	return true;
 }
 
 float Phase2::search()
@@ -82,7 +88,7 @@ float Phase2::search()
 	auto current = path.back();
 	float h = heuristic(current);
 	float f = float(current->g) + h;
-	if (f > bound)
+	if (f > bound || f > max_depth)
 		return f;
 	if (h == 0)
 		return 0;

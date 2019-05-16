@@ -9,13 +9,13 @@ def get_next(set_moves, last_move):
 
 
 def gen_scramble(set_moves, size):
-    ret = "\""
+    ret = ""
     last_move = "E"
     for i in range(size):
         move = get_next(set_moves, last_move);
         ret += move + " "
         last_move = move
-    print(ret[:-1] + "\"")
+    print(ret[:-1])
 
 def main():
     parser = argparse.ArgumentParser()

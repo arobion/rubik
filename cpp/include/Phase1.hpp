@@ -11,8 +11,9 @@
 class Phase1
 {
 public:
-	Phase1(std::shared_ptr<State> start);
+	Phase1();
 	std::list<std::shared_ptr<State>> path;
+	void set_start(std::shared_ptr<State>);
 	void run();
 
 private:

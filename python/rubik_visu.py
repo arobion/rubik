@@ -1,4 +1,5 @@
-import sys, pygame
+import sys
+import pygame as pg
 from pygame.locals import *
 
 POS_B = (3,0)
@@ -7,6 +8,45 @@ POS_U = (3,3)
 POS_R = (6,3)
 POS_D = (9,3)
 POS_F = (3,6)
+COLOR_INACTIVE = pg.Color(255,255,255)
+COLOR_ACTIVE = pg.Color(0,0,0)
+
+class InputBox:
+
+    def __init__(self, x, y, w, h, text=''):
+        self.rect = pg.Rect(x, y, w, h)
+        self.color = COLOR_INACTIVE
+        self.text = text
+        self.txt_surface = FONT.render(text, True, self.color)
+        self.active = False
+
+    def handle_event(self, event):
+        tmp = ""
+        if event.type == pg.MOUSEBUTTONDOWN:
+            if self.rect.collidepoint(event.pos):
+                self.active = not self.active
+            else:
+                self.active = False
+            self.color = COLOR_ACTIVE if self.active else COLOR_INACTIVE
+        if event.type == pg.KEYDOWN:
+            if self.active:
+                if event.key == pg.K_RETURN:
+                    tmp = self.text
+                    self.text = ''
+                elif event.key == pg.K_BACKSPACE:
+                    self.text = self.text[:-1]
+                else:
+                    self.text += event.unicode
+                self.txt_surface = FONT.render(self.text, True, self.color)
+        return tmp
+
+    def update(self):
+        width = max(200, self.txt_surface.get_width()+10)
+        self.rect.w = width
+
+    def draw(self, screen):
+        screen.blit(self.txt_surface, (self.rect.x+5, self.rect.y+5))
+        pg.draw.rect(screen, self.color, self.rect, 2)
 
 class RubikVisu:
     """
@@ -24,12 +64,12 @@ class RubikVisu:
         for i in range(9):
             cube.append([0] * 12)
         self.cube = cube
-        self.img_u = pygame.image.load("./resource/cube_yellow.png").convert()
-        self.img_d = pygame.image.load("./resource/cube_white.png").convert()
-        self.img_f = pygame.image.load("./resource/cube_blue.png").convert()
-        self.img_b = pygame.image.load("./resource/cube_green.png").convert()
-        self.img_r = pygame.image.load("./resource/cube_red.png").convert()
-        self.img_l = pygame.image.load("./resource/cube_orange.png").convert()
+        self.img_u = pg.image.load("./resource/cube_yellow.png").convert()
+        self.img_d = pg.image.load("./resource/cube_white.png").convert()
+        self.img_f = pg.image.load("./resource/cube_blue.png").convert()
+        self.img_b = pg.image.load("./resource/cube_green.png").convert()
+        self.img_r = pg.image.load("./resource/cube_red.png").convert()
+        self.img_l = pg.image.load("./resource/cube_orange.png").convert()
         self.face_u = [1] * 9
         self.face_d = [2] * 9
         self.face_f = [3] * 9
@@ -298,37 +338,44 @@ class RubikVisu:
             self.make_move("L")
             self.make_move("L")
 
-pygame.init()
-
-size = width, height = 800, 600
-
-window = pygame.display.set_mode(size)
-
-backgound = pygame.image.load("./resource/background.png").convert()
-
+pg.init()
+FONT = pg.font.Font(None, 32)
+size = width, height = 1200, 600
+window = pg.display.set_mode(size)
+backgound = pg.image.load("./resource/background.png").convert()
 cube = RubikVisu(window)
-cube.make_move("L")
-cube.make_move("U'")
-cube.make_move("R")
-cube.make_move("U'")
-cube.make_move("U'")
-cube.make_move("L'")
-cube.make_move("R'")
-cube.make_move("D'")
-cube.make_move("R")
-cube.make_move("L")
-cube.make_move("D")
-cube.make_move("F'")
-cube.make_move("B")
-cube.make_move("B2")
+input_box = InputBox(650, 240, 400, 32)
 
+font_title = pg.font.Font("./resource/04B_30__.TTF", 50)
+font = pg.font.Font("./resource/04B_30__.TTF", 20)
+title = font_title.render("MEGA Rubik's solver 3000", True, (255, 0, 0))
+text_to_solve = font.render("Press S to solve", True, (255, 255, 255))
+text_to_reset = font.render("Press X to reset", True, (255, 255, 255))
+text_to_input = font.render("Enter number or scramble", True, (255, 255, 255))
 
-
-
-    
 while 1:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT: sys.exit()
+    text = ""
+    window.fill((30, 30, 30))
     window.blit(backgound, (0, 0))
+    window.blit(title, (100, 50))
+    window.blit(text_to_solve, (650, 160))
+    window.blit(text_to_reset, (650, 190))
+    window.blit(text_to_input, (650, 220))
     cube.put_cube2window(window)
-    pygame.display.flip()
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
+            sys.exit()
+        else:
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_s:
+                    print("solve")
+                if event.key == pg.K_x:
+                    print("reset")
+            text = input_box.handle_event(event)
+            if text != "":
+                print("mix")
+    input_box.update()
+    input_box.draw(window)
+    if text != "":
+        print(text)
+    pg.display.flip()

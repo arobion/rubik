@@ -1,6 +1,10 @@
 #include "State.hpp"
 #include "move.hpp"
 #include <stdlib.h>
+#include <vector>
+#include <string>
+#include <sstream>
+#include<iterator>
 
 int		State::tot = 0;
 
@@ -21,32 +25,40 @@ State::State() :
 	tot++;
 }
 
-State::State(char **argv):
+State::State(std::string input):
 	g(0),
 	instruction(EMPTY)
 {
-	for (auto i = 1; i < 9; i++)
-	{
-		this->compressed <<= 3;
-		this->compressed |= atoi(argv[i]);
-	}
+	// tokenize
+	std::istringstream buf(input);
+	std::istream_iterator<std::string> beg(buf), end;
+	std::vector<std::string> tokens(beg, end);
 
-	for (auto i = 9; i < 21; i++)
-	{
-		this->compressed <<= 4;
-		this->compressed |= atoi(argv[i]);
-	}
 
-	for (auto i = 21; i < 29; i++)
+	int i = 0;
+	for (auto& s: tokens)
 	{
-		this->corners_orientation <<= 2;
-		this->corners_orientation |= atoi(argv[i]);
-	}
-
-	for (auto i = 29; i < 41; i++)
-	{
-		this->edges_orientation <<= 1;
-		this->edges_orientation |= atoi(argv[i]);
+		if (i >= 0 && i < 8)
+		{
+			this->compressed <<= 3;
+			this->compressed |= atoi(s.c_str());
+		}
+		if (i >= 8 && i < 20)
+		{
+			this->compressed <<= 4;
+			this->compressed |= atoi(s.c_str());
+		}
+		if (i >= 20 && i < 28)
+		{
+			this->corners_orientation <<= 2;
+			this->corners_orientation |= atoi(s.c_str());
+		}
+		if (i >= 28 && i < 40)
+		{
+			this->edges_orientation <<= 1;
+			this->edges_orientation |= atoi(s.c_str());
+		}
+		i++;
 	}
 	tot++;
 }

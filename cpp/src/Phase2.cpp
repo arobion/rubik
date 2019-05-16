@@ -1,8 +1,7 @@
 #include "Phase2.hpp"
 #include "move.hpp"
 
-Phase2::Phase2(std::shared_ptr<State> start) :
-	start(start)
+Phase2::Phase2()
 {
 	TableLoader loader("phase2.bin");
 	if (loader.file.fail())
@@ -17,10 +16,16 @@ Phase2::Phase2(std::shared_ptr<State> start) :
 		loader.load_map(&bfs_map);
 	}
 	std::cout << "bfs_map: " << bfs_map.size() << std::endl;
-	std::cout << std::endl;
 	
+}
+
+void Phase2::set_start(std::shared_ptr<State> start)
+{
+	this->start = start;
 	this->bound = map_heuristic(start);
-	path.push_back(start);
+	std::list<std::shared_ptr<State>> new_path;
+	new_path.push_back(start);
+	this->path = new_path;
 }
 
 void Phase2::generate_bfs_map()
@@ -62,7 +67,7 @@ void Phase2::run()
 			break;
 		}
 		bound = tmp;
-		std::cout << "update bound: " << bound << std::endl;
+		//std::cout << "update bound: " << bound << std::endl;
 	}
 }
 

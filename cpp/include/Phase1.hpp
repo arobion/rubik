@@ -2,22 +2,31 @@
 
 #include "State.hpp"
 #include "TableLoader.hpp"
+#include "type.hpp"
 #include <list>
-#include <limits>
 #include <unordered_set>
-
-#define BOUND_INF std::numeric_limits<float>::max()
 
 class Phase1
 {
 public:
-	Phase1();
-	std::list<std::shared_ptr<State>> path;
-	void set_start(std::shared_ptr<State>);
-	void run();
+	Phase1(P1OrientationTable & p1_orientation_table, P1SliceTable & p1_slice_table, StatePtr start);
+
+	std::list<StatePtr>						path;
+
+	void									run();
+	static std::vector<StatePtr>			get_nexts(StatePtr current);
 
 private:
-	std::unordered_map<Instruction, std::vector<Instruction>> moves_map_1{
+	P1OrientationTable &					p1_orientation_table;
+	P1SliceTable &							p1_slice_table;
+	StatePtr								start;
+	float									bound;
+	std::unordered_set<std::bitset<100>>	visited;
+
+	float									heuristic(StatePtr state);
+	float									search();
+
+	static inline std::unordered_map<Instruction, std::vector<Instruction>> moves_map_1{
 		{U, {D, DR, D2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}},
 		{UR, {D, DR, D2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}},
 		{U2, {D, DR, D2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}},
@@ -44,24 +53,4 @@ private:
 
 		{EMPTY, {U, UR, U2, D, DR, D2, L, LR, L2, R, RR, R2, F, FR, F2, B, BR, B2}}
 	};
-
-	std::shared_ptr<State> solved = std::make_shared<State>();
-
-	std::shared_ptr<State> start;
-	//std::unordered_map<std::bitset<16>, char> co_map;
-	std::unordered_map<std::bitset<32>, char> o_map;
-	std::unordered_map<std::bitset<16>, char> slice_map;
-
-	float bound;
-	std::unordered_set<std::bitset<100>> visited;
-
-	std::vector<std::shared_ptr<State>> get_nexts(std::shared_ptr<State>);
-	std::vector<std::shared_ptr<State>> get_nexts_for_slice_map(std::shared_ptr<State>);
-	//void generate_co_map();
-	void generate_o_map();
-	void generate_slice_map();
-	std::bitset<8>	get_edges_around_slice(std::shared_ptr<State>, char pos1, char pos2);
-	void			add_new_entry_permuted(int to_perm[4], std::list<std::shared_ptr<State>>);
-	float heuristic(std::shared_ptr<State> state);
-	float search();
 };

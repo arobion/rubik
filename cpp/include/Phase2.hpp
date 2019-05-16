@@ -2,30 +2,34 @@
 
 #include "State.hpp"
 #include "TableLoader.hpp"
+#include "type.hpp"
 #include <list>
-#include <limits>
 #include <unordered_set>
 
-#define BOUND_INF std::numeric_limits<float>::max()
-#define MAP_DEPTH 8
 
 class Phase2
 {
 public:
-	Phase2();
+	Phase2(P2Table & p2_table, StatePtr start);
 
-	std::list<std::shared_ptr<State>> path;
-
-	void set_start(std::shared_ptr<State>);
-	void run();
-	void run_from_pruning();
+	std::list<StatePtr>					path;
+	static std::vector<StatePtr>		get_nexts(StatePtr current);
+	void								run();
+	void								run_from_pruning();
 
 private:
-	std::shared_ptr<State> start;
-	float bound;
-	std::unordered_set<std::bitset<72>> visited;
+	P2Table &							p2_table;
+	StatePtr							start;
+	float								bound;
+	std::unordered_set<std::bitset<72>>	visited;
 
-	inline static std::unordered_map<Instruction, std::vector<Instruction>> moves_map{
+	float								heuristic(StatePtr state);
+	float 								heuristic_moves(StatePtr state);
+	float 								search();
+	void 								search_with_table(char cost, StatePtr current);
+
+
+	inline static std::unordered_map<Instruction, std::vector<Instruction>> moves_map_2{
 		{U, {D, DR, D2, L2, R2, F2, B2}},
 		{UR, {D, DR, D2, L2, R2, F2, B2}},
 		{U2, {D, DR, D2, L2, R2, F2, B2}},
@@ -42,12 +46,4 @@ private:
 
 		{EMPTY, {U, UR, U2, D, DR, D2, L2, R2, F2, B2}}
 	};
-
-	std::unordered_map<std::bitset<72>, char> bfs_map;
-	void	generate_bfs_map();
-	float 	search();
-	void	search_from_pruning(char, std::shared_ptr<State>);
-	float 	heuristic(std::shared_ptr<State> state);
-	float 	map_heuristic(std::shared_ptr<State> state);
-	std::vector<std::shared_ptr<State>> get_nexts(std::shared_ptr<State>);
 };

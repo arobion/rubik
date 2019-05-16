@@ -15,12 +15,9 @@ struct State
 	State(State const & origin, Instruction instruction);
 	State & operator=(State const &);
 	
-	std::vector<std::shared_ptr<State>>	get_nexts_1();
-	std::vector<std::shared_ptr<State>>	get_nexts_2();
-    std::bitset<16>         get_UD_slice_permutation();
-	std::bitset<100>		get_bitset();
-	std::bitset<32>			get_full_orientation();
-	float					heuristic_dummy();
+    std::bitset<16>		get_UD_slice_permutation();
+	std::bitset<100>	get_bitset();
+	std::bitset<32>		get_full_orientation();
 
 	char				g;
 	static int			tot;
@@ -32,3 +29,5 @@ struct State
 };
 
 std::ostream & operator<<(std::ostream & o, State const & rhs);
+
+typedef std::shared_ptr<State> StatePtr;

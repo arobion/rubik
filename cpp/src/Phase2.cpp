@@ -1,147 +1,30 @@
 #include "Phase2.hpp"
 #include "move.hpp"
 
-Phase2::Phase2()
+Phase2::Phase2(P2Table & p2_table, StatePtr start) :
+	p2_table(p2_table),
+	start(start),
+	bound(heuristic(start))
 {
-	TableLoader loader("phase2.bin");
-	if (loader.file.fail())
-	{
-		std::cout << "Generating phase 2 map" << std::endl;
-		generate_bfs_map();
-		loader.dump_map(&bfs_map);
-	}
-	else
-	{
-		std::cout << "Loading phase 2 map" << std::endl;
-		loader.load_map(&bfs_map);
-	}
-	std::cout << "bfs_map: " << bfs_map.size() << std::endl;
-	
+	path.push_back(start);
 }
 
-void Phase2::set_start(std::shared_ptr<State> start)
+std::vector<StatePtr> Phase2::get_nexts(StatePtr current)
 {
-	this->start = start;
-	this->bound = map_heuristic(start);
-	std::list<std::shared_ptr<State>> new_path;
-	new_path.push_back(start);
-	this->path = new_path;
+	std::vector<StatePtr> nexts;
+	for (auto next_instruction : moves_map_2[current->instruction])
+		nexts.push_back(move(*current, next_instruction));
+	return nexts;
 }
 
-void Phase2::generate_bfs_map()
+float Phase2::heuristic(StatePtr state)
 {
-	auto dep = std::make_shared<State>();
-	bfs_map[dep->compressed] = dep->g;
-
-	std::list<std::shared_ptr<State>> queue;
-	queue.push_back(dep);
-
-	while (queue.size())
-	{
-		auto current = queue.front();
-		queue.pop_front();
-		if (current->g < MAP_DEPTH)
-		{
-			for (auto next : current->get_nexts_2())
-			{
-				if (bfs_map.find(next->compressed) == bfs_map.end())
-				{
-					bfs_map[next->compressed] = next->g;
-					queue.push_back(next);
-				}
-			}
-		}
-	}
-}
-
-void Phase2::run()
-{
-	while (1)
-	{
-		auto tmp = search();
-		if (tmp == 0)
-			break;
-		else if (tmp == BOUND_INF)
-		{
-			std::cerr << "Can't found the solution.";
-			break;
-		}
-		bound = tmp;
-		//std::cout << "update bound: " << bound << std::endl;
-	}
-}
-
-void Phase2::run_from_pruning()
-{
-	auto dep = path.back();
-	auto cost = bfs_map[dep->compressed];
-	search_from_pruning(cost, dep);
-
-}
-
-void Phase2::search_from_pruning(char cost, std::shared_ptr<State> current)
-{
-	if (cost == 0)
-		return ;
-	char tmp_cost = cost;
-	auto tmp_state = current;
-	for (auto next : get_nexts(current))
-	{
-		if (bfs_map.find(next->compressed) != bfs_map.end())
-		{
-			if (bfs_map[next->compressed] < tmp_cost)
-			{
-				tmp_cost = bfs_map[next->compressed];
-				tmp_state = next;
-			}
-		}
-	}
-	path.push_back(tmp_state);
-	search_from_pruning(tmp_cost, tmp_state);
-}
-
-float Phase2::search()
-{
-	auto current = path.back();
-	float h = map_heuristic(current);
-	float f = float(current->g) + h;
-	if (f > bound)
-		return f;
-	if (h == 0)
-		return 0;
-	float min = BOUND_INF;
-
-	for (auto next : get_nexts(current))
-	{
-		if (visited.find(next->compressed) == visited.end())
-		{
-			path.push_back(next);
-			visited.insert(next->compressed);
-			auto tmp = search();
-			if (tmp == 0)
-				return 0;
-			if (tmp < min)
-			{
-				min = tmp;
-				current = next;
-			}
-			path.pop_back();
-			visited.erase(next->compressed);
-			current = path.back();
-		}
-	}
-	return min;
-}
-
-float Phase2::map_heuristic(std::shared_ptr<State> state)
-{
-	if (bfs_map.find(state->compressed) == bfs_map.end())
-		return heuristic(state);
+	if (p2_table.find(state->compressed) == p2_table.end())
+		return heuristic_moves(state);
 	return 0;
-	return bfs_map[state->compressed];
 }
 
-float Phase2::heuristic(std::shared_ptr<State> state)
+float Phase2::heuristic_moves(StatePtr state)
 {
 	// compare edges
 	float sum_edges = 0;
@@ -174,10 +57,76 @@ float Phase2::heuristic(std::shared_ptr<State> state)
 	return std::max(sum_edges / 4, sum_corners / 4);
 }
 
-std::vector<std::shared_ptr<State>> Phase2::get_nexts(std::shared_ptr<State> current)
+void Phase2::run()
 {
-	std::vector<std::shared_ptr<State>> nexts;
-	for (auto next_instruction : moves_map[current->instruction])
-		nexts.push_back(move(*current, next_instruction));
-	return nexts;
+	while (1)
+	{
+		auto tmp = search();
+		if (tmp == 0)
+			break;
+		else if (tmp == BOUND_INF)
+		{
+			std::cerr << "Can't found the solution.";
+			break;
+		}
+		bound = tmp;
+	}
+
+	auto dep = path.back();
+	auto cost = p2_table[dep->compressed];
+	search_with_table(cost, dep);
+}
+
+float Phase2::search()
+{
+	auto current = path.back();
+	float h = heuristic(current);
+	float f = float(current->g) + h;
+	if (f > bound)
+		return f;
+	if (h == 0)
+		return 0;
+	float min = BOUND_INF;
+
+	for (auto next : get_nexts(current))
+	{
+		if (visited.find(next->compressed) == visited.end())
+		{
+			path.push_back(next);
+			visited.insert(next->compressed);
+			auto tmp = search();
+			if (tmp == 0)
+				return 0;
+			if (tmp < min)
+			{
+				min = tmp;
+				current = next;
+			}
+			path.pop_back();
+			visited.erase(next->compressed);
+			current = path.back();
+		}
+	}
+	return min;
+}
+
+void Phase2::search_with_table(char cost, StatePtr current)
+{
+	if (cost == 0)
+		return ;
+	char tmp_cost = cost;
+	auto tmp_state = current;
+	for (auto next : get_nexts(current))
+	{
+		if (p2_table.find(next->compressed) != p2_table.end())
+		{
+			if (p2_table[next->compressed] < tmp_cost)
+			{
+				tmp_cost = p2_table[next->compressed];
+				tmp_state = next;
+			}
+		}
+	}
+	path.push_back(tmp_state);
+	search_with_table(tmp_cost, tmp_state);
 }

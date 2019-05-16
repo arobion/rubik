@@ -1,17 +1,18 @@
 #include "Phase1.hpp"
+#include "Phase2.hpp"
 #include "move.hpp"
 #include <iostream>
 #include <algorithm>
 
-Phase1::Phase1(P1OrientationTable & p1_orientation_table, P1SliceTable & p1_slice_table, StatePtr start) :
+Phase1::Phase1(P1OrientationTable & p1_orientation_table, P1SliceTable & p1_slice_table, P2Table & p2_table, StatePtr start) :
 	p1_orientation_table(p1_orientation_table),
 	p1_slice_table(p1_slice_table),
+	p2_table(p2_table),
 	start(start),
 	bound(heuristic(start))
 {
 	path.push_back(start);
 }
-
 
 std::vector<StatePtr> Phase1::get_nexts(StatePtr current)
 {
@@ -30,7 +31,7 @@ void Phase1::run()
 {
 	while (1)
 	{
-		auto tmp = search();
+		auto tmp = search(BOUND_INF);
 		if (tmp == 0)
 			break;
 		else if (tmp == BOUND_INF)
@@ -43,7 +44,7 @@ void Phase1::run()
 	}
 }
 
-float Phase1::search()
+float Phase1::search(float prev_min)
 {
 	auto current = path.back();
 	float h = heuristic(current);
@@ -51,7 +52,7 @@ float Phase1::search()
 	if (f > bound)
 		return f;
 	if (h == 0)
-		return 0;
+		return (run_phase2()) ? 0 : prev_min;
 	float min = BOUND_INF;
 
 	for (auto next : get_nexts(current))
@@ -61,7 +62,7 @@ float Phase1::search()
 		{
 			path.push_back(next);
 			visited.insert(bitset);
-			auto tmp = search();
+			auto tmp = search(min);
 			if (tmp == 0)
 				return 0;
 			if (tmp < min)
@@ -76,3 +77,23 @@ float Phase1::search()
 	}
 	return min;
 }
+
+bool Phase1::run_phase2()
+{
+	// prepare strarting state for phase 2
+	auto s2 = std::make_shared<State>(*(path.back()));
+	s2->g = 0;
+	s2->instruction = EMPTY;
+
+	// phase 2
+	Phase2 phase2(p2_table, s2, MAX_DEPTH - path.back()->g);
+	if (phase2.run())
+	{
+		phase2.path.pop_front();
+		for (auto elem : phase2.path)
+			path.push_back(elem);
+		return true;
+	}
+	return false;
+}
+

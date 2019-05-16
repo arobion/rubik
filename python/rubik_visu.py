@@ -349,9 +349,9 @@ input_box = InputBox(650, 240, 400, 32)
 font_title = pg.font.Font("./resource/04B_30__.TTF", 50)
 font = pg.font.Font("./resource/04B_30__.TTF", 20)
 title = font_title.render("MEGA Rubik's solver 3000", True, (255, 0, 0))
-text_to_solve = font.render("Press S to solve", True, (255, 255, 255))
-text_to_reset = font.render("Press X to reset", True, (255, 255, 255))
-text_to_input = font.render("Enter number or scramble", True, (255, 255, 255))
+text_to_solve = font.render("Press S to solve", True, (0, 0, 0))
+text_to_reset = font.render("Press X to reset", True, (0, 0, 0))
+text_to_input = font.render("Enter number or scramble", True, (0, 0, 0))
 
 while 1:
     text = ""

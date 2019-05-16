@@ -3,8 +3,7 @@
 #include <iostream>
 #include <algorithm>
 
-Phase1::Phase1(std::shared_ptr<State> start) :
-	start(start)
+Phase1::Phase1()
 {
 	TableLoader loader("phase1.bin");
 	if (loader.file.fail())
@@ -27,12 +26,18 @@ Phase1::Phase1(std::shared_ptr<State> start) :
 	//std::cout << "corners: " << co_map.size() << std::endl;
 	std::cout << "edges: " << o_map.size() << std::endl;
 	std::cout << "slices: " << slice_map.size() << std::endl;
-	std::cout << std::endl;
+	//std::cout << std::endl;
 
-	bound = heuristic(start);
-	path.push_back(start);
 }
 
+void Phase1::set_start(std::shared_ptr<State> start)
+{
+	this->start = start;
+	this->bound = heuristic(start);
+	std::list<std::shared_ptr<State>> new_path;
+	new_path.push_back(start);
+	this->path = new_path;
+}
 std::vector<std::shared_ptr<State>> Phase1::get_nexts(std::shared_ptr<State> current)
 {
 	std::vector<std::shared_ptr<State>> nexts;
@@ -203,7 +208,7 @@ void Phase1::run()
 			break;
 		}
 		bound = tmp;
-		std::cout << "update bound: " << bound << std::endl;
+//		std::cout << "update bound: " << bound << std::endl;
 	}
 }
 

@@ -41,9 +41,10 @@ def main():
 #    parser.add_argument("scramble", help="Please enter a scramble composed of following moves :<U, U', U2, R, R', R2, L, L', L2, D, D', D2, F, F', F2, B, B', B2> ")
 #    args = parser.parse_args()
     print("Loading C++ program :")
-    subprocess.run(["make -C ../cpp/."], shell=True, capture_output=True)
+    subprocess.run(["make -C ../cpp/."], shell=True, stdout=subprocess.PIPE)
     print('\tcompilation Done')
     cpp = subprocess.Popen(["../cpp/rubik"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
+    cpp.stdout.flush()
     read = cpp.stdout.readline()
     while read != "Ready\n":
         print("\t" + read, end="")

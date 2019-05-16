@@ -1,4 +1,5 @@
 import argparse
+import random
 import time
 import subprocess
 
@@ -8,15 +9,28 @@ from rubik_state import rubik_state
 from rubik_next import get_nexts_1, get_nexts_2
 from rubik_ida import IDA
 
+def random_scramble(number):
+    ret = ""
+    set_moves = ["U", "D", "R", "L", "F", "B", "U'", "D'", "R'", "L'", "F'", "B'", "U2", "D2", "R2", "L2", "F2", "B2"]
+    last_move = "E"
+    for i in range(number):
+        move = random.choice(set_moves)
+        while(move[0] == last_move[0]):
+            move = random.choice(set_moves)
+        ret += move + " "
+        last_move = move
+    return ret[:-1]
+
+
 def scramble(string, rubik):
     valid_moves = ["U", "U'", "U2", "R", "R'", "R2", "L", "L'", "L2", "D", "D'", "D2", "F", "F'", "F2", "B", "B'", "B2"]
     moves = string.split()
     for elem in moves:
         if elem not in valid_moves:
-            raise Exception("Error unvalid move : {}, look at usage for more information".format(elem))
+            raise Exception("Error unvalid move : {}".format(elem))
         move_by_notation(rubik, elem)
 
-def handle_cpp(cpp, rubik):
+def handle_cpp(cpp, rubik, instructions):
     corners = ""
     for i in range(1, 9):
         corners += str(rubik.corners[i].final_position - 1) + " "
@@ -31,14 +45,41 @@ def handle_cpp(cpp, rubik):
         eo += str(rubik.edges[i].orientation) + " "
 
     cpp.stdin.write("{}{}{}{}\n".format(corners, edges, co, eo))
+    start_time = time.time()
     solution = cpp.stdout.readline()
+    print("\nscramble: {}".format(instructions))
+    print("time resolution: {:.2f} s".format(time.time() - start_time))
     print("nb moves: {}".format(len(solution.split())))
     print("solution: {}".format(solution), end="")
 
+def launch_cmd(cpp):
+    print("\nPlease enter a specific scramble or a size for a random scramble:")
+    instruction = input()
+    while instruction != "exit":
+        rubik = Rubik()
+        try:
+            number = int(instruction)
+            instruction = random_scramble(number)
+        except Exception as e:
+            pass
+        try:
+            scramble(instruction, rubik)
+            handle_cpp(cpp, rubik, instruction)
+        except Exception as e:
+            print(e)
+        print("\nPlease enter a specific scramble or a size for a random scramble:")
+        instruction = input()
+    print("Bye")
+    cpp.kill()
+
+def launch_visu(cpp):
+    pass
+
 def main():
-#    parser = argparse.ArgumentParser()
-#    parser.add_argument("scramble", help="Please enter a scramble composed of following moves :<U, U', U2, R, R', R2, L, L', L2, D, D', D2, F, F', F2, B, B', B2> ")
-#    args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-v", "--visu", help="Display window", action="store_true")
+    args = parser.parse_args()
+
     print("Loading C++ program :")
     subprocess.run(["make -C ../cpp/."], shell=True, stdout=subprocess.PIPE)
     print('\tcompilation Done')
@@ -49,17 +90,10 @@ def main():
         print("\t" + read, end="")
         read = cpp.stdout.readline()
     print("C++ program is Ready")
-    print("Please enter a scramble :")
-    instruction = input()
-    while instruction != "exit":
-        try:
-            rubik = Rubik()
-            scramble(instruction, rubik)
-            handle_cpp(cpp, rubik)
-        except Exception as e:
-            print(e)
-        print("Please enter a scramble :")
-        instruction = input()
+    if args.visu:
+        launch_visu(cpp)
+    else:
+        launch_cmd(cpp)
 
 if __name__ == "__main__":
     main()

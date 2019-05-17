@@ -8,7 +8,7 @@ POS_U = (3,3)
 POS_R = (6,3)
 POS_D = (9,3)
 POS_F = (3,6)
-COLOR_INACTIVE = pg.Color(255,255,255)
+COLOR_INACTIVE = pg.Color(150,150,150)
 COLOR_ACTIVE = pg.Color(0,0,0)
 
 class InputBox:
@@ -17,7 +17,7 @@ class InputBox:
         self.rect = pg.Rect(x, y, w, h)
         self.color = COLOR_INACTIVE
         self.text = text
-        self.txt_surface = pg.font.Font(None, 32).render(text, True, self.color)
+        self.txt_surface = pg.font.Font("./resource/menlo.ttc", 20).render(text, True, self.color)
         self.active = False
 
     def handle_event(self, event):
@@ -37,7 +37,7 @@ class InputBox:
                     self.text = self.text[:-1]
                 else:
                     self.text += event.unicode
-                self.txt_surface = pg.font.Font(None, 32).render(self.text, True, self.color)
+                self.txt_surface = pg.font.Font("./resource/menlo.ttc", 16).render(self.text, True, self.color)
         return tmp
 
     def update(self):

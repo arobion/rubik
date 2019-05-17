@@ -89,21 +89,17 @@ def convert_list2str(l):
 
 def launch_visu(cpp):
     pg.init()
-    size = width, height = 1200, 600
+    size = width, height = 1400, 600
     window = pg.display.set_mode(size)
-    backgound = pg.image.load("./resource/background.png").convert()
-    kociemba = pg.image.load("./resource/kociemba.jpg").convert()
     cube = RubikVisu(window)
     input_box = InputBox(650, 140, 400, 32)
     
-    font_title = pg.font.Font("./resource/04B_30__.TTF", 50)
-    font = pg.font.Font("./resource/04B_30__.TTF", 20)
-    font_result = pg.font.Font(None, 25)
-    title = font_title.render("MEGA Rubik's solver 3000", True, (255, 0, 0))
+    font = pg.font.Font("./resource/menlo.ttc", 16)
+    font_result = pg.font.Font("./resource/menlo.ttc", 16)
     text_to_solve = font.render("Press S to solve", True, (0, 0, 0))
+    text_to_arrow = font.render("Press <- or -> to go between the solution", True, (0, 0, 0))
     text_to_reset = font.render("Press X to reset", True, (0, 0, 0))
     text_to_input = font.render("Enter number or scramble", True, (0, 0, 0))
-    text_to_skynet = font.render("Skynet confirmed !", True, (255, 0, 0))
     text_to_solution_put = font.render("Currently:  (press key left or right)", True, (0, 0, 0))
     
     text = ""
@@ -112,32 +108,29 @@ def launch_visu(cpp):
     solution_put = []
     melange = ""
     while 1:
-        window.fill((30, 30, 30))
-        window.blit(backgound, (0, 0))
-        window.blit(kociemba, (700, 240))
-        window.blit(title, (100, 50))
+        window.fill((255, 255, 255))
         window.blit(text_to_input, (650, 110))
-        window.blit(text_to_solve, (650, 180))
-        window.blit(text_to_reset, (650, 210))
+        window.blit(text_to_solve, (650, 200))
+        window.blit(text_to_arrow, (650, 230))
+        window.blit(text_to_reset, (650, 260))
         cube.put_cube2window(window)
         if len(melange):
             if len(melange) <= 50:
                 text_to_scramble = font.render("Scramble: (moves: " + str(len(melange.split())) + ")", True, (0, 0, 0))
                 text_scramble = font_result.render(melange, True, (0, 0, 0))
-                window.blit(text_scramble, (400, 430))
+                window.blit(text_scramble, (650, 350))
             if len(melange) > 50:
                 text_to_scramble = font.render("Scramble too large to be displayed", True, (0, 0, 0))
-            window.blit(text_to_scramble, (400, 400))
+            window.blit(text_to_scramble, (650, 320))
         if len(solution):
             text_to_solution = font.render("Solution: (moves: " + str(len(solution)) + ")", True, (0, 0, 0))
-            window.blit(text_to_solution, (400, 460))
+            window.blit(text_to_solution, (650, 400))
             text_solution = font_result.render(convert_list2str(solution), True, (0, 0, 0))
-            window.blit(text_solution, (400, 480))
-            window.blit(text_to_skynet, (720, 290))
+            window.blit(text_solution, (650, 420))
         if len(solution_put):
-            window.blit(text_to_solution_put, (400, 510))
+            window.blit(text_to_solution_put, (650, 470))
             text_solution_put = font_result.render(convert_list2str(solution_put), True, (0, 0, 0))
-            window.blit(text_solution_put, (400, 540))
+            window.blit(text_solution_put, (650, 500))
 
         for event in pg.event.get():
             if event.type == pg.QUIT:

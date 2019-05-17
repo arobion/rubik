@@ -103,6 +103,7 @@ def launch_visu(cpp):
     text_to_solve = font.render("Press S to solve", True, (0, 0, 0))
     text_to_reset = font.render("Press X to reset", True, (0, 0, 0))
     text_to_input = font.render("Enter number or scramble", True, (0, 0, 0))
+    text_to_skynet = font.render("Skynet confirmed !", True, (255, 0, 0))
     text_to_solution_put = font.render("Currently:  (press key left or right)", True, (0, 0, 0))
     
     text = ""
@@ -120,15 +121,19 @@ def launch_visu(cpp):
         window.blit(text_to_reset, (650, 210))
         cube.put_cube2window(window)
         if len(melange):
-            text_to_scramble = font.render("Scramble: (moves: " + str(len(melange.split())) + ")", True, (0, 0, 0))
+            if len(melange) <= 50:
+                text_to_scramble = font.render("Scramble: (moves: " + str(len(melange.split())) + ")", True, (0, 0, 0))
+                text_scramble = font_result.render(melange, True, (0, 0, 0))
+                window.blit(text_scramble, (400, 430))
+            if len(melange) > 50:
+                text_to_scramble = font.render("Scramble too large to be displayed", True, (0, 0, 0))
             window.blit(text_to_scramble, (400, 400))
-            text_scramble = font_result.render(melange, True, (0, 0, 0))
-            window.blit(text_scramble, (400, 430))
         if len(solution):
             text_to_solution = font.render("Solution: (moves: " + str(len(solution)) + ")", True, (0, 0, 0))
             window.blit(text_to_solution, (400, 460))
             text_solution = font_result.render(convert_list2str(solution), True, (0, 0, 0))
             window.blit(text_solution, (400, 480))
+            window.blit(text_to_skynet, (720, 290))
         if len(solution_put):
             window.blit(text_to_solution_put, (400, 510))
             text_solution_put = font_result.render(convert_list2str(solution_put), True, (0, 0, 0))

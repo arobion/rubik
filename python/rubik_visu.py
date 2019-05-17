@@ -17,7 +17,7 @@ class InputBox:
         self.rect = pg.Rect(x, y, w, h)
         self.color = COLOR_INACTIVE
         self.text = text
-        self.txt_surface = pg.font.Font("./resource/menlo.ttc", 20).render(text, True, self.color)
+        self.txt_surface = pg.font.Font("./python/resource/menlo.ttc", 20).render(text, True, self.color)
         self.active = False
 
     def handle_event(self, event):
@@ -37,7 +37,7 @@ class InputBox:
                     self.text = self.text[:-1]
                 else:
                     self.text += event.unicode
-                self.txt_surface = pg.font.Font("./resource/menlo.ttc", 16).render(self.text, True, self.color)
+                self.txt_surface = pg.font.Font("./python/resource/menlo.ttc", 16).render(self.text, True, self.color)
         return tmp
 
     def update(self):
@@ -64,12 +64,12 @@ class RubikVisu:
         for i in range(9):
             cube.append([0] * 12)
         self.cube = cube
-        self.img_u = pg.image.load("./resource/cube_yellow.png").convert()
-        self.img_d = pg.image.load("./resource/cube_white.png").convert()
-        self.img_f = pg.image.load("./resource/cube_blue.png").convert()
-        self.img_b = pg.image.load("./resource/cube_green.png").convert()
-        self.img_r = pg.image.load("./resource/cube_red.png").convert()
-        self.img_l = pg.image.load("./resource/cube_orange.png").convert()
+        self.img_u = pg.image.load("./python/resource/cube_yellow.png").convert()
+        self.img_d = pg.image.load("./python/resource/cube_white.png").convert()
+        self.img_f = pg.image.load("./python/resource/cube_blue.png").convert()
+        self.img_b = pg.image.load("./python/resource/cube_green.png").convert()
+        self.img_r = pg.image.load("./python/resource/cube_red.png").convert()
+        self.img_l = pg.image.load("./python/resource/cube_orange.png").convert()
         self.face_u = [1] * 9
         self.face_d = [2] * 9
         self.face_f = [3] * 9

@@ -7,12 +7,9 @@ import time
 import pygame as pg
 from pygame.locals import *
 
-from rubik_cubes import Rubik
-from rubik_moves import move, move_by_notation, move_translator
-from rubik_visu import *
-#from rubik_state import rubik_state
-#from rubik_next import get_nexts_1, get_nexts_2
-#from rubik_ida import IDA
+from python.rubik_cubes import Rubik
+from python.rubik_moves import move, move_by_notation, move_translator
+from python.rubik_visu import *
 
 
 def random_scramble(number):
@@ -94,8 +91,8 @@ def launch_visu(cpp):
     cube = RubikVisu(window)
     input_box = InputBox(650, 140, 400, 32)
     
-    font = pg.font.Font("./resource/menlo.ttc", 16)
-    font_result = pg.font.Font("./resource/menlo.ttc", 16)
+    font = pg.font.Font("./python/resource/menlo.ttc", 16)
+    font_result = pg.font.Font("./python/resource/menlo.ttc", 16)
     text_to_solve = font.render("Press S to solve", True, (0, 0, 0))
     text_to_arrow = font.render("Press <- or -> to go between the solution", True, (0, 0, 0))
     text_to_reset = font.render("Press X to reset", True, (0, 0, 0))
@@ -195,9 +192,9 @@ def main():
     args = parser.parse_args()
 
     print("Loading C++ program :")
-    subprocess.run(["make -C ../cpp/."], shell=True, stdout=subprocess.PIPE)
+    subprocess.run(["make -C cpp/."], shell=True, stdout=subprocess.PIPE)
     print('\tcompilation Done')
-    cpp = subprocess.Popen(["../cpp/rubik"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
+    cpp = subprocess.Popen(["cpp/rubik"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
     cpp.stdout.flush()
     read = cpp.stdout.readline()
     while read != "Ready\n":

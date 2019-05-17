@@ -6,7 +6,6 @@
 #include <list>
 #include <unordered_set>
 
-
 class Phase2
 {
 public:
@@ -30,7 +29,7 @@ private:
 	void 								search_with_table(char cost, StatePtr current);
 
 
-	inline static std::unordered_map<Instruction, std::vector<Instruction>> moves_map_2{
+	static inline std::unordered_map<Instruction, std::vector<Instruction>> moves_map_2{
 		{U, {D, DR, D2, L2, R2, F2, B2}},
 		{UR, {D, DR, D2, L2, R2, F2, B2}},
 		{U2, {D, DR, D2, L2, R2, F2, B2}},

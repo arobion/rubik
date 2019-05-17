@@ -1,16 +1,8 @@
 #include "State.hpp"
-#include "move.hpp"
 #include "Solver.hpp"
-#include "Phase1.hpp"
-#include "Phase2.hpp"
 #include <iostream>
-#include <bitset>
-#include <unordered_map>
-#include <list>
 #include <memory>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sstream>
+#include <string>
 
 int main()
 {

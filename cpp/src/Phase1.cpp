@@ -40,7 +40,6 @@ void Phase1::run()
 			break;
 		}
 		bound = tmp;
-		// std::cout << "update bound: " << bound << std::endl;
 	}
 }
 
@@ -96,4 +95,3 @@ bool Phase1::run_phase2()
 	}
 	return false;
 }
-

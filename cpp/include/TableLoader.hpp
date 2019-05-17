@@ -1,8 +1,8 @@
 #pragma once
 
+#include <bitset>
 #include <fstream>
 #include <iostream>
-#include <bitset>
 #include <unordered_map>
 
 #define BUFF_SIZE 100000

@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
-#include<iterator>
+#include <iterator>
 
 int		State::tot = 0;
 

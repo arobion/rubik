@@ -21,7 +21,7 @@ public:
 private:
 	P1OrientationTable &					p1_orientation_table;
 	P1SliceTable &							p1_slice_table;
-	P2Table									p2_table;
+	P2Table &								p2_table;
 	StatePtr								start;
 	float									bound;
 	std::unordered_set<std::bitset<100>>	visited;
